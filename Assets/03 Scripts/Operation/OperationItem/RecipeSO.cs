@@ -32,4 +32,7 @@ public class RecipeSO : ScriptableObject
     [Header("과정 시간")]
     public float craftTime = 1f;
 
+    [Header("UI")]
+    public Sprite icon;
+
 }
