@@ -21,7 +21,7 @@ public class PlayerMove : MonoBehaviour
         input.x = Input.GetAxisRaw("Horizontal");
         input.y = Input.GetAxisRaw("Vertical");
         input = input.normalized;
-        Debug.Log("Update Running");
+       
     }
 
     private void FixedUpdate()
