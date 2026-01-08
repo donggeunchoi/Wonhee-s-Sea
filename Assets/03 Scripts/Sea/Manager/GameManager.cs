@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (_player == null || _joystick == null) return;
-
+        
         _player.SetMoveInput(_joystick.Direction);
+       
     }
 }
