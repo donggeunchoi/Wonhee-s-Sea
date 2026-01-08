@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         Move();
         
-        if(!_useRotation)
+        if(_useRotation)
             Rotate();
     }
 

@@ -907,7 +907,7 @@ MonoBehaviour:
   _acceleration: 10
   _rotationSpeed: 10
   _deadZone: 0.15
-  _useRotation: 1
+  _useRotation: 0
 --- !u!114 &1998186675
 MonoBehaviour:
   m_ObjectHideFlags: 0
