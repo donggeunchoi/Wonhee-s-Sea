@@ -10,13 +10,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private float _deadZone = 0.15f;
 
+    [Header("Options")] 
+    [SerializeField] 
+    private bool _useRotation = true;
 
     Rigidbody2D _rb;
     Vector2 _moveInput;
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody2D>();
+        if (!TryGetComponent(out Rigidbody2D rb))
+            return;
+        
+        _rb = rb;
+        
         _rb.gravityScale = 0f;
         _rb.drag = 3f;
         _rb.angularDrag = 3f;
@@ -34,7 +41,9 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
-        Rotate();
+        
+        if(!_useRotation)
+            Rotate();
     }
 
     private void Move()
