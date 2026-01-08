@@ -12,11 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1f1020e0affc44ca48e6b361e2dcc0, type: 3}
   m_Name: "\uB3C4\uB9C8"
   m_EditorClassIdentifier: 
-  id: 2001
-  machineType: 0
-  inputs:
-  - item: {fileID: 11400000, guid: de2629b918a51fd46aa64b1d79ec0383, type: 2}
-    count: 1
-  outputItem: {fileID: 11400000, guid: b39517fdf625ed7439412567a24c97e7, type: 2}
+  inputItemId: 10004
+  inputCount: 1
+  outputItemId: 20004
   outputCount: 1
-  craftTime: 5
+  processTime: 1.5
