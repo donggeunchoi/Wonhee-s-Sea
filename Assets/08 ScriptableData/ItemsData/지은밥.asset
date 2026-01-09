@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88dfd49f2a85efc4dbd01ded775f97c5, type: 3}
   m_Name: "\uC9C0\uC740\uBC25"
   m_EditorClassIdentifier: 
-  id: 1004
-  disPlayName: "\uC9C0\uC740\uBC25"
+  itemId: 20007
+  displayName: "\uC9C0\uC740\uBC25"
+  Category: 0
   icon: {fileID: 0}
   stackable: 1
+  maxStack: 90
