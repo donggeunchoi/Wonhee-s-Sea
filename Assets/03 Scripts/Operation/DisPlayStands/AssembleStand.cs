@@ -24,12 +24,10 @@ public class AssembleStand : MonoBehaviour
        if (!string.IsNullOrEmpty(outputItemId) )
        {
           bool ok = inv.TryAdd(outputItemId, recipe.outputCount);
-          
+
           if (!ok)
-          {
              return;
-          }
-   
+           
           outputItemId = null;
           view?.ShowOutput(null);
           return;
@@ -37,19 +35,34 @@ public class AssembleStand : MonoBehaviour
    
        // 2) 가공중이면 무시
        if (isProcessing)
-       {
           return;
-       }
-   
-       int haveInput = inv.CountOf(recipe.inputItemId);
-       // 3) 재료 자동 투입(인벤에서 차감)
-       if (haveInput < recipe.inputCount)
+       
+       var inputs = recipe.GetInputs();
+       for (int i = 0; i < inputs.Count; i++)
        {
-          return;
+          var req = inputs[i];
+          
+          if (string.IsNullOrEmpty(req.itemId) || req.count <= 0)
+             continue;
+
+          int have = inv.CountOf(req.itemId);
+          if (have < req.count)
+          {
+             Debug.Log($"재료부족: {req.itemId}가 {req.count}필요 {have}보유");
+             return;
+          }
        }
-   
-       bool removed = inv.TryRemove(recipe.inputItemId, recipe.inputCount);
-       if (!removed) return;
+
+       for (int i = 0; i < inputs.Count; i++)
+       {
+          var req = inputs[i];
+          
+          if (string.IsNullOrEmpty(req.itemId) || req.count <= 0)
+             continue;
+          
+          bool removed = inv.TryRemove(recipe.inputItemId, recipe.inputCount);
+          if (!removed) return;
+       }
    
        StartCoroutine(CoProcess());
     }
