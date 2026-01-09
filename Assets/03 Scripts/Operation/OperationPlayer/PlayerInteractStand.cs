@@ -18,6 +18,6 @@ public class PlayerInteractStand : MonoBehaviour
         if (!hit.TryGetComponent<SashimiStand>(out var stand))
             return;
         
-        stand.Interact(inventory);
+        //stand.Interact(inventory);
     }
 }

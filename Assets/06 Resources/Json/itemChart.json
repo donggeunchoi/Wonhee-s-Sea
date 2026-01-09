@@ -1,0 +1,46 @@
+﻿{
+  "items": [
+    {
+      "itemId": "1",
+      "itemName": "빨간포션",
+      "itemType": "hp_potion",
+      "itemPower": "100",
+      "itemInfo": "hp를 100만큼 회복합니다."
+    },
+    {
+      "itemId": "2",
+      "itemName": "하얀포션",
+      "itemType": "hp_potion",
+      "itemPower": "300",
+      "itemInfo": "hp를 300만큼 회복합니다."
+    },
+    {
+      "itemId": "3",
+      "itemName": "파란포션",
+      "itemType": "mp_potion",
+      "itemPower": "100",
+      "itemInfo": "mp를 100만큼 회복합니다."
+    },
+    {
+      "itemId": "4",
+      "itemName": "보라포션",
+      "itemType": "mp_potion",
+      "itemPower": "300",
+      "itemInfo": "mp를 300만큼 회복합니다."
+    },
+    {
+      "itemId": "5",
+      "itemName": "빨간 폭탄",
+      "itemType": "bomb",
+      "itemPower": "1000",
+      "itemInfo": "적에게 1000데미지를 줍니다."
+    },
+    {
+      "itemId": "6",
+      "itemName": "주황 폭탄",
+      "itemType": "bomb",
+      "itemPower": "3000",
+      "itemInfo": "적에게 3000데미지를 줍니다."
+    }
+  ]
+}
