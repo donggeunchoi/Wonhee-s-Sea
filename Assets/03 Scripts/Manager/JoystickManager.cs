@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JoystickManager : MonoBehaviour
+public class JoystickManager : Singleton<JoystickManager>
 {
     [SerializeField] private PlayerController _player;
     [SerializeField] private FloatingJoystick _joystick;
