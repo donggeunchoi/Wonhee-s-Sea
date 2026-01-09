@@ -646,7 +646,7 @@ GameObject:
   - component: {fileID: 1734175387}
   - component: {fileID: 1734175386}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: JoyStickManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
