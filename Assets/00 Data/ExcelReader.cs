@@ -19,15 +19,17 @@ public static class ExcelReader
             return null;
         }
         
+        // 한글 깨짐 방지 : RegisterProvider -> 시스템 메모리에 등록하겠다  :  CodePagesEncodingProvider -> 언어 인코딩 사전  (한번만 호출하면 됩니다)
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
-        var list = new List<T>();
+        List<T> list = new List<T>();
 
-        using (var stream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        // using은 동적할당
+        using (var stream = File.Open(fullPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) // (이 위치에 있는, 파일을 열건데, 읽기전용으로 열거고, 내가 사용하는 도중에 다른사람이 사용하는 것을 허락할거야)
         {
-            using (var reader = ExcelReaderFactory.CreateReader(stream))
+            using (var reader = ExcelReaderFactory.CreateReader(stream)) // CreateReader는 파일 형식을 감지해주고, 데이터를 한줄한줄 스캔할 준비를 해줌
             {
-                var result = reader.AsDataSet();
+                var result = reader.AsDataSet(); // 데이터를 표 형태로 변환
                 DataTable table = (sheetName != null) ? result.Tables[sheetName] : result.Tables[0];
 
                 for (int i = 2; i < table.Rows.Count; ++i)
