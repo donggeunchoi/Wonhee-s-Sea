@@ -17,10 +17,10 @@ public class JsonManager : Singleton<JsonManager>
    private string basePath;
    
    private Dictionary<Type, object> jsonCache = new Dictionary<Type, object>();
-   private void Awake()
+   protected override void Awake()
    {
       // 플랫폼 안전 경로
-      basePath = Path.Combine(Application.persistentDataPath, "JsonData");
+      basePath = Path.Combine(Application.persistentDataPath, "Json");
 
       if (!Directory.Exists(basePath))
       {
