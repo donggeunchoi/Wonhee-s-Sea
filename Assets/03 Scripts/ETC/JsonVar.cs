@@ -3,10 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JsonVar : MonoBehaviour
-{
-  
-}
 
 [Serializable]
 public class FishData
@@ -55,7 +51,7 @@ public class DpStandData
 [Serializable]
 public class ItemChart
 {
-    public int itemId;
+    public string itemId;
     public string name;
     public string itemType;
     public int itemPower;

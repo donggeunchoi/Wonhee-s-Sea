@@ -4,21 +4,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 public class JsonManager : Singleton<JsonManager>
 {
    // 사용하는 방법은 JsonManager.Ins.fishData.Id 이런 식으로 사용합니다.
    FishData fishData = new FishData();
    SashimiData sashimiData = new SashimiData();
-   SushiData sushiData = new SushiData();
+   List<SushiData> sushiData = new List<SushiData>();
    DpStandData dpStandData = new DpStandData();
-   ItemChart itemChartData = new ItemChart();
+   List<ItemChart> itemChartData = new List<ItemChart>();
 
    private string basePath;
    
-   private Dictionary<Type, object> jsonCache = new Dictionary<Type, object>();
+   [Serializable]
+   private class ItemWrapper<TItem>
+   {
+      public List<TItem> items = new List<TItem>();
+   }
+   
+   private Dictionary<string, object> jsonCache = new Dictionary<string, object>();
    protected override void Awake()
    {
+      base.Awake();
       // 플랫폼 안전 경로
       basePath = Path.Combine(Application.persistentDataPath, "Json");
 
@@ -27,6 +35,7 @@ public class JsonManager : Singleton<JsonManager>
          Directory.CreateDirectory(basePath);
       }
    }
+
    
    #region Save
 
@@ -81,7 +90,7 @@ public class JsonManager : Singleton<JsonManager>
 
    #endregion
 
-   #region Util
+   //#region Util
 
    private string GetPath(string fileName)
    {
@@ -97,44 +106,97 @@ public class JsonManager : Singleton<JsonManager>
    public void Delete(string fileName)
    {
       string path = GetPath(fileName);
-
       if (File.Exists(path))
          File.Delete(path);
+
+      // 캐시도 같이 날리기(간단 버전)
+      jsonCache.Clear();
    }
-
-   #endregion
-   /// <summary>
-   /// 타입 기반 Json 로드 (캐싱)
-   /// </summary>
-   public T GetJson<T>() where T : new()
+   
+   public List<T> GetItems<T>(string fileName)
    {
-      Type type = typeof(T);
+      string cacheKey = $"ITEMS:{typeof(T).FullName}:{fileName}";
 
-      // 이미 로드된 경우
-      if (jsonCache.TryGetValue(type, out var cached))
-      {
-         return (T)cached;
-      }
+      // 1. 캐시 체크
+      if (jsonCache.TryGetValue(cacheKey, out var cached))
+         return (List<T>)cached;
 
-      string fileName = type.Name;
       string path = GetPath(fileName);
+      List<T> list;
 
-      T data;
-
+      // 2. 파일 없으면 Resources에서 읽어서 저장
       if (!File.Exists(path))
       {
-         data = new T();
-         Save(fileName, data);
+         list = LoadItemsFromResources<T>(fileName);
+         Save(fileName, new ItemWrapper<T> { items = list });
       }
       else
       {
          string json = File.ReadAllText(path);
-         data = JsonConvert.DeserializeObject<T>(json);
+         list = ParseItems<T>(json);
       }
 
-      jsonCache.Add(type, data);
-      return data;
+      jsonCache[cacheKey] = list;
+      return list;
    }
    
+   private List<T> LoadItemsFromResources<T>(string fileName)
+   {
+      TextAsset asset = Resources.Load<TextAsset>($"Json/{fileName}");
+      if (asset == null)
+      {
+         Debug.LogWarning($"[JsonManager] Resources/Json/{fileName}.json 없음");
+         return new List<T>();
+      }
+
+      return ParseItems<T>(asset.text);
+   }
+   private List<T> ParseItems<T>(string json)
+   {
+      try
+      {
+         json = json?.Trim();
+         if (string.IsNullOrEmpty(json))
+            return new List<T>();
+
+         // 배열이면 그대로 시도
+         if (json.StartsWith("["))
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(json) ?? new List<T>();
+
+         // 객체면 items 배열 뽑기
+         var root = Newtonsoft.Json.Linq.JObject.Parse(json);
+         var itemsToken = root["items"] as Newtonsoft.Json.Linq.JArray;
+
+         if (itemsToken == null)
+         {
+            Debug.LogWarning("[JsonManager] items 키가 없거나 배열이 아님");
+            return new List<T>();
+         }
+
+         var result = new List<T>();
+
+         // 한 줄씩 안전 파싱(실패한 행은 스킵)
+         foreach (var row in itemsToken)
+         {
+            try
+            {
+               var obj = row.ToObject<T>();
+               if (obj != null) result.Add(obj);
+            }
+            catch
+            {
+               // 여기서 "int" 같은 타입행/헤더행이 걸러짐
+               continue;
+            }
+         }
+
+         return result;
+      }
+      catch (Exception e)
+      {
+         Debug.LogError($"[JsonManager] ParseItems Error: {e}");
+         return new List<T>();
+      }
+   }
  
 }
