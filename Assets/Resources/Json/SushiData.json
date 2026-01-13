@@ -1,0 +1,68 @@
+﻿{
+  "items": [
+    {
+      "Id": "int",
+      "Name": "string",
+      "Cost": "int",
+      "CookingTime": "float",
+      "CookingStand": "int",
+      "DPStand": "int"
+    },
+    {
+      "Id": "30000",
+      "Name": "숭어초밥",
+      "Cost": "100",
+      "CookingTime": "5",
+      "CookingStand": "40000",
+      "DPStand": "40307"
+    },
+    {
+      "Id": "30001",
+      "Name": "새우초밥",
+      "Cost": "200",
+      "CookingTime": "5",
+      "CookingStand": "40001",
+      "DPStand": "40308"
+    },
+    {
+      "Id": "30002",
+      "Name": "복어초밥",
+      "Cost": "300",
+      "CookingTime": "5",
+      "CookingStand": "40002",
+      "DPStand": "40309"
+    },
+    {
+      "Id": "30003",
+      "Name": "고등어초밥",
+      "Cost": "400",
+      "CookingTime": "5",
+      "CookingStand": "40003",
+      "DPStand": "40310"
+    },
+    {
+      "Id": "30004",
+      "Name": "연어초밥",
+      "Cost": "500",
+      "CookingTime": "5",
+      "CookingStand": "40004",
+      "DPStand": "40311"
+    },
+    {
+      "Id": "30005",
+      "Name": "초롱아귀초밥",
+      "Cost": "600",
+      "CookingTime": "5",
+      "CookingStand": "40005",
+      "DPStand": "40312"
+    },
+    {
+      "Id": "30006",
+      "Name": "독사고기초밥",
+      "Cost": "700",
+      "CookingTime": "5",
+      "CookingStand": "40006",
+      "DPStand": "40313"
+    }
+  ]
+}

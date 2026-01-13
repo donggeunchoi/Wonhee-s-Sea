@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1f1020e0affc44ca48e6b361e2dcc0, type: 3}
   m_Name: "\uC544\uAD81\uC774"
   m_EditorClassIdentifier: 
-  id: 2002
-  machineType: 1
   inputs:
-  - item: {fileID: 11400000, guid: ec4da54f83a1e564b9642986416cd59d, type: 2}
+  - itemId: 
     count: 1
-  outputItem: {fileID: 11400000, guid: cbbc5661fe69f074b970e8bd85dc519a, type: 2}
+  inputItemId: 60000
+  inputCount: 1
+  outputItemId: 20007
   outputCount: 1
-  craftTime: 5
+  processTime: 1.5
