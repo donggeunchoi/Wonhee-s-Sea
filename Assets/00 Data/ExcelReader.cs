@@ -7,7 +7,7 @@ using UnityEngine;
 
 public static class ExcelReader
 {
-    public static string EXCEL_PATH = Path.Combine(Application.dataPath, "Excel");
+    public static string EXCEL_PATH = Path.Combine(Application.dataPath, "09 Excel");
 
     public static T[] Load<T>(string fileName, Func<string[], T> map, string sheetName = null)
     {
@@ -52,4 +52,44 @@ public static class ExcelReader
         
         return list.ToArray();
     }
+
+    // 파싱 안전장치
+    public static T ParseSafe<T>(string s, T defaultValue = default)
+    {
+        if (typeof(T) == typeof(int)) return (T)(object)(int.TryParse(s, out var v) ? v : (object)defaultValue);
+        if (typeof(T) == typeof(float)) return (T)(object)(float.TryParse(s, out var v) ? v : (object)defaultValue);
+        if (typeof(T) == typeof(bool))
+        {
+            var lower = s.ToLower();
+            if (lower == "true" || lower == "1" || lower == "y") return (T)(object)true;
+            return (T)(object)false;
+        }
+        if (typeof(T) == typeof(string)) return (T)(object)(string.IsNullOrEmpty(s) ? defaultValue : (object)s);
+
+        return defaultValue;
+    }
+
+    public static T EnumParseSafe<T>(string raw, T @default) where T : struct, Enum =>
+        string.IsNullOrWhiteSpace(raw) ? @default : (Enum.TryParse<T>(raw.Trim(), true, out var val) ? val : @default);
+
+    public static void SaveToJson<T>(T[] data, string fileName)
+    {
+        SerializationWrapper<T> wrapper = new SerializationWrapper<T> {items = data};
+
+        string json = JsonUtility.ToJson(wrapper, true);
+
+        string path = Path.Combine(Application.dataPath, "Resource/Data");
+
+        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+
+        File.WriteAllText(Path.Combine(path, fileName +  ".json"), json);
+
+        Debug.Log($"JSON 저장 완료: {path}/{fileName}.json");
+    }
+}
+
+[System.Serializable]
+public class SerializationWrapper<T>
+{
+    public T[] items;
 }
