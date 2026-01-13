@@ -18,9 +18,6 @@ public class Sample : MonoBehaviour
             Debug.Log(item.name);
         }
 
-
-
     }
 
-    
 }

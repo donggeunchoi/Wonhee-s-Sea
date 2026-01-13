@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RecipeStand : MonoBehaviour
 {
@@ -14,7 +16,10 @@ public class RecipeStand : MonoBehaviour
     [Header("옵션")] 
     [SerializeField] private bool autoPickupIfPossible = false;
 
-
+    [Header("스텐드 기본 정보")] 
+    [SerializeField] private TextMeshProUGUI StandNametext;
+    [SerializeField] private Image imgIcon;
+    
     private bool isProcessing;
     private string outputItemId;
     private int ouputCount;
@@ -55,6 +60,45 @@ public class RecipeStand : MonoBehaviour
             int have = inv.CountOf(req.itemId);
             if (have < req.count)
                 return;
+        }
+
+        for (int i = 0; i < inputs.Count; i++)
+        {
+            var req = inputs[i];
+            if(string.IsNullOrEmpty(req.itemId)||req.count <= 0)
+                continue;
+            
+            bool remove = inv.TryRemove(req.itemId, req.count);
+            if (!remove)
+            {
+                Debug.LogWarning("재료 차감 실패");
+                return;
+            }
+        }
+
+        StartCoroutine(CoProcess());
+    }
+
+    private IEnumerator CoProcess()
+    {
+        isProcessing = true;
+        view?.ShowProcessing(true);
+
+        yield return new WaitForSeconds(recipe.processTime);
+
+        outputItemId = recipe.outputItemId;
+        ouputCount = recipe.outputCount;
+
+        view?.ShowProcessing(false);
+        view?.ShowOutput(outputItemId);
+        
+        isProcessing = false;
+
+        if (autoPickupIfPossible && lastInventory != null)
+        {
+            bool ok = lastInventory.TryAdd(outputItemId, ouputCount);
+            if (ok)
+                ClearOutput();
         }
     }
 
