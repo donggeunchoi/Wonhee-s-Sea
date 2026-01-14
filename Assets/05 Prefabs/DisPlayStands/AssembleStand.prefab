@@ -210,6 +210,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outputRenderer: {fileID: 0}
   db: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
+  imgOutputIcon: {fileID: 0}
+  objOutputGroup: {fileID: 0}
+  objProcessingGroup: {fileID: 0}
+  imgProgressFill: {fileID: 0}
+  txtRemainTime: {fileID: 0}
 --- !u!1 &6462168333260415117
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,7 +328,7 @@ GameObject:
   - component: {fileID: 8296395641222285483}
   - component: {fileID: 4425690288993721209}
   - component: {fileID: 9162267830842398547}
-  - component: {fileID: 1689238350858417221}
+  - component: {fileID: 5161906432738244006}
   m_Layer: 0
   m_Name: AssembleStand
   m_TagString: Untagged
@@ -447,7 +452,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1689238350858417221
+--- !u!114 &5161906432738244006
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -456,11 +461,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6930863072698295265}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bf738c342e724549a19276e79f3efb7, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ce125b9c6858ff4bb97728340ef6c34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  view: {fileID: 1608106899387297748}
   recipe: {fileID: 11400000, guid: e1e3c1d8c2f7c64448e9835360efe4a8, type: 2}
+  view: {fileID: 1608106899387297748}
+  autoPickupIfPossible: 1
+  StandNametext: {fileID: 2885199094541888010}
+  imgIcon: {fileID: 0}
 --- !u!1 &7714391560263118160
 GameObject:
   m_ObjectHideFlags: 0

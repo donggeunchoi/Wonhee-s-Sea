@@ -55,13 +55,13 @@ public class PlayerInteractStand : MonoBehaviour
             Debug.Log($"text {testItemId} x {testAddCount} 지급시도 => {added}");
         }
         
-        if (!Input.GetKeyDown(KeyCode.E)) return;
+        //if (!Input.GetKeyDown(KeyCode.E)) return;
 
         var hit = Physics2D.OverlapCircle(transform.position, range);
         if (hit == null) return;
 
         
-        if (!hit.TryGetComponent<SashimiStand>(out var stand))
+        if (!hit.TryGetComponent<RecipeStand>(out var stand))
             return;
         
         stand.Interact(inventory);

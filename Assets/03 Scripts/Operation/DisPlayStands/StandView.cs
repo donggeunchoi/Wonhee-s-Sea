@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class StandView : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer outputRenderer;
     [SerializeField] private ItemDatabaseSO db;
     
     [Header("결과물 아이콘")]
@@ -26,23 +25,23 @@ public class StandView : MonoBehaviour
     
     public void ShowOutput(string itemId)
     {
-        if (outputRenderer == null) return;
+        if (objOutputGroup == null) return;
 
         if (string.IsNullOrEmpty(itemId))
         {
-            outputRenderer.enabled = false;
-            outputRenderer.sprite = null;
+            objOutputGroup.SetActive(false);
+            
             return;
         }
 
-        outputRenderer.enabled = true;
-        outputRenderer.sprite = db != null ? db.GetIcon(itemId) : null;
+        objOutputGroup.SetActive(true);
+        
     }
     
     public void ShowProcessing(bool on, float duration = 0f)
     {
         isProcessing = on;
-        objProcessingGroup?.SetActive(on);
+        objProcessingGroup?.SetActive(isProcessing);
 
         if (!on)
         {
