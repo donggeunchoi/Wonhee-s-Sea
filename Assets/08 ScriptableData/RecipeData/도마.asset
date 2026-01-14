@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1f1020e0affc44ca48e6b361e2dcc0, type: 3}
   m_Name: "\uB3C4\uB9C8"
   m_EditorClassIdentifier: 
+  inputs: []
   inputItemId: 10004
   inputCount: 1
   outputItemId: 20004

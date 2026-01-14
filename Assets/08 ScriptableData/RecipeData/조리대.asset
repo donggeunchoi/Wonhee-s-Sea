@@ -18,7 +18,7 @@ MonoBehaviour:
   - itemId: 20007
     count: 1
   inputItemId: 
-  inputCount: 1
+  inputCount: 0
   outputItemId: 30004
   outputCount: 1
   processTime: 1.5

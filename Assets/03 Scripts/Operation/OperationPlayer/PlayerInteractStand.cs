@@ -8,12 +8,19 @@ public class PlayerInteractStand : MonoBehaviour
     [SerializeField] private Inventory inventory;
     [SerializeField] private float range = 1.5f;
 
-    [SerializeField] private string testItemId;
-    [SerializeField] private string testItemId1;
-    [SerializeField] private int testAddCount = 5;
+    [SerializeField] private string fishItemId;
+    [SerializeField] private string sashimiItemId;
+    [SerializeField] private string rearRiceItemId;
+    [SerializeField] private string evenRiceItemId;
+    [SerializeField] private string sushiItemId;
+    [SerializeField] private int testAddCount;
     
-    [SerializeField] private TextMeshProUGUI countText;
-    [SerializeField] private TextMeshProUGUI countText1;
+    [SerializeField] private TextMeshProUGUI fishCount;
+    [SerializeField] private TextMeshProUGUI sashimiCount;
+    [SerializeField] private TextMeshProUGUI rearRiceCount;
+    [SerializeField] private TextMeshProUGUI evenRiceCount;
+    [SerializeField] private TextMeshProUGUI sushiCount;
+    
 
     void Start()
     {
@@ -37,8 +44,11 @@ public class PlayerInteractStand : MonoBehaviour
             return;
 
         
-        countText.text = inventory.CountOf(testItemId).ToString();
-        countText1.text = inventory.CountOf(testItemId1).ToString();
+        fishCount.text = inventory.CountOf(fishItemId).ToString();
+        sashimiCount.text = inventory.CountOf(sashimiItemId).ToString();
+        rearRiceCount.text = inventory.CountOf(rearRiceItemId).ToString();
+        evenRiceCount.text = inventory.CountOf(evenRiceItemId).ToString();
+        sushiCount.text = inventory.CountOf(evenRiceItemId).ToString();
     }
     
     void Update()
@@ -51,17 +61,17 @@ public class PlayerInteractStand : MonoBehaviour
                 return;
             }
             
-            bool added = inventory.TryAdd(testItemId, testAddCount);
-            Debug.Log($"text {testItemId} x {testAddCount} 지급시도 => {added}");
+            bool fishadded = inventory.TryAdd(fishItemId, testAddCount);
+            bool rearRiceadded = inventory.TryAdd(rearRiceItemId, testAddCount);
+            Debug.Log($"text {fishItemId} x {testAddCount} 지급시도 => {fishadded}");
+            Debug.Log($"text {rearRiceItemId} x {testAddCount} 지급시도 => {rearRiceadded}");
         }
         
-        if (!Input.GetKeyDown(KeyCode.E)) return;
-
         var hit = Physics2D.OverlapCircle(transform.position, range);
         if (hit == null) return;
 
         
-        if (!hit.TryGetComponent<SashimiStand>(out var stand))
+        if (!hit.TryGetComponent<RecipeStand>(out var stand))
             return;
         
         stand.Interact(inventory);
