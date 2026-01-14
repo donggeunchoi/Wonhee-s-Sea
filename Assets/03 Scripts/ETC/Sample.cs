@@ -9,7 +9,7 @@ public class Sample : MonoBehaviour
     {
         JsonManager.Ins.Delete("SushiData");
 
-        var wrapper = JsonManager.Ins.GetItems<SushiData>("SushiData");
+        var wrapper = JsonManager.Ins.GetItems<SushiDataDef>("SushiData");
         Debug.Log(wrapper.Count);
 
         foreach (var item in wrapper)
