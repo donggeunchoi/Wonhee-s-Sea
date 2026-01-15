@@ -58,3 +58,11 @@ public class ItemChart
     public string itemInfo;
 
 }
+
+[Serializable]
+public class EquipmentData
+{
+    public string itemId;
+    public string name;
+    public string equipType;
+}
