@@ -8,35 +8,22 @@ public class BackendManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var bro = Backend.Initialize(); // µÚ³¡ ÃÊ±âÈ­
+        var bro = Backend.Initialize(); // ë’¤ë ì´ˆê¸°í™”
 
-        // µÚ³¡ ÃÊ±âÈ­¿¡ ´ëÇÑ ÀÀ´ä°ª
+        // ë’¤ë ì´ˆê¸°í™”ì— ëŒ€í•œ ì‘ë‹µê°’
         if (bro.IsSuccess())
         {
-            Debug.Log("ÃÊ±âÈ­ ¼º°ø : " + bro); // ¼º°øÀÏ °æ¿ì statusCode 204 Success
+            Debug.Log("ì´ˆê¸°í™” ì„±ê³µ : " + bro); // ì„±ê³µì¼ ê²½ìš° statusCode 204 Success
         }
         else
         {
-            Debug.LogError("ÃÊ±âÈ­ ½ÇÆĞ : " + bro); // ½ÇÆĞÀÏ °æ¿ì statusCode 400´ë ¿¡·¯ ¹ß»ı
+            Debug.LogError("ì´ˆê¸°í™” ì‹¤íŒ¨ : " + bro); // ì‹¤íŒ¨ì¼ ê²½ìš° statusCode 400ëŒ€ ì—ëŸ¬ ë°œìƒ
         }
         Test();
     }
 
     void Test()
     {
-        BackendLogin.Instance.CustomLogin("user1", "1234"); // [Ãß°¡] µÚ³¡ ·Î±×ÀÎ
-        BackendGameData.Instance.GameDataGet(); //[Ãß°¡] µ¥ÀÌÅÍ ºÒ·¯¿À±â ÇÔ¼ö
-
-        // [Ãß°¡] ¼­¹ö¿¡ ºÒ·¯¿Â µ¥ÀÌÅÍ°¡ Á¸ÀçÇÏÁö ¾ÊÀ» °æ¿ì, µ¥ÀÌÅÍ¸¦ »õ·Î »ı¼ºÇÏ¿© »ğÀÔ
-        if (BackendGameData.userData == null)
-        {
-            BackendGameData.Instance.GameDataInsert();
-        }
-
-        BackendGameData.Instance.LevelUp(); // [Ãß°¡] ·ÎÄÃ¿¡ ÀúÀåµÈ µ¥ÀÌÅÍ¸¦ º¯°æ
-
-        BackendGameData.Instance.GameDataUpdate(); //[Ãß°¡] ¼­¹ö¿¡ ÀúÀåµÈ µ¥ÀÌÅÍ¸¦ µ¤¾î¾²±â(º¯°æµÈ ºÎºĞ¸¸)
-
-        Debug.Log("Å×½ºÆ®¸¦ Á¾·áÇÕ´Ï´Ù.");
+      
     }
 }
