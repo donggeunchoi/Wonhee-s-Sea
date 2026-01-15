@@ -9,13 +9,14 @@ using Newtonsoft.Json.Linq;
 public class JsonManager : Singleton<JsonManager>
 {
    // 사용하는 방법은 JsonManager.Ins.fishData.Id 이런 식으로 사용합니다.
-   FishData fishData = new FishData();
-   SashimiData sashimiData = new SashimiData();
+   List<FishData> fishData = new List<FishData>();
+   List<SashimiData> sashimiData = new List<SashimiData>();
    List<SushiData> sushiData = new List<SushiData>();
-   DpStandData dpStandData = new DpStandData();
+   List<DpStandData> dpStandData = new List<DpStandData>();
    List<ItemChart> itemChartData = new List<ItemChart>();
+   List<EquipmentData> equipmentData = new List<EquipmentData>();
 
-   private string basePath;
+    private string basePath;
    
    [Serializable]
    private class ItemWrapper<TItem>
