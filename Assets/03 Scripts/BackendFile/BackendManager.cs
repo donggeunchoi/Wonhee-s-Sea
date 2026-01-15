@@ -24,7 +24,19 @@ public class BackendManager : MonoBehaviour
 
     void Test()
     {
-        BackendLogin.Instance.CustomSignUp("user1", "1234"); // [추가] 뒤끝 회원가입 함수
+        BackendLogin.Instance.CustomLogin("user1", "1234"); // [추가] 뒤끝 로그인
+        BackendGameData.Instance.GameDataGet(); //[추가] 데이터 불러오기 함수
+
+        // [추가] 서버에 불러온 데이터가 존재하지 않을 경우, 데이터를 새로 생성하여 삽입
+        if (BackendGameData.userData == null)
+        {
+            BackendGameData.Instance.GameDataInsert();
+        }
+
+        BackendGameData.Instance.LevelUp(); // [추가] 로컬에 저장된 데이터를 변경
+
+        BackendGameData.Instance.GameDataUpdate(); //[추가] 서버에 저장된 데이터를 덮어쓰기(변경된 부분만)
+
         Debug.Log("테스트를 종료합니다.");
     }
 }
