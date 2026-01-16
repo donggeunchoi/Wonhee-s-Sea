@@ -114,11 +114,13 @@ MonoBehaviour:
   sashimiItemId: 20004
   rearRiceItemId: 60000
   evenRiceItemId: 20007
+  sushiItemId: 
   testAddCount: 2
   fishCount: {fileID: 5373658275260118933}
   sashimiCount: {fileID: 8914686394535368089}
   rearRiceCount: {fileID: 2372605443439998778}
   evenRiceCount: {fileID: 7387809817979710966}
+  sushiCount: {fileID: 0}
 --- !u!1 &3015049847358812366
 GameObject:
   m_ObjectHideFlags: 0
@@ -762,7 +764,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -669036676, guid: 13c64e8abce942346ac5bb05ef17e366, type: 3}
+  m_Sprite: {fileID: -1324213077, guid: 5dbee617cda760b47abcfba0008fe80e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -783,7 +785,7 @@ Animator:
   m_GameObject: {fileID: 8121174658251102100}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b8efd513238f49d46b893fc0476778f3, type: 2}
+  m_Controller: {fileID: 9100000, guid: c22e46c62b372f949bddc3944fb6a0e2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
