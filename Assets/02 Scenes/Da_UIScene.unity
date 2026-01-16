@@ -469,22 +469,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuBtns:
   - menu: 0
-    button: {fileID: 0}
-    icon: {fileID: 0}
+    button: {fileID: 1910111869}
+    icon: {fileID: 190273665}
     normalIcon: {fileID: 0}
     selectedIcon: {fileID: 0}
   - menu: 1
-    button: {fileID: 0}
-    icon: {fileID: 0}
+    button: {fileID: 529152453}
+    icon: {fileID: 721586190}
     normalIcon: {fileID: 0}
     selectedIcon: {fileID: 0}
   - menu: 2
-    button: {fileID: 0}
-    icon: {fileID: 0}
+    button: {fileID: 1335123456}
+    icon: {fileID: 90420251}
     normalIcon: {fileID: 0}
     selectedIcon: {fileID: 0}
   shopPanel: {fileID: 204134046}
-  dungeonSceneName: DungeonScene
+  dungeonSceneName: Gwang_DungeonScene
 --- !u!1 &529152451
 GameObject:
   m_ObjectHideFlags: 0
