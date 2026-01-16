@@ -14,8 +14,9 @@ public class JsonManager : Singleton<JsonManager>
    List<SushiData> sushiData = new List<SushiData>();
    List<DpStandData> dpStandData = new List<DpStandData>();
    List<ItemChart> itemChartData = new List<ItemChart>();
+   List<EquipmentData> equipmentData = new List<EquipmentData>();
 
-   private string basePath;
+    private string basePath;
    
    [Serializable]
    private class ItemWrapper<TItem>

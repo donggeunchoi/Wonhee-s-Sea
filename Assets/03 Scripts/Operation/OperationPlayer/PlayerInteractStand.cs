@@ -48,7 +48,7 @@ public class PlayerInteractStand : MonoBehaviour
         sashimiCount.text = inventory.CountOf(sashimiItemId).ToString();
         rearRiceCount.text = inventory.CountOf(rearRiceItemId).ToString();
         evenRiceCount.text = inventory.CountOf(evenRiceItemId).ToString();
-        sushiCount.text = inventory.CountOf(evenRiceItemId).ToString();
+        sushiCount.text = inventory.CountOf(sushiItemId).ToString();
     }
     
     void Update()
