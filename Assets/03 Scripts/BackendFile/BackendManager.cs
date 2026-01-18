@@ -63,6 +63,14 @@ public class BackendManager : Singleton<BackendManager>
     {
         // 동기식: 간단하고 확실 (MVP에 적합)
         var bro = Backend.BMember.GetUserInfo();
+
+        if (bro == null)
+        {
+            Debug.LogError("[Backend] GetUserInfo bro is null");
+            OnBackEndLogin.OnNext(false);
+            return;
+        }
+
         if (!bro.IsSuccess())
         {
             Debug.LogError("[Backend] GetUserInfo failed: " + bro);
@@ -70,17 +78,33 @@ public class BackendManager : Singleton<BackendManager>
             return;
         }
 
-        JsonData row = bro.GetReturnValuetoJSON()["row"];
+        var json = bro.GetReturnValuetoJSON();
+        if (json == null)
+        {
+            Debug.LogError("[Backend] GetReturnValuetoJSON() is null");
+            OnBackEndLogin.OnNext(false);
+            return;
+        }
 
-        // 필요한 것만 저장 (닉네임은 선택)
-        if (row.ContainsKey("nickname"))
+        if (!json.ContainsKey("row") || json["row"] == null)
+        {
+            Debug.LogWarning("[Backend] GetUserInfo has no row. First login?");
+            // 👉 이 경우에도 로그인 자체는 성공으로 봄
+            OnBackEndLogin.OnNext(true);
+            return;
+        }
+
+        JsonData row = json["row"];
+
+        if (row.ContainsKey("nickname") && row["nickname"] != null)
             UserManager.Ins.userNickName = row["nickname"].ToString();
 
-        if (row.ContainsKey("inDate"))
+        if (row.ContainsKey("inDate") && row["inDate"] != null)
             UserManager.Ins.userIndate = row["inDate"].ToString();
 
-        if (row.ContainsKey("gamerId"))
+        if (row.ContainsKey("gamerId") && row["gamerId"] != null)
             UserManager.Ins.userGamerID = row["gamerId"].ToString();
+
 
         OnBackEndLogin.OnNext(true);
     }
@@ -168,9 +192,13 @@ public class BackendManager : Singleton<BackendManager>
             case EGameData.BuildingInfo:
             {
                 var data = JsonConvert.DeserializeObject<PBuildingSaveData>(json);
-                UserManager.Ins.buildingSaveData = data;
-                buildingSaveData = data;
-            }
+                    if (data == null) data = new PBuildingSaveData();
+
+                    data.SyncFromJson();
+
+                    UserManager.Ins.buildingSaveData = data;
+                    buildingSaveData = data;
+                }
             break;
 
             default:

@@ -6,9 +6,8 @@ using System;
 [Serializable]
 public enum EGameData
 {
-    None = 0,
-    UserInfo = 1,
-    DungeonInfo = 2,
-    TownInfo = 3,
-    BuildingInfo = 4,
+    UserInfo,
+    DungeonInfo,
+    TownInfo,
+    BuildingInfo,
 }

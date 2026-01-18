@@ -1,5 +1,6 @@
 using BackEnd;
 using BackEnd.BackndNewtonsoft.Json;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -90,39 +91,59 @@ public class PTownInfo
     }
 }
 
-
 [Serializable]
-public class  PBuildingSaveData
+public class PBuildingState
 {
     public int buildingId;
     public int level;
     public bool isUnlocked;
     public bool isOperating;
     public int staffId;        // 배치 직원
+}
 
-    public List<int> buildingLevels = new List<int>();
+[Serializable]
+public class  PBuildingSaveData
+{
+    public List<PBuildingState> buildings = new List<PBuildingState>();
+
+    public string buildingsJson = "[]";
+
+    public void SyncToJson()
+    {
+        buildingsJson = JsonConvert.SerializeObject(buildings);
+    }
+
+    public void SyncFromJson()
+    {
+        if (string.IsNullOrEmpty(buildingsJson))
+            buildingsJson = "[]";
+
+        try
+        {
+            buildings = JsonConvert.DeserializeObject<List<PBuildingState>>(buildingsJson);
+            if (buildings == null) buildings = new List<PBuildingState>();
+        }
+        catch
+        {
+            buildings = new List<PBuildingState>();
+            buildingsJson = "[]";
+        }
+    }
+
     public bool IsDifferent(PBuildingSaveData other)
     {
         if (other == null) return true;
-        if (buildingLevels.Count != other.buildingLevels.Count) return true;
-
-        for (int i = 0; i < buildingLevels.Count; i++)
-        {
-            if (buildingLevels[i] != other.buildingLevels[i])
-                return true;
-        }
-
+        if (buildingsJson != other.buildingsJson) return true; //문자열 비교가 제일 깔끔/빠름
         return false;
     }
 
     public Param FormatJsonData()
     {
+        // 저장 직전에 JSON 동기화
+        SyncToJson();
+
         Param p = new Param();
-
-        // 안전하게 JSON 문자열로 저장
-        string json = JsonConvert.SerializeObject(buildingLevels);
-        p.Add("buildingLevels", json);
-
+        p.Add("buildingsJson", buildingsJson);
         return p;
     }
 }
