@@ -61,7 +61,7 @@ public class BackendManager : Singleton<BackendManager>
 
     private void LoginGetUserInfo()
     {
-        // 동기식: 간단하고 확실 (MVP에 적합)
+        // 동기식: 간단하고 확실
         var bro = Backend.BMember.GetUserInfo();
 
         if (bro == null)
@@ -89,7 +89,7 @@ public class BackendManager : Singleton<BackendManager>
         if (!json.ContainsKey("row") || json["row"] == null)
         {
             Debug.LogWarning("[Backend] GetUserInfo has no row. First login?");
-            // 👉 이 경우에도 로그인 자체는 성공으로 봄
+            //이 경우에도 로그인 자체는 성공으로 봄
             OnBackEndLogin.OnNext(true);
             return;
         }
@@ -202,7 +202,7 @@ public class BackendManager : Singleton<BackendManager>
             break;
 
             default:
-                // 네 프로젝트에서 다른 데이터가 있으면 여기에 추가
+                // 프로젝트에서 다른 데이터가 있으면 여기에 추가
                 break;
         }
     }
@@ -312,7 +312,7 @@ public class BackendManager : Singleton<BackendManager>
 
     private Param GetParamGameData(EGameData eGameData)
     {
-        // 너 프로젝트의 PXXX.FormatJsonData() 그대로 사용
+        //프로젝트의 PXXX.FormatJsonData() 그대로 사용
         switch (eGameData)
         {
             case EGameData.UserInfo:
@@ -332,23 +332,5 @@ public class BackendManager : Singleton<BackendManager>
         Debug.LogError($"[Backend] GetParamGameData Error: {eGameData}");
         return new Param();
     }
-
-
-    //// Start is called before the first frame update
-    //void Start()
-    //{
-    //    var bro = Backend.Initialize(); // 뒤끝 초기화
-
-    //    // 뒤끝 초기화에 대한 응답값
-    //    if (bro.IsSuccess())
-    //    {
-    //        Debug.Log("초기화 성공 : " + bro); // 성공일 경우 statusCode 204 Success
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("초기화 실패 : " + bro); // 실패일 경우 statusCode 400대 에러 발생
-    //    }
-    
-    //}
 
 }

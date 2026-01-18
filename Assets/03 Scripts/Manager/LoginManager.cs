@@ -112,7 +112,7 @@ public class LoginManager : MonoBehaviour
                 if (objAuthGroup != null) objAuthGroup.SetActive(false);
                 if (txLoading != null) txLoading.text = "게스트 로그인 중...";
 
-                BackendManager.Ins.LoginGuest(); // <- 너 BackendManager의 LoginGuest()
+                BackendManager.Ins.LoginGuest();
             }).AddTo(this);
         }
     }
