@@ -25,7 +25,7 @@ public abstract class BaseDB<TKey, TData, TRaw>
 
         foreach (var item in rawList)
         {
-            Debug.Log($"<color=white>[Raw Item]</color> {JsonUtility.ToJson(item)}");
+            Debug.Log($"<color=white>{fileName}</color> {JsonUtility.ToJson(item)}");
         }
 
         _dict = new Dictionary<TKey, TData>();
