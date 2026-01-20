@@ -23,6 +23,11 @@ public abstract class BaseDB<TKey, TData, TRaw>
 
         Debug.Log($"<color=cyan>[파일 확인]</color> {fileName}에서 {rawList.Count}개의 줄을 읽어옴.");
 
+        foreach (var item in rawList)
+        {
+            Debug.Log($"<color=white>[Raw Item]</color> {JsonUtility.ToJson(item)}");
+        }
+
         _dict = new Dictionary<TKey, TData>();
 
         for (int i = 0; i < rawList.Count; i++)
@@ -41,8 +46,7 @@ public abstract class BaseDB<TKey, TData, TRaw>
             }
             catch (System.Exception e)
             {
-                // [중요] 여기서 터지는 이유가 나옵니다.
-                Debug.LogError($"<color=yellow>[변환 에러]</color> {fileName}의 {i}번째 줄에서 에러 발생: {e.Message}\n원문: {rawList[i].ToString()}");
+                Debug.LogError($"{fileName}의 {i}번째 줄에서 에러 발생: {e.Message}: {rawList[i].ToString()}");
             }
         }
 

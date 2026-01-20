@@ -123,7 +123,8 @@ public class StandRaw
     public string StandType;
     public string Ingredient_1;
     public string Ingredient_2;
-    public string Time;  
+    public string Time;
+    public string Cost;
 }
 
 public class StandDataDef
@@ -133,16 +134,18 @@ public class StandDataDef
     public int Ingredient_1;
     public int Ingredient_2;
     public float Time;
+    public float Cost;
 
     public StandDataDef(StandRaw raw)
     {
-        Debug.Log($"[Debug] RawID: {raw.standId}, RawType: {raw.StandType}, RawIngredient_1: {raw.Ingredient_1}, RawIngredient_2: {raw.Ingredient_2}, RawTime: {raw.Time}");
-        
+        Debug.Log($"[Debug] RawID: {raw.standId}, RawType: {raw.StandType}, RawIngredient_1: {raw.Ingredient_1}, RawIngredient_2: {raw.Ingredient_2}, RawTime: {raw.Time}, RawCost: {raw.Cost}");
+
         this.standId = DataParse.ParseSafe<int>(raw.standId);
         this.StandType = DataParse.ParseSafe<StandType>(raw.StandType);
         this.Ingredient_1 = DataParse.ParseSafe<int>(raw.Ingredient_1);
         this.Ingredient_2 = DataParse.ParseSafe<int>(raw.Ingredient_2);
         this.Time = DataParse.ParseSafe<float>(raw.Time);
+        this.Cost = DataParse.ParseSafe<float>(raw.Cost);
     }
 }
 
