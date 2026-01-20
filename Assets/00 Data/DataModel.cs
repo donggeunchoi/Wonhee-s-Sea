@@ -138,8 +138,6 @@ public class StandDataDef
 
     public StandDataDef(StandRaw raw)
     {
-        Debug.Log($"[Debug] RawID: {raw.standId}, RawType: {raw.StandType}, RawIngredient_1: {raw.Ingredient_1}, RawIngredient_2: {raw.Ingredient_2}, RawTime: {raw.Time}, RawCost: {raw.Cost}");
-
         this.standId = DataParse.ParseSafe<int>(raw.standId);
         this.StandType = DataParse.ParseSafe<StandType>(raw.StandType);
         this.Ingredient_1 = DataParse.ParseSafe<int>(raw.Ingredient_1);
