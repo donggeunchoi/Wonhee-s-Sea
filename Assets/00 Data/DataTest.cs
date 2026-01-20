@@ -6,19 +6,19 @@ public class DataTest : MonoBehaviour
     {
         Debug.Log("--- 데이터 로드 테스트 시작 ---");
 
-        var mackeral = JsonManager.Ins.Sushis[30001];
+        var mackeral = DataInstance.Ins.Sushis[30001];
         if (mackeral != null)
         {
-            Debug.Log($"[성공] 이름: {mackeral.name}");
+            Debug.Log($"[성공] 이름: {mackeral.sushiId}");
         }
 
-        var shark = JsonManager.Ins.Sushis[30002];
+        var shark = DataInstance.Ins.Sushis[30002];
         if (shark != null)
         {
-            Debug.Log($"[성공] {shark.name}");
+            Debug.Log($"[성공] {shark.sushiId}");
         }
 
-        var none = JsonManager.Ins.Sushis[999];
+        var none = DataInstance.Ins.Sushis[999];
         if (none == null)
         {
             Debug.Log("[성공] 존재하지 않는 데이터에 대해 null을 반환함.");

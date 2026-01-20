@@ -1,0 +1,221 @@
+﻿{
+  "items": [
+    {
+      "standId": "int",
+      "StandType": "enum",
+      "Ingredient_1": "int",
+      "Ingredient_2": "int",
+      "Time": "float"
+    },
+    {
+      "standId": "40000",
+      "StandType": "CuttingBoard",
+      "Ingredient_1": "10000",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40001",
+      "StandType": "CuttingBoard",
+      "Ingredient_1": "10001",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40002",
+      "StandType": "CuttingBoard",
+      "Ingredient_1": "10002",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40003",
+      "StandType": "CuttingBoard",
+      "Ingredient_1": "10003",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40004",
+      "StandType": "CuttingBoard",
+      "Ingredient_1": "10004",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40005",
+      "StandType": "CuttingBoard",
+      "Ingredient_1": "10100",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40006",
+      "StandType": "CuttingBoard",
+      "Ingredient_1": "10101",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40100",
+      "StandType": "RiceCooker",
+      "Ingredient_1": "20007",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40200",
+      "StandType": "CounterTop",
+      "Ingredient_1": "20000",
+      "Ingredient_2": "30100",
+      "Time": "5"
+    },
+    {
+      "standId": "40201",
+      "StandType": "CounterTop",
+      "Ingredient_1": "20001",
+      "Ingredient_2": "30100",
+      "Time": "5"
+    },
+    {
+      "standId": "40202",
+      "StandType": "CounterTop",
+      "Ingredient_1": "20002",
+      "Ingredient_2": "30100",
+      "Time": "5"
+    },
+    {
+      "standId": "40203",
+      "StandType": "CounterTop",
+      "Ingredient_1": "20003",
+      "Ingredient_2": "30100",
+      "Time": "5"
+    },
+    {
+      "standId": "40204",
+      "StandType": "CounterTop",
+      "Ingredient_1": "20004",
+      "Ingredient_2": "30100",
+      "Time": "5"
+    },
+    {
+      "standId": "40205",
+      "StandType": "CounterTop",
+      "Ingredient_1": "20005",
+      "Ingredient_2": "30100",
+      "Time": "5"
+    },
+    {
+      "standId": "40206",
+      "StandType": "CounterTop",
+      "Ingredient_1": "20006",
+      "Ingredient_2": "30100",
+      "Time": "5"
+    },
+    {
+      "standId": "40300",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "30000",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40301",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "30001",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40302",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "30002",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40303",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "30003",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40304",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "30004",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40305",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "30005",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40306",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "30006",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40307",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "20000",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40308",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "20001",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40309",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "20002",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40310",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "20003",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40311",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "20004",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40312",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "20005",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40313",
+      "StandType": "DisplayStand",
+      "Ingredient_1": "20006",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    },
+    {
+      "standId": "40400",
+      "StandType": "SalesStand",
+      "Ingredient_1": "-1",
+      "Ingredient_2": "-1",
+      "Time": "5"
+    }
+  ]
+}

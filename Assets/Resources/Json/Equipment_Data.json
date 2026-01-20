@@ -1,0 +1,34 @@
+﻿{
+  "items": [
+    {
+      "equipmentId": "int",
+      "Name": "string",
+      "EquipmentType": "enum"
+    },
+    {
+      "equipmentId": "50000",
+      "Name": "맨손",
+      "EquipmentType": "Weapon"
+    },
+    {
+      "equipmentId": "50001",
+      "Name": "수중칼",
+      "EquipmentType": "Weapon"
+    },
+    {
+      "equipmentId": "50002",
+      "Name": "작살",
+      "EquipmentType": "Weapon"
+    },
+    {
+      "equipmentId": "50003",
+      "Name": "작살총",
+      "EquipmentType": "Weapon"
+    },
+    {
+      "equipmentId": "50004",
+      "Name": "수중총",
+      "EquipmentType": "Weapon"
+    }
+  ]
+}

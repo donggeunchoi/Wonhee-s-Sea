@@ -1,115 +1,82 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
-public class FishDB
+public abstract class BaseDB<TKey, TData, TRaw>
 {
-    private readonly Dictionary<int, FishDataDef> _fishDict;
+    protected Dictionary<TKey, TData> _dict = new Dictionary<TKey, TData>();
 
-    public FishDataDef this[int id] => Get(id);
+    // 인덱서 property
+    public TData this[TKey id] => Get(id);
 
-    public FishDB()
+    // 데이터 로드 공통 로직
+    protected void Load(string fileName, System.Func<TRaw, TData> transform, System.Func<TData, TKey> keySelector)
     {
-        // JsonManager를 통해 리스트를 가져와서 딕셔너리로 변환
-        var list = JsonManager.Ins.GetItems<FishDataDef>("FishData");
-        _fishDict = list.ToDictionary(fish => fish.id);
-        
-        Debug.Log($"[FishDB] {_fishDict.Count}종의 물고기 데이터 로드 완료.");
+        // 1. 실제 파일 내용이 메모리에 들어오는지 확인
+        var rawList = JsonManager.Ins.GetItems<TRaw>(fileName);
+
+        if (rawList == null || rawList.Count == 0)
+        {
+            Debug.LogError($"<color=red>[파일 읽기 실패]</color> {fileName}.json을 찾지 못했거나 내용이 아예 없습니다.");
+            return;
+        }
+
+        Debug.Log($"<color=cyan>[파일 확인]</color> {fileName}에서 {rawList.Count}개의 줄을 읽어옴.");
+
+        _dict = new Dictionary<TKey, TData>();
+
+        for (int i = 0; i < rawList.Count; i++)
+        {
+            try
+            {
+                TData data = transform(rawList[i]);
+                TKey key = keySelector(data);
+
+                // 헤더 무시
+                if (key is int id && id <= 0) continue;
+
+                if (_dict.ContainsKey(key)) continue;
+
+                _dict.Add(key, data);
+            }
+            catch (System.Exception e)
+            {
+                // [중요] 여기서 터지는 이유가 나옵니다.
+                Debug.LogError($"<color=yellow>[변환 에러]</color> {fileName}의 {i}번째 줄에서 에러 발생: {e.Message}\n원문: {rawList[i].ToString()}");
+            }
+        }
+
+        Debug.Log($"<color=green>[최종 완료]</color> {this.GetType().Name}: {_dict.Count}개 로드 성공.");
     }
-
-    public FishDataDef Get(int id)
+    public TData Get(TKey id)
     {
-        if (_fishDict.TryGetValue(id, out var def)) return def;
-        Debug.LogError($"[FishDB] ID {id}를 찾을 수 없습니다.");
-        return null;
+        if (_dict.TryGetValue(id, out var def)) return def;
+        Debug.LogError($"[{this.GetType().Name}] ID {id}를 찾을 수 없습니다.");
+        return default;
     }
 }
 
-public class SashimiDB
+public class FishDB : BaseDB<int, FishDataDef, FishRaw>
 {
-    private readonly Dictionary<int, SashimiDataDef> _SashimiDict;
-
-    public SashimiDataDef this[int id] => Get(id);
-
-    public SashimiDB()
-    {
-        var list = JsonManager.Ins.GetItems<SashimiDataDef>("SashimiData");
-        _SashimiDict = list.ToDictionary(fish => fish.id);
-        
-        Debug.Log($"[SashimiDB] {_SashimiDict.Count}종의 물고기 데이터 로드 완료.");
-    }
-
-    public SashimiDataDef Get(int id)
-    {
-        if (_SashimiDict.TryGetValue(id, out var def)) return def;
-        Debug.LogError($"[SashimiDB] ID {id}를 찾을 수 없습니다.");
-        return null;
-    }
+    public FishDB() => Load("Fish_Data", raw => new FishDataDef(raw), data => data.fishId);
 }
 
-public class SushiDB
+public class SashimiDB : BaseDB<int, SashimiDataDef, SashimiRaw>
 {
-    private readonly Dictionary<int, SushiDataDef> _SushiDict;
-
-    public SushiDataDef this[int id] => Get(id);
-
-    public SushiDB()
-    {
-        var list = JsonManager.Ins.GetItems<SushiDataDef>("SushiData");
-        _SushiDict = list.ToDictionary(fish => fish.id);
-        
-        Debug.Log($"[SushiDB] {_SushiDict.Count}종의 물고기 데이터 로드 완료.");
-    }
-
-    public SushiDataDef Get(int id)
-    {
-        if (_SushiDict.TryGetValue(id, out var def)) return def;
-        Debug.LogError($"[SushiDB] ID {id}를 찾을 수 없습니다.");
-        return null;
-    }
+    public SashimiDB() => Load("Sashimi_Data", raw => new SashimiDataDef(raw), data => data.sashimiId);
 }
 
-public class DpStandDB
+public class SushiDB : BaseDB<int, SushiDataDef, SushiRaw>
 {
-    private readonly Dictionary<int, DpStandDataDef> _DpStandDict;
-
-    public DpStandDataDef this[int id] => Get(id);
-
-    public DpStandDB()
-    {
-        var list = JsonManager.Ins.GetItems<DpStandDataDef>("DpStandData");
-        _DpStandDict = list.ToDictionary(fish => fish.id);
-        
-        Debug.Log($"[DpStandDB] {_DpStandDict.Count}종의 물고기 데이터 로드 완료.");
-    }
-
-    public DpStandDataDef Get(int id)
-    {
-        if (_DpStandDict.TryGetValue(id, out var def)) return def;
-        Debug.LogError($"[DpStandDB] ID {id}를 찾을 수 없습니다.");
-        return null;
-    }
+    public SushiDB() => Load("Sushi_Data", raw => new SushiDataDef(raw), data => data.sushiId);
 }
 
-public class ItemChartDB
+public class StandDB : BaseDB<int, StandDataDef, StandRaw>
 {
-    private readonly Dictionary<int, ItemChartDef> _ItemChartDict;
+    public StandDB() => Load("Stand_Data", raw => new StandDataDef(raw), data => data.standId);
+}
 
-    public ItemChartDef this[int id] => Get(id);
-
-    public ItemChartDB()
-    {
-        var list = JsonManager.Ins.GetItems<ItemChartDef>("ItemChart");
-        _ItemChartDict = list.ToDictionary(fish => fish.itemId);
-        
-        Debug.Log($"[ItemChartDB] {_ItemChartDict.Count}종의 물고기 데이터 로드 완료.");
-    }
-
-    public ItemChartDef Get(int id)
-    {
-        if (_ItemChartDict.TryGetValue(id, out var def)) return def;
-        Debug.LogError($"[ItemChartDB] ID {id}를 찾을 수 없습니다.");
-        return null;
-    }
+public class EquipmentDB : BaseDB<int, EquipmentDataDef, EquipmentRaw>
+{
+    public EquipmentDB() => Load("Equipment_Data", raw => new EquipmentDataDef(raw), data => data.equipmentId);
 }

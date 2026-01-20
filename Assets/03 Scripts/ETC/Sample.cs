@@ -14,8 +14,7 @@ public class Sample : MonoBehaviour
 
         foreach (var item in wrapper)
         {
-            Debug.Log(item.id);
-            Debug.Log(item.name);
+            Debug.Log(item.sushiId);
         }
 
     }

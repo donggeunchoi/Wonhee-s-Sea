@@ -15,13 +15,7 @@ public class JsonManager : Singleton<JsonManager>
     // DpStandDataDef dpStandData = new DpStandDataDef();
     // List<ItemChartDef> itemChartData = new List<ItemChartDef>();\
 
-    public FishDB Fishes { get; private set; }
-    public SushiDB Sushis { get; private set; }
-    public SashimiDB Sashimis { get; private set; }
-    public ItemChartDB ItemCharts { get; private set; }
-
-
-    private string basePath;
+        private string basePath;
 
     [Serializable]
     private class ItemWrapper<TItem>
@@ -40,11 +34,6 @@ public class JsonManager : Singleton<JsonManager>
         {
             Directory.CreateDirectory(basePath);
         }
-
-        Fishes = new FishDB();
-        Sushis = new SushiDB();
-        Sashimis = new SashimiDB();
-        ItemCharts = new ItemChartDB();
     }
 
 
