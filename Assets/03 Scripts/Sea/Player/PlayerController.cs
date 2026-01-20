@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float _maxSpeed = 1f;
+    [SerializeField] private float _maxSpeed;
     [SerializeField] private float _acceleration = 10f;
     [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private float _deadZone = 0.15f;
@@ -14,6 +14,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] 
     private bool _useRotation = true;
 
+    [Header("애니메이션")]
+    [SerializeField]
+    private Animator _anim;
+
     Rigidbody2D _rb;
     Vector2 _moveInput;
 
@@ -21,7 +25,10 @@ public class PlayerController : MonoBehaviour
     {
         if (!TryGetComponent(out Rigidbody2D rb))
             return;
-        
+
+        if (_anim == null)
+            return;
+
         _rb = rb;
         
         _rb.gravityScale = 0f;
@@ -44,6 +51,16 @@ public class PlayerController : MonoBehaviour
         
         if(_useRotation)
             Rotate();
+
+        UpdateAnim();
+    }
+
+    public void UpdateAnim()
+    {
+        if (_anim == null) return;
+
+        bool isMove = _rb.velocity.sqrMagnitude > 0.01f;
+        _anim.SetBool("isMove", isMove);
     }
 
     private void Move()
