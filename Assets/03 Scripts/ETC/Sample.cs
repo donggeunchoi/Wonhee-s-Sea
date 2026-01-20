@@ -9,13 +9,20 @@ public class Sample : MonoBehaviour
     {
         JsonManager.Ins.Delete("SushiData");
 
-        var wrapper = JsonManager.Ins.GetItems<SushiDataDef>("SushiData");
+        var wrapper = JsonManager.Ins.GetItems<SushiData>("SushiData");
         Debug.Log(wrapper.Count);
 
-        foreach (var item in wrapper)
-        {
-            Debug.Log(item.sushiId);
-        }
+        var wraper = wrapper.Find(info => info.id == 3);
+
+        int i = wraper.cost;
+
+        Debug.Log(i);
+
+        //foreach (var item in wrapper)
+        //{
+        //    Debug.Log(item.id);
+        //    Debug.Log(item.name);
+        //}
 
     }
 
