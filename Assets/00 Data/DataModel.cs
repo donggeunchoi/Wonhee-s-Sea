@@ -120,6 +120,7 @@ public class SushiDataDef
 public class StandRaw
 {
     public string standId;
+    public string Name;
     public string StandType;
     public string Ingredient_1;
     public string Ingredient_2;
@@ -130,6 +131,7 @@ public class StandRaw
 public class StandDataDef
 {
     public int standId;
+    public string Name;
     public StandType StandType;
     public int Ingredient_1;
     public int Ingredient_2;
@@ -139,6 +141,7 @@ public class StandDataDef
     public StandDataDef(StandRaw raw)
     {
         this.standId = DataParse.ParseSafe<int>(raw.standId);
+        this.Name = DataParse.ParseSafe<string>(raw.Name);        
         this.StandType = DataParse.ParseSafe<StandType>(raw.StandType);
         this.Ingredient_1 = DataParse.ParseSafe<int>(raw.Ingredient_1);
         this.Ingredient_2 = DataParse.ParseSafe<int>(raw.Ingredient_2);

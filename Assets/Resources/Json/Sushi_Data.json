@@ -2,57 +2,66 @@
   "items": [
     {
       "sushiId": "int",
+      "Name": "string",
       "Cost": "float",
       "CookingStand": "int",
       "DPStand": "int"
     },
     {
       "sushiId": "30000",
+      "Name": "숭어초밥",
       "Cost": "100",
       "CookingStand": "40000",
       "DPStand": "40307"
     },
     {
       "sushiId": "30001",
+      "Name": "새우초밥",
       "Cost": "200",
       "CookingStand": "40001",
       "DPStand": "40308"
     },
     {
       "sushiId": "30002",
+      "Name": "복어초밥",
       "Cost": "300",
       "CookingStand": "40002",
       "DPStand": "40309"
     },
     {
       "sushiId": "30003",
+      "Name": "고등어초밥",
       "Cost": "400",
       "CookingStand": "40003",
       "DPStand": "40310"
     },
     {
       "sushiId": "30004",
+      "Name": "연어초밥",
       "Cost": "500",
       "CookingStand": "40004",
       "DPStand": "40311"
     },
     {
       "sushiId": "30005",
+      "Name": "초롱아귀초밥",
       "Cost": "600",
       "CookingStand": "40005",
       "DPStand": "40312"
     },
     {
       "sushiId": "30006",
+      "Name": "독사고기초밥",
       "Cost": "700",
       "CookingStand": "40006",
       "DPStand": "40313"
     },
     {
-      "sushiId": "30100",
-      "Cost": "0",
-      "CookingStand": "40200",
-      "DPStand": "0"
+      "sushiId": "",
+      "Name": "",
+      "Cost": "",
+      "CookingStand": "",
+      "DPStand": ""
     }
   ]
 }

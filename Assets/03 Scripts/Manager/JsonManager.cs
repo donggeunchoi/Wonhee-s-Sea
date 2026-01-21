@@ -98,47 +98,49 @@ public class JsonManager : Singleton<JsonManager>
       if (!fileName.EndsWith(".json"))
          fileName += ".json";
 
-      return Path.Combine(basePath, fileName);
-   }
+        return Path.Combine(basePath, fileName);
+    }
 
-   /// <summary>
-   /// 특정 JSON 파일 삭제
-   /// </summary>
-   public void Delete(string fileName)
-   {
-      string path = GetPath(fileName);
-      if (File.Exists(path))
-         File.Delete(path);
+    /// <summary>
+    /// 특정 JSON 파일 삭제
+    /// </summary>
+    public void Delete(string fileName)
+    {
+        string path = GetPath(fileName);
+        if (File.Exists(path))
+            File.Delete(path);
 
-      // 캐시도 같이 날리기(간단 버전)
-      jsonCache.Clear();
-   }
-   
-   public List<T> GetItems<T>(string fileName)
-   {
-      string cacheKey = $"ITEMS:{typeof(T).FullName}:{fileName}";
+        // 캐시도 같이 날리기(간단 버전)
+        jsonCache.Clear();
+    }
 
-      // 1. 캐시 체크
-      if (jsonCache.TryGetValue(cacheKey, out var cached))
-         return (List<T>)cached;
+    public List<T> GetItems<T>(string fileName)
+    {
+        string cacheKey = $"ITEMS:{typeof(T).FullName}:{fileName}";
 
-      string path = GetPath(fileName);
-      List<T> list;
+        // 1. 캐시 체크
+        if (jsonCache.TryGetValue(cacheKey, out var cached))
+            return (List<T>)cached;
 
-      // 2. 파일 없으면 Resources에서 읽어서 저장
-      if (!File.Exists(path))
-      {
-         list = LoadItemsFromResources<T>(fileName);
-         Save(fileName, new ItemWrapper<T> { items = list });
-      }
-      else
-      {
-         string json = File.ReadAllText(path);
-         list = ParseItems<T>(json);
-      }
+        string path = GetPath(fileName);
+        List<T> list;
 
-      jsonCache[cacheKey] = list;
-      return list;
+        bool forceReload = true; // 임시 변수
+
+        // 2. 파일 없으면 Resources에서 읽어서 저장
+        if (!File.Exists(path) || forceReload)
+        {
+            list = LoadItemsFromResources<T>(fileName);
+            Save(fileName, new ItemWrapper<T> { items = list });
+        }
+        else
+        {
+            string json = File.ReadAllText(path);
+            list = ParseItems<T>(json);
+        }
+
+        jsonCache[cacheKey] = list;
+        return list;
    }
    
    private List<T> LoadItemsFromResources<T>(string fileName)

@@ -2,51 +2,66 @@
   "items": [
     {
       "sashimiId": "int",
+      "Name": "string",
       "Cost": "float",
       "CookingStand": "int",
       "DPStand": "int"
     },
     {
       "sashimiId": "20000",
+      "Name": "숭어사시미",
       "Cost": "100",
       "CookingStand": "40000",
       "DPStand": "40300"
     },
     {
       "sashimiId": "20001",
+      "Name": "새우사시미",
       "Cost": "200",
       "CookingStand": "40001",
       "DPStand": "40301"
     },
     {
       "sashimiId": "20002",
+      "Name": "복어사시미",
       "Cost": "300",
       "CookingStand": "40002",
       "DPStand": "40302"
     },
     {
       "sashimiId": "20003",
+      "Name": "고등어사시미",
       "Cost": "400",
       "CookingStand": "40003",
       "DPStand": "40303"
     },
     {
       "sashimiId": "20004",
+      "Name": "연어사시미",
       "Cost": "500",
       "CookingStand": "40004",
       "DPStand": "40304"
     },
     {
       "sashimiId": "20005",
+      "Name": "초롱아귀사시미",
       "Cost": "600",
       "CookingStand": "40005",
       "DPStand": "40305"
     },
     {
       "sashimiId": "20006",
+      "Name": "독사고기사시미",
       "Cost": "700",
       "CookingStand": "40006",
       "DPStand": "40306"
+    },
+    {
+      "sashimiId": "20100",
+      "Name": "밥",
+      "Cost": "-1",
+      "CookingStand": "-1",
+      "DPStand": "-1"
     }
   ]
 }
