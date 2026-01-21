@@ -2,6 +2,7 @@
   "items": [
     {
       "standId": "int",
+      "Name": "string",
       "StandType": "enum",
       "Ingredient_1": "int",
       "Ingredient_2": "int",
@@ -10,6 +11,7 @@
     },
     {
       "standId": "40000",
+      "Name": "숭어 도마",
       "StandType": "CuttingBoard",
       "Ingredient_1": "10000",
       "Ingredient_2": "-1",
@@ -18,6 +20,7 @@
     },
     {
       "standId": "40001",
+      "Name": "새우 도마",
       "StandType": "CuttingBoard",
       "Ingredient_1": "10001",
       "Ingredient_2": "-1",
@@ -26,6 +29,7 @@
     },
     {
       "standId": "40002",
+      "Name": "복어 도마",
       "StandType": "CuttingBoard",
       "Ingredient_1": "10002",
       "Ingredient_2": "-1",
@@ -34,6 +38,7 @@
     },
     {
       "standId": "40003",
+      "Name": "고등어 도마",
       "StandType": "CuttingBoard",
       "Ingredient_1": "10003",
       "Ingredient_2": "-1",
@@ -42,6 +47,7 @@
     },
     {
       "standId": "40004",
+      "Name": "연어 도마",
       "StandType": "CuttingBoard",
       "Ingredient_1": "10004",
       "Ingredient_2": "-1",
@@ -50,6 +56,7 @@
     },
     {
       "standId": "40005",
+      "Name": "초롱아귀 도마",
       "StandType": "CuttingBoard",
       "Ingredient_1": "10100",
       "Ingredient_2": "-1",
@@ -58,6 +65,7 @@
     },
     {
       "standId": "40006",
+      "Name": "독사고기 도마",
       "StandType": "CuttingBoard",
       "Ingredient_1": "10101",
       "Ingredient_2": "-1",
@@ -66,6 +74,7 @@
     },
     {
       "standId": "40100",
+      "Name": "밥솥",
       "StandType": "RiceCooker",
       "Ingredient_1": "20007",
       "Ingredient_2": "-1",
@@ -74,62 +83,70 @@
     },
     {
       "standId": "40200",
+      "Name": "숭어 조리대",
       "StandType": "CounterTop",
       "Ingredient_1": "20000",
-      "Ingredient_2": "30100",
+      "Ingredient_2": "20100",
       "Time": "5",
       "Cost": "900"
     },
     {
       "standId": "40201",
+      "Name": "새우 조리대",
       "StandType": "CounterTop",
       "Ingredient_1": "20001",
-      "Ingredient_2": "30100",
+      "Ingredient_2": "20100",
       "Time": "5",
       "Cost": "1000"
     },
     {
       "standId": "40202",
+      "Name": "복어 조리대",
       "StandType": "CounterTop",
       "Ingredient_1": "20002",
-      "Ingredient_2": "30100",
+      "Ingredient_2": "20100",
       "Time": "5",
       "Cost": "1100"
     },
     {
       "standId": "40203",
+      "Name": "고등어 조리대",
       "StandType": "CounterTop",
       "Ingredient_1": "20003",
-      "Ingredient_2": "30100",
+      "Ingredient_2": "20100",
       "Time": "5",
       "Cost": "1200"
     },
     {
       "standId": "40204",
+      "Name": "연어 조리대",
       "StandType": "CounterTop",
       "Ingredient_1": "20004",
-      "Ingredient_2": "30100",
+      "Ingredient_2": "20100",
       "Time": "5",
       "Cost": "1300"
     },
     {
       "standId": "40205",
+      "Name": "초롱아귀 조리대",
       "StandType": "CounterTop",
       "Ingredient_1": "20005",
-      "Ingredient_2": "30100",
+      "Ingredient_2": "20100",
       "Time": "5",
       "Cost": "1400"
     },
     {
       "standId": "40206",
+      "Name": "독사고기 조리대",
       "StandType": "CounterTop",
       "Ingredient_1": "20006",
-      "Ingredient_2": "30100",
+      "Ingredient_2": "20100",
       "Time": "5",
       "Cost": "1500"
     },
     {
       "standId": "40300",
+      "Name": "숭어 사시미 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "30000",
       "Ingredient_2": "-1",
@@ -138,6 +155,7 @@
     },
     {
       "standId": "40301",
+      "Name": "새우 사시미 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "30001",
       "Ingredient_2": "-1",
@@ -146,6 +164,7 @@
     },
     {
       "standId": "40302",
+      "Name": "복어 사시미 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "30002",
       "Ingredient_2": "-1",
@@ -154,6 +173,7 @@
     },
     {
       "standId": "40303",
+      "Name": "고등어 사시미 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "30003",
       "Ingredient_2": "-1",
@@ -162,6 +182,7 @@
     },
     {
       "standId": "40304",
+      "Name": "연어 사시미 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "30004",
       "Ingredient_2": "-1",
@@ -170,6 +191,7 @@
     },
     {
       "standId": "40305",
+      "Name": "초롱아귀 사시미 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "30005",
       "Ingredient_2": "-1",
@@ -178,6 +200,7 @@
     },
     {
       "standId": "40306",
+      "Name": "독사고기 사시미 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "30006",
       "Ingredient_2": "-1",
@@ -186,6 +209,7 @@
     },
     {
       "standId": "40307",
+      "Name": "숭어 초밥 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "20000",
       "Ingredient_2": "-1",
@@ -194,6 +218,7 @@
     },
     {
       "standId": "40308",
+      "Name": "새우 초밥 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "20001",
       "Ingredient_2": "-1",
@@ -202,6 +227,7 @@
     },
     {
       "standId": "40309",
+      "Name": "복어 초밥 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "20002",
       "Ingredient_2": "-1",
@@ -210,6 +236,7 @@
     },
     {
       "standId": "40310",
+      "Name": "고등어 초밥 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "20003",
       "Ingredient_2": "-1",
@@ -218,6 +245,7 @@
     },
     {
       "standId": "40311",
+      "Name": "연어 초밥 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "20004",
       "Ingredient_2": "-1",
@@ -226,6 +254,7 @@
     },
     {
       "standId": "40312",
+      "Name": "초롱아귀 초밥 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "20005",
       "Ingredient_2": "-1",
@@ -234,6 +263,7 @@
     },
     {
       "standId": "40313",
+      "Name": "독사고기 초밥 매대",
       "StandType": "DisplayStand",
       "Ingredient_1": "20006",
       "Ingredient_2": "-1",
@@ -242,6 +272,7 @@
     },
     {
       "standId": "40400",
+      "Name": "판매대",
       "StandType": "SalesStand",
       "Ingredient_1": "-1",
       "Ingredient_2": "-1",
