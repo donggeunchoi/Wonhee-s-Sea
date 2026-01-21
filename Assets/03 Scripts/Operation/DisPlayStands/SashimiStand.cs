@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SashimiStand : MonoBehaviour
 {
-   SashimiData sashimiData;
+   SashimiDataDef sashimiData;
    
    [Header("스텐드 표출")]
    [SerializeField] 

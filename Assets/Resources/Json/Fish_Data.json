@@ -1,7 +1,7 @@
 ﻿{
   "items": [
     {
-      "Id": "int",
+      "fishId": "int",
       "Name": "string",
       "Hp": "float",
       "AttackDamage": "float",
@@ -12,7 +12,7 @@
       "IsAttack": "bool"
     },
     {
-      "Id": "10000",
+      "fishId": "10000",
       "Name": "숭어",
       "Hp": "100",
       "AttackDamage": "0",
@@ -23,7 +23,7 @@
       "IsAttack": "FALSE"
     },
     {
-      "Id": "10001",
+      "fishId": "10001",
       "Name": "새우",
       "Hp": "200",
       "AttackDamage": "0",
@@ -34,7 +34,7 @@
       "IsAttack": "FALSE"
     },
     {
-      "Id": "10002",
+      "fishId": "10002",
       "Name": "복어",
       "Hp": "300",
       "AttackDamage": "30",
@@ -45,7 +45,7 @@
       "IsAttack": "TRUE"
     },
     {
-      "Id": "10003",
+      "fishId": "10003",
       "Name": "고등어",
       "Hp": "400",
       "AttackDamage": "0",
@@ -56,7 +56,7 @@
       "IsAttack": "FALSE"
     },
     {
-      "Id": "10004",
+      "fishId": "10004",
       "Name": "연어",
       "Hp": "500",
       "AttackDamage": "0",
@@ -67,7 +67,7 @@
       "IsAttack": "FALSE"
     },
     {
-      "Id": "10100",
+      "fishId": "10100",
       "Name": "초롱아귀",
       "Hp": "1200",
       "AttackDamage": "120",
@@ -78,7 +78,7 @@
       "IsAttack": "TRUE"
     },
     {
-      "Id": "10101",
+      "fishId": "10101",
       "Name": "독사고기",
       "Hp": "1300",
       "AttackDamage": "130",

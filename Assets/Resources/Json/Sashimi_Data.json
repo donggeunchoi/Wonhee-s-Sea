@@ -1,0 +1,52 @@
+﻿{
+  "items": [
+    {
+      "sashimiId": "int",
+      "Cost": "float",
+      "CookingStand": "int",
+      "DPStand": "int"
+    },
+    {
+      "sashimiId": "20000",
+      "Cost": "100",
+      "CookingStand": "40000",
+      "DPStand": "40300"
+    },
+    {
+      "sashimiId": "20001",
+      "Cost": "200",
+      "CookingStand": "40001",
+      "DPStand": "40301"
+    },
+    {
+      "sashimiId": "20002",
+      "Cost": "300",
+      "CookingStand": "40002",
+      "DPStand": "40302"
+    },
+    {
+      "sashimiId": "20003",
+      "Cost": "400",
+      "CookingStand": "40003",
+      "DPStand": "40303"
+    },
+    {
+      "sashimiId": "20004",
+      "Cost": "500",
+      "CookingStand": "40004",
+      "DPStand": "40304"
+    },
+    {
+      "sashimiId": "20005",
+      "Cost": "600",
+      "CookingStand": "40005",
+      "DPStand": "40305"
+    },
+    {
+      "sashimiId": "20006",
+      "Cost": "700",
+      "CookingStand": "40006",
+      "DPStand": "40306"
+    }
+  ]
+}
