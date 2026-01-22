@@ -4,68 +4,52 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement")]
-    [SerializeField] private float _maxSpeed;
+    [Header("이동 관련")]
+    [SerializeField] private float _maxSpeed = 3f;
     [SerializeField] private float _acceleration = 10f;
     [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private float _deadZone = 0.15f;
 
-    [Header("Options")] 
-    [SerializeField] 
-    private bool _useRotation = true;
+    [Header("옵션")]
+    [SerializeField] private bool _useRotation = true;
 
     [Header("애니메이션")]
-    [SerializeField]
-    private Animator _anim;
+    [SerializeField] private Animator _anim;
 
-    Rigidbody2D _rb;
-    Vector2 _moveInput;
+    private PlayerRoot _owner;
+    private Rigidbody2D _rb;
 
-    private void Awake()
+    public void Init(PlayerRoot owner)
     {
-        if (!TryGetComponent(out Rigidbody2D rb))
-            return;
+        _owner = owner;
+        _rb = owner.Rb;
 
-        if (_anim == null)
-            return;
+        if (_anim == null) _anim = owner.Anim;
 
-        _rb = rb;
-        
         _rb.gravityScale = 0f;
         _rb.drag = 3f;
         _rb.angularDrag = 3f;
         _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
     }
 
-    public void SetMoveInput(Vector2 input)
-    {
-        if (input.magnitude < _deadZone)
-            _moveInput = Vector2.zero;
-        else
-            _moveInput = input;
-    }
-
     private void FixedUpdate()
     {
-        Move();
-        
-        if(_useRotation)
+        if (_owner == null || _owner.Input == null) return;
+
+        Vector2 raw = _owner.Input.Move;
+        Vector2 input = raw.magnitude < _deadZone ? Vector2.zero : raw;
+
+        Move(input);
+
+        if (_useRotation)
             Rotate();
 
         UpdateAnim();
     }
 
-    public void UpdateAnim()
+    private void Move(Vector2 input)
     {
-        if (_anim == null) return;
-
-        bool isMove = _rb.velocity.sqrMagnitude > 0.01f;
-        _anim.SetBool("isMove", isMove);
-    }
-
-    private void Move()
-    {
-        Vector2 targetVelocity = _moveInput * _maxSpeed;
+        Vector2 targetVelocity = input * _maxSpeed;
 
         _rb.velocity = Vector2.Lerp(
             _rb.velocity,
@@ -86,6 +70,14 @@ public class PlayerController : MonoBehaviour
             targetRot,
             _rotationSpeed * Time.fixedDeltaTime
         );
+    }
+
+    private void UpdateAnim()
+    {
+        if (_anim == null) return;
+
+        bool isMove = _rb.velocity.sqrMagnitude > 0.01f;
+        _anim.SetBool("isMove", isMove);
     }
 }
 

@@ -1207,7 +1207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8216d178a7cc8284d8a112933cc9206d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 8358111390638160014}
+  _player: {fileID: 8358111390638160016}
   _joystick: {fileID: 1406776911}
 --- !u!4 &1524843486
 Transform:
@@ -1372,6 +1372,8 @@ GameObject:
   - component: {fileID: 6530202661719559556}
   - component: {fileID: 8358111390638160014}
   - component: {fileID: 8358111390638160015}
+  - component: {fileID: 8358111390638160016}
+  - component: {fileID: 8358111390638160017}
   m_Layer: 0
   m_Name: Player_D
   m_TagString: Player
@@ -1531,6 +1533,7 @@ MonoBehaviour:
   _rotationSpeed: 10
   _deadZone: 0.15
   _useRotation: 1
+  _anim: {fileID: 5354175234993858942}
 --- !u!114 &8358111390638160015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1547,6 +1550,30 @@ MonoBehaviour:
   _attackDistance: 1.2
   _attackSpeed: 15
   _attackCooldown: 0.5
+--- !u!114 &8358111390638160016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470996028424793330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39c74b48caf35b6499b740f341b927a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8358111390638160017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470996028424793330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 978d83f5ea919a94a92b57db69133797, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
