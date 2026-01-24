@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4356506331813725694}
+  - component: {fileID: 8245811462362448677}
+  - component: {fileID: 5109885742910424823}
   m_Layer: 0
   m_Name: F_Salmon
   m_TagString: Untagged
@@ -32,6 +34,38 @@ Transform:
   - {fileID: 820215638845426144}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8245811462362448677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125256895149406171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 259d4e543358d7442be0b72cefd75980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 0.5
+  _chaseSpeed: 0.7
+  _moveRangeX: 5
+  _detectionRange: 3
+  _attackRange: 0.5
+  _attackCooldown: 2
+--- !u!114 &5109885742910424823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125256895149406171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86bcddd467f15d043ada651fc7eae092, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHp: 2
+  _destroyDelay: 1
 --- !u!1 &3727190697470120754
 GameObject:
   m_ObjectHideFlags: 0
