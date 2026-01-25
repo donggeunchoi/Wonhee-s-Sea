@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
         _rb.drag = 3f;
         _rb.angularDrag = 3f;
         _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+
     }
 
     public void SetMoveInput(Vector2 input)
@@ -68,6 +69,7 @@ public class PlayerController : MonoBehaviour
         //UpdateAnim();
 
         UpdateTownAnim();
+
     }
 
     public void UpdateAnim()

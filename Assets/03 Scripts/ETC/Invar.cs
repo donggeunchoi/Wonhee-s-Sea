@@ -41,11 +41,11 @@ public class PUserInfo
 public class PDungeonInfo
 {
     //던전에서만 사용하는 변수
-    public int HP;
-    public int Speed;
-    public int Attack;
-    public int HPRegen;
-    public int Oxygen;
+    public int HP = 100;
+    public int Speed = 0;
+    public int Attack = 10;
+    public int HPRegen = 0;
+    public int Oxygen = 0;
 
     public bool IsDifferent(PDungeonInfo other)
     {
