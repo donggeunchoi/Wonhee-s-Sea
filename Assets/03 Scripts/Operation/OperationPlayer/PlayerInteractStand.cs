@@ -67,13 +67,29 @@ public class PlayerInteractStand : MonoBehaviour
             Debug.Log($"text {rearRiceItemId} x {testAddCount} 지급시도 => {rearRiceadded}");
         }
         
-        var hit = Physics2D.OverlapCircle(transform.position, range);
-        if (hit == null) return;
+        var hits = Physics2D.OverlapCircleAll(transform.position, range);
+        if (hits == null) return;
+        
+        foreach(var hit in hits)
+        {
+            var storage = hit.GetComponentInParent<StorageStand>();
+            if (storage != null)
+            {
+                storage.Interact(inventory);
+                return;
+            }
+        }
 
-        
-        if (!hit.TryGetComponent<RecipeStand>(out var stand))
-            return;
-        
-        stand.Interact(inventory);
+        foreach (var hit in hits)
+        {
+            // RecipeStand 그 다음
+            var recipe = hit.GetComponentInParent<RecipeStand>();
+            if (recipe != null)
+            {
+                recipe.Interact(inventory);
+                return;
+            }
+        }
+
     }
 }
