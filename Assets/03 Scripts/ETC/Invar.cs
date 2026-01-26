@@ -6,10 +6,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//IsDifferent는 해당 값이 다른지 같은지 판단하기위해서 만든겁니다.
+//변경된 값만 서버에 전송하거나 할때 사용합니다.
+
+//FormatJsonData는 뒤끝 서버에 저장할때 JSON형태로 변환하기 위해 만든겁니다.
+
 [Serializable]
 public class PUserInfo
 {
-    public int level;
+    public int level = 1;
     public int exp;
     public int gold;
 
@@ -36,11 +41,11 @@ public class PUserInfo
 public class PDungeonInfo
 {
     //던전에서만 사용하는 변수
-    public int HP;
-    public int Speed;
-    public int Attack;
-    public int HPRegen;
-    public int Oxygen;
+    public int HP = 100;
+    public int Speed = 0;
+    public int Attack = 10;
+    public int HPRegen = 0;
+    public int Oxygen = 0;
 
     public bool IsDifferent(PDungeonInfo other)
     {

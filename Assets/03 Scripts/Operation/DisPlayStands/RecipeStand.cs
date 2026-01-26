@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class RecipeStand : MonoBehaviour
@@ -19,14 +20,26 @@ public class RecipeStand : MonoBehaviour
     [Header("스텐드 기본 정보")] 
     [SerializeField] private TextMeshProUGUI StandNametext;
     [SerializeField] private Image imgIcon;
+
+    [Header("쌓일 프리펩")]
+    [SerializeField]
+    GameObject Prefab;
+
     
     private bool isProcessing;
     private string outputItemId;
     private int ouputCount;
     
     private Inventory lastInventory;
+    private PlayerStackVisualizer stack;
 
-    public void Interact(Inventory inv)
+    private void Awake()
+    {
+        if(stack == null)
+            stack = GetComponent<PlayerStackVisualizer>();
+    }
+
+    public void Interact(Inventory inv, PlayerStackVisualizer stack)
     {
         if (recipe == null || inv == null)
             return;
@@ -41,7 +54,20 @@ public class RecipeStand : MonoBehaviour
             //클리어가 아니라면 인벤이 가득 찼다는 의미
             if (!clear)
                 return;
-            
+
+            int needRemove = 0;
+            var input = recipe.GetInputs();
+            for(int i = 0; i < input.Count; i++)
+            {
+                needRemove += input[i].count;
+            }
+
+
+
+            if (stack != null && Prefab != null)
+                for(int i = 0; i < ouputCount; i++)
+                    stack.Add(Prefab);
+
             ClearOutput();
             return;
         }
@@ -98,7 +124,13 @@ public class RecipeStand : MonoBehaviour
         {
             bool ok = lastInventory.TryAdd(outputItemId, ouputCount);
             if (ok)
+            {
+                if (stack != null && Prefab != null)
+                    stack.Add(Prefab);
+
+
                 ClearOutput();
+            }
         }
     }
 
