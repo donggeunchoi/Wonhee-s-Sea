@@ -1529,12 +1529,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6758dbe6b89497448a52f44ec1897da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSpeed: 1
-  _acceleration: 10
-  _rotationSpeed: 10
-  _deadZone: 0.15
+  _mode: 0
   _useRotation: 1
+  _maxSpeed: 1
   _anim: {fileID: 5354175234993858942}
+  _sr: {fileID: 2117330541375569578}
 --- !u!114 &8358111390638160015
 MonoBehaviour:
   m_ObjectHideFlags: 0
