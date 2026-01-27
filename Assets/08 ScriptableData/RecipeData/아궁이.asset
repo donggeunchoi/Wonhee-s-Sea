@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: "\uC544\uAD81\uC774"
   m_EditorClassIdentifier: 
   inputs: []
-  inputItemId: 60000
+  inputItem: {fileID: 11400000, guid: ec4da54f83a1e564b9642986416cd59d, type: 2}
   inputCount: 1
-  outputItemId: 20007
+  outputItem: {fileID: 11400000, guid: cbbc5661fe69f074b970e8bd85dc519a, type: 2}
   outputCount: 1
   processTime: 1.5
