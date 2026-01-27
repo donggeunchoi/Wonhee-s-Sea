@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: "\uB3C4\uB9C8"
   m_EditorClassIdentifier: 
   inputs: []
-  inputItemId: 10004
+  inputItem: {fileID: 11400000, guid: de2629b918a51fd46aa64b1d79ec0383, type: 2}
   inputCount: 1
-  outputItemId: 20004
+  outputItem: {fileID: 11400000, guid: b39517fdf625ed7439412567a24c97e7, type: 2}
   outputCount: 1
   processTime: 1.5

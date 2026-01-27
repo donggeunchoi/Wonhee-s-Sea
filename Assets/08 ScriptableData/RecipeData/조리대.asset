@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: "\uC870\uB9AC\uB300"
   m_EditorClassIdentifier: 
   inputs:
-  - itemId: 20004
+  - item: {fileID: 11400000, guid: b39517fdf625ed7439412567a24c97e7, type: 2}
     count: 1
-  - itemId: 20007
+  - item: {fileID: 11400000, guid: cbbc5661fe69f074b970e8bd85dc519a, type: 2}
     count: 1
-  inputItemId: 
+  inputItem: {fileID: 0}
   inputCount: 0
-  outputItemId: 30004
+  outputItem: {fileID: 11400000, guid: 7a6919c6cb2dd72469d86d78380c8232, type: 2}
   outputCount: 1
   processTime: 1.5

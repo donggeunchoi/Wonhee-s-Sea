@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88dfd49f2a85efc4dbd01ded775f97c5, type: 3}
-  m_Name: "\uC5F0\uC5B4\uC0B4"
+  m_Script: {fileID: 11500000, guid: b49a0a0fdbbe77e448b8ab8f898b53ef, type: 3}
+  m_Name: NPCDatabase
   m_EditorClassIdentifier: 
-  itemId: 10004
-  displayName: "\uC5F0\uC5B4"
-  Category: 0
-  icon: {fileID: 0}
-  stackable: 1
-  maxStack: 90
+  items:
+  - {fileID: 11400000, guid: 7a6919c6cb2dd72469d86d78380c8232, type: 2}
