@@ -23,23 +23,21 @@ public class Inventory : MonoBehaviour
     [SerializeField] private ItemDatabaseSO dataBase;
 
     [Header("시작시 가지게 될 슬롯 개수(=수용량)")]
-    [SerializeField] private int startSlot = 5;
+    [SerializeField] private int startSlot;
 
     [Header("머리 위 기준점")]
     [SerializeField] private Transform stackRoot;
 
     [Header("스택 간격(프리팹 1개당 올라갈 높이)")]
-    [SerializeField] private float offsetY = 0.3f;
+    [SerializeField] private float offsetY;
 
     [Header("머리위에 표시할지 여부")]
     [SerializeField] private bool useHeadStackVisual = true;
 
-    // (UI가 필요 없으면 이 이벤트/호출은 나중에 전부 삭제 가능)
     public event Action OnChange;
 
     public List<ItemStack> Slots { get; private set; } = new List<ItemStack>();
 
-    //머리 위 비주얼: itemId를 같이 들고 있어야 “ID로 제거”가 가능
     [Serializable]
     private class VisualEntry
     {
@@ -59,7 +57,6 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < startSlot; i++)
             Slots.Add(new ItemStack());
 
-        // 시작할 때는 비주얼 동기화(원하면 지워도 됨)
         SyncVisualFromSlots();
         OnChange?.Invoke();
     }
@@ -69,7 +66,6 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < add; i++)
             Slots.Add(new ItemStack());
 
-        // 수용량 확장만 했으면 비주얼 변경은 없음
         OnChange?.Invoke();
     }
 
@@ -90,14 +86,12 @@ public class Inventory : MonoBehaviour
         if (amount <= 0) return true;
         if (dataBase == null) { Debug.LogError("Inventory: db 미할당"); return false; }
 
-        // Add 전 수량
         int before = CountOf(itemId);
 
         bool stackable = dataBase.IsStackable(itemId);
         int maxStack = dataBase.GetMaxStack(itemId);
         int left = amount;
 
-        // 1) 기존 스택에 합치기
         if (stackable)
         {
             for (int i = 0; i < Slots.Count && left > 0; i++)
@@ -115,7 +109,6 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        // 2) 빈 슬롯에 넣기
         for (int i = 0; i < Slots.Count && left > 0; i++)
         {
             var s = Slots[i];
@@ -133,7 +126,6 @@ public class Inventory : MonoBehaviour
 
         if (left > 0) return false; // 공간 부족
 
-        // Add 후 수량
         int after = CountOf(itemId);
         int added = after - before;
 
@@ -187,14 +179,9 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        // ItemSO 먼저 가져와서 원인 분리
         var itemSO = dataBase.Get(itemId);
 
-        // 프리팹도 가져오기
         var prefab = dataBase.GetPrefab(itemId);
-
-        // 진단 로그 (DB / ItemSO / Prefab 모두 확인)
-        Debug.Log($"[INV] db={dataBase.name}, itemId='{itemId}', itemSO={(itemSO == null ? "NULL" : itemSO.name)}, prefab={(prefab == null ? "NULL" : prefab.name)}");
 
         if (itemSO == null)
         {
@@ -208,7 +195,6 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        // amount 만큼 생성
         for (int i = 0; i < amount; i++)
         {
             var obj = Instantiate(prefab, stackRoot);
@@ -224,7 +210,6 @@ public class Inventory : MonoBehaviour
     {
         int removed = 0;
 
-        // 뒤에서부터(최근 쌓인 것부터) 제거
         for (int i = visualStack.Count - 1; i >= 0 && removed < amount; i--)
         {
             var e = visualStack[i];
@@ -257,10 +242,8 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    // “현재 Slots 상태”를 기준으로 비주얼을 완전 재구성 (디버그/초기화/세이브로드 후 유용)
     public void SyncVisualFromSlots()
     {
-        // 기존 비주얼 제거
         for (int i = visualStack.Count - 1; i >= 0; i--)
         {
             var e = visualStack[i];
@@ -271,7 +254,6 @@ public class Inventory : MonoBehaviour
         if (!useHeadStackVisual) return;
         if (dataBase == null) return;
 
-        // Slots에서 itemId별 개수만큼 쌓기
         for (int i = 0; i < Slots.Count; i++)
         {
             var s = Slots[i];
