@@ -78,13 +78,13 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.0452, y: 3.8, z: 0}
-  m_LocalScale: {x: 1.6722529, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5778531434875674547}
   - {fileID: 7445626290531847564}
   - {fileID: 4011806597959482727}
   - {fileID: 2736819925733953313}
-  - {fileID: 5778531434875674547}
   - {fileID: 7721793889129568968}
   - {fileID: 7716681723135350290}
   m_Father: {fileID: 0}
@@ -147,11 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipe: {fileID: 11400000, guid: ecfe6bc0fc510444b9fbb04145227a76, type: 2}
-  view: {fileID: 6004908357338676426}
   autoPickupIfPossible: 1
-  StandNametext: {fileID: 5010742004561346853}
-  imgIcon: {fileID: 0}
-  Prefab: {fileID: 7874115043040487165, guid: 7a8998837cf305a4d93a145529a57cf4, type: 3}
 --- !u!1 &3823605990501839905
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +157,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5778531434875674547}
-  - component: {fileID: 4655994816065346202}
+  - component: {fileID: 1667144116022612332}
   m_Layer: 0
   m_Name: MainSprite
   m_TagString: Untagged
@@ -184,7 +180,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8321421676889506997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &4655994816065346202
+--- !u!212 &1667144116022612332
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -833,6 +829,7 @@ GameObject:
   - component: {fileID: 7652831928239050654}
   - component: {fileID: 7389148444610084780}
   - component: {fileID: 2445872835806060541}
+  - component: {fileID: 5292243716936447068}
   m_Layer: 0
   m_Name: ColiderBox
   m_TagString: Untagged
@@ -849,7 +846,7 @@ RectTransform:
   m_GameObject: {fileID: 8540973013588030165}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.79, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8321421676889506997}
@@ -891,9 +888,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.28}
   serializedVersion: 2
-  m_Radius: 0.43670198
+  m_Radius: 0.52
 --- !u!222 &7389148444610084780
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -954,3 +951,68 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &5292243716936447068
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8540973013588030165}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 0.5}
+      - {x: -0.15234375, y: 0.47265625}
+      - {x: -0.29296875, y: 0.40234375}
+      - {x: -0.40234375, y: 0.29296875}
+      - {x: -0.47265625, y: 0.15234375}
+      - {x: -0.5, y: 0}
+      - {x: -0.47265625, y: -0.15234375}
+      - {x: -0.40234375, y: -0.29296875}
+      - {x: -0.29296875, y: -0.40234375}
+      - {x: -0.15234375, y: -0.47265625}
+      - {x: 0, y: -0.5}
+      - {x: 0.15234375, y: -0.47265625}
+      - {x: 0.29296875, y: -0.40234375}
+      - {x: 0.40234375, y: -0.29296875}
+      - {x: 0.47265625, y: -0.15234375}
+      - {x: 0.5, y: 0}
+      - {x: 0.47265625, y: 0.15234375}
+      - {x: 0.40234375, y: 0.29296875}
+      - {x: 0.29296875, y: 0.40234375}
+      - {x: 0.15234375, y: 0.47265625}
+  m_UseDelaunayMesh: 0
