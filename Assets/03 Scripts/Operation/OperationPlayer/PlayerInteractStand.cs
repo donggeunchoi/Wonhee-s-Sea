@@ -8,69 +8,16 @@ public class PlayerInteractStand : MonoBehaviour
     [SerializeField] private Inventory inventory;
     [SerializeField] private float range = 1.5f;
 
-    [SerializeField] private string fishItemId;
-    [SerializeField] private string sashimiItemId;
-    [SerializeField] private string rearRiceItemId;
-    [SerializeField] private string evenRiceItemId;
-    [SerializeField] private string sushiItemId;
-    [SerializeField] private int testAddCount;
-    
-    [SerializeField] private TextMeshProUGUI fishCount;
-    [SerializeField] private TextMeshProUGUI sashimiCount;
-    [SerializeField] private TextMeshProUGUI rearRiceCount;
-    [SerializeField] private TextMeshProUGUI evenRiceCount;
-    [SerializeField] private TextMeshProUGUI sushiCount;
-    
-
-    void Start()
-    {
-        if (inventory != null)
-        {
-            inventory.OnChange += Refresh;
-
-            Refresh();
-        }
-    }
-
-    void OnDestroy()
-    {
-        if (inventory != null)
-            inventory.OnChange -= Refresh;
-    }
-
-    private void Refresh()
-    {
-        if (inventory == null)
-            return;
-
-        
-        fishCount.text = inventory.CountOf(fishItemId).ToString();
-        sashimiCount.text = inventory.CountOf(sashimiItemId).ToString();
-        rearRiceCount.text = inventory.CountOf(rearRiceItemId).ToString();
-        evenRiceCount.text = inventory.CountOf(evenRiceItemId).ToString();
-        sushiCount.text = inventory.CountOf(sushiItemId).ToString();
-    }
-    
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            if (inventory == null)
-            {
-                Debug.LogWarning("인벤토리 연결 안됨");
-                return;
-            }
-            
-            bool fishadded = inventory.TryAdd(fishItemId, testAddCount);
-            bool rearRiceadded = inventory.TryAdd(rearRiceItemId, testAddCount);
-            Debug.Log($"text {fishItemId} x {testAddCount} 지급시도 => {fishadded}");
-            Debug.Log($"text {rearRiceItemId} x {testAddCount} 지급시도 => {rearRiceadded}");
-        }
         
         var hits = Physics2D.OverlapCircleAll(transform.position, range);
-        if (hits == null) return;
-        
-        foreach(var hit in hits)
+        if (hits == null|| hits.Length == 0)
+        {
+            return;
+        }
+
+        foreach (var hit in hits)
         {
             var storage = hit.GetComponentInParent<StorageStand>();
             if (storage != null)
@@ -90,6 +37,6 @@ public class PlayerInteractStand : MonoBehaviour
                 return;
             }
         }
-
+        
     }
 }

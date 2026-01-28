@@ -20,34 +20,53 @@ public struct ItemStack
 public class Inventory : MonoBehaviour
 {
     [Header("아이템 데이터 베이스")]
-    [SerializeField] 
-    private ItemDatabaseSO dataBase;
-    
-    [Header("시작시 가지게 될 슬롯 개수")]
-    [SerializeField] 
-    private int startSlot = 5;
+    [SerializeField] private ItemDatabaseSO dataBase;
+
+    [Header("시작시 가지게 될 슬롯 개수(=수용량)")]
+    [SerializeField] private int startSlot;
+
+    [Header("머리 위 기준점")]
+    [SerializeField] private Transform stackRoot;
+
+    [Header("스택 간격(프리팹 1개당 올라갈 높이)")]
+    [SerializeField] private float offsetY;
+
+    [Header("머리위에 표시할지 여부")]
+    [SerializeField] private bool useHeadStackVisual = true;
 
     public event Action OnChange;
 
     public List<ItemStack> Slots { get; private set; } = new List<ItemStack>();
 
+    [Serializable]
+    private class VisualEntry
+    {
+        public string itemId;
+        public GameObject obj;
+    }
+
+    [Header("디버그: 머리 위에 쌓인 리스트(런타임 확인용)")]
+    [SerializeField] private List<VisualEntry> visualStack = new List<VisualEntry>();
+
+    public int Capacity => Slots.Count;
+    public int VisualCount => visualStack.Count;
+
     private void Awake()
     {
         Slots = new List<ItemStack>(startSlot);
         for (int i = 0; i < startSlot; i++)
-        {
             Slots.Add(new ItemStack());
-            OnChange?.Invoke();
-        }
+
+        SyncVisualFromSlots();
+        OnChange?.Invoke();
     }
 
     public void ExpandSlots(int add)
     {
         for (int i = 0; i < add; i++)
-        {
             Slots.Add(new ItemStack());
-            OnChange?.Invoke();
-        }
+
+        OnChange?.Invoke();
     }
 
     public int CountOf(string itemId)
@@ -57,41 +76,22 @@ public class Inventory : MonoBehaviour
             if (Slots[i].itemId == itemId) sum += Slots[i].count;
         return sum;
     }
-    
-    public bool TryRemove(string itemId, int amount)
-    {
-        if (amount <= 0) return true;
-        if (CountOf(itemId) < amount) return false;
 
-        int left = amount;
-        for (int i = 0; i < Slots.Count && left > 0; i++)
-        {
-            var s = Slots[i];
-            if (s.itemId != itemId) continue;
+    // -------------------------
+    //Add/Remove 할 때 비주얼변경
+    // -------------------------
 
-            int take = Mathf.Min(s.count, left);
-            s.count -= take;
-            left -= take;
-
-            if (s.count <= 0) s.Clear();
-            Slots[i] = s;
-        }
-
-        OnChange?.Invoke();
-        return true;
-    }
-    
     public bool TryAdd(string itemId, int amount)
     {
         if (amount <= 0) return true;
         if (dataBase == null) { Debug.LogError("Inventory: db 미할당"); return false; }
 
+        int before = CountOf(itemId);
+
         bool stackable = dataBase.IsStackable(itemId);
         int maxStack = dataBase.GetMaxStack(itemId);
-
         int left = amount;
 
-        // 1) 기존 스택에 합치기
         if (stackable)
         {
             for (int i = 0; i < Slots.Count && left > 0; i++)
@@ -109,7 +109,6 @@ public class Inventory : MonoBehaviour
             }
         }
 
-        // 2) 빈 슬롯에 넣기
         for (int i = 0; i < Slots.Count && left > 0; i++)
         {
             var s = Slots[i];
@@ -121,12 +120,147 @@ public class Inventory : MonoBehaviour
             left -= put;
             Slots[i] = s;
 
-            if (!stackable && left > 0) // 비스택이면 슬롯 더 필요
+            if (!stackable && left > 0)
                 continue;
         }
 
         if (left > 0) return false; // 공간 부족
+
+        int after = CountOf(itemId);
+        int added = after - before;
+
+        if (useHeadStackVisual && added > 0)
+            VisualAdd(itemId, added);
+
         OnChange?.Invoke();
         return true;
+    }
+
+    public bool TryRemove(string itemId, int amount)
+    {
+        if (amount <= 0) return true;
+
+        int before = CountOf(itemId);
+        if (before < amount) return false;
+
+        int left = amount;
+        for (int i = 0; i < Slots.Count && left > 0; i++)
+        {
+            var s = Slots[i];
+            if (s.itemId != itemId) continue;
+
+            int take = Mathf.Min(s.count, left);
+            s.count -= take;
+            left -= take;
+
+            if (s.count <= 0) s.Clear();
+            Slots[i] = s;
+        }
+
+        int after = CountOf(itemId);
+        int removed = before - after;
+
+        if (useHeadStackVisual && removed > 0)
+            VisualRemoveById(itemId, removed);
+
+        OnChange?.Invoke();
+        return true;
+    }
+
+    // -------------------------
+    //머리 위 비주얼 로직
+    // -------------------------
+
+    private void VisualAdd(string itemId, int amount)
+    {
+        if (stackRoot == null)
+        {
+            Debug.LogWarning("Inventory: stackRoot 미할당");
+            return;
+        }
+
+        var itemSO = dataBase.Get(itemId);
+
+        var prefab = dataBase.GetPrefab(itemId);
+
+        if (itemSO == null)
+        {
+            Debug.LogError($"Inventory: ItemSO 없음 itemId={itemId}");
+            return;
+        }
+
+        if (prefab == null)
+        {
+            Debug.LogError($"Inventory: prefab 없음 itemId={itemId} (ItemSO: {itemSO.name})");
+            return;
+        }
+
+        for (int i = 0; i < amount; i++)
+        {
+            var obj = Instantiate(prefab, stackRoot);
+            obj.transform.localRotation = Quaternion.identity;
+
+            visualStack.Add(new VisualEntry { itemId = itemId, obj = obj });
+        }
+
+        RepositionVisual();
+    }
+
+    private int VisualRemoveById(string itemId, int amount)
+    {
+        int removed = 0;
+
+        for (int i = visualStack.Count - 1; i >= 0 && removed < amount; i--)
+        {
+            var e = visualStack[i];
+            if (e == null || e.obj == null)
+            {
+                visualStack.RemoveAt(i);
+                continue;
+            }
+
+            if (e.itemId != itemId) continue;
+
+            var obj = e.obj;
+            visualStack.RemoveAt(i);
+            Destroy(obj);
+            removed++;
+        }
+
+        if (removed > 0) RepositionVisual();
+        return removed;
+    }
+
+    private void RepositionVisual()
+    {
+        for (int i = 0; i < visualStack.Count; i++)
+        {
+            var e = visualStack[i];
+            if (e == null || e.obj == null) continue;
+
+            e.obj.transform.localPosition = Vector3.up * (offsetY * i);
+        }
+    }
+
+    public void SyncVisualFromSlots()
+    {
+        for (int i = visualStack.Count - 1; i >= 0; i--)
+        {
+            var e = visualStack[i];
+            if (e != null && e.obj != null) Destroy(e.obj);
+        }
+        visualStack.Clear();
+
+        if (!useHeadStackVisual) return;
+        if (dataBase == null) return;
+
+        for (int i = 0; i < Slots.Count; i++)
+        {
+            var s = Slots[i];
+            if (s.IsEmpty) continue;
+            VisualAdd(s.itemId, s.count);
+        }
+
+        RepositionVisual();
     }
 }

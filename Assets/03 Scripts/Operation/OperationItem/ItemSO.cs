@@ -17,4 +17,5 @@ public class ItemSO : ScriptableObject
     public Sprite icon;
     public bool stackable = true;
     public int maxStack = 90;
+    public GameObject prefab;
 }
