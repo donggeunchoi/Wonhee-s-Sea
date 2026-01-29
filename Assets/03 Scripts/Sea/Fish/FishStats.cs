@@ -5,23 +5,17 @@ using UnityEngine;
 public class FishStats : MonoBehaviour
 {
     [SerializeField] private int _maxHp = 2;
-    [SerializeField] private float _destroyDelay = 1.0f;
 
     public int CurrentHp { get; private set; }
     public bool IsDead { get; private set; }
 
-    private Animator _animator;
-    private FishController _controller;
-    private Collider2D _collider;
+    private FishRoot _owner;
 
-    private void Awake()
+    public void Init(FishRoot owner)
     {
+        _owner = owner;
         CurrentHp = _maxHp;
         IsDead = false;
-
-        _animator = GetComponentInChildren<Animator>();
-        _controller = GetComponent<FishController>();
-        _collider = GetComponent<Collider2D>();
     }
 
     public void TakeDamage(int amount)
@@ -30,11 +24,10 @@ public class FishStats : MonoBehaviour
         if (amount <= 0) return;
 
         CurrentHp = Mathf.Max(0, CurrentHp - amount);
+        Debug.Log($"물고기 데미지 {amount} 받음! (hp {CurrentHp}/{_maxHp})");
 
         if (CurrentHp <= 0)
-        {
             Die();
-        }
     }
 
     private void Die()
@@ -42,15 +35,9 @@ public class FishStats : MonoBehaviour
         if (IsDead) return;
         IsDead = true;
 
-        if (_controller != null)
-            _controller.enabled = false;
+        Debug.Log("물고기 다이");
 
-        if (_collider != null)
-            _collider.enabled = false;
-
-        if (_animator != null)
-            _animator.SetTrigger("isDead");
-
-        Destroy(gameObject, _destroyDelay);
+        if (_owner != null && _owner.Controller != null)
+            _owner.Controller.enabled = false;
     }
 }
