@@ -24,11 +24,9 @@ public class FishController : MonoBehaviour
     private float _cooldownTimer = 0f;
 
     private Transform _targetTr;
-    private PlayerStats _targetStats;
+    private IDamageable _targetDamageable;
 
     private FishRoot _owner;
-
-    private IDamageable _targetDamageable;
 
     public void Init(FishRoot owner)
     {
@@ -38,10 +36,10 @@ public class FishController : MonoBehaviour
         _startPosition = transform.position;
     }
 
-    public void BindTarget(Transform playerTr, IDamageable playerDamageable)
+    public void BindTarget(Transform targetTr)
     {
-        _targetTr = playerTr;
-        _targetDamageable = playerDamageable;
+        _targetTr = targetTr;
+        _targetDamageable = targetTr != null ? targetTr.GetComponentInParent<IDamageable>() : null;
     }
 
     private void Update()

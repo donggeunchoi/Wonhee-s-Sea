@@ -25,6 +25,15 @@ public class PlayerAttackController : MonoBehaviour
             _weaponLocalOrigin = _weaponTransform.localPosition;
     }
 
+    // 키보드 공격 임시테스트용
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            OnAttack();
+        }
+    }
+
     public void OnAttack()
     {
         if (_owner == null || _weaponTransform == null) return;

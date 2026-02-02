@@ -23,7 +23,6 @@ public class FishRoot : MonoBehaviour
     public void Init(Transform playerTr)
     {
         PlayerTr = playerTr;
-        IDamageable dmg = playerTr != null ? playerTr.GetComponentInParent<IDamageable>() : null;
-        Controller?.BindTarget(PlayerTr, dmg);
+        Controller?.BindTarget(PlayerTr);
     }
 }
