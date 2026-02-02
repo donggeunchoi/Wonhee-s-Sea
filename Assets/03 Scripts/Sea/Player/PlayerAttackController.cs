@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAttackController : MonoBehaviour
 {
     [SerializeField] private Transform _weaponTransform;
+    [SerializeField] private Weapon _weapon;
 
     [Header("공격 관련")]
     [SerializeField] private float _attackDistance = 1.2f;
@@ -41,6 +42,8 @@ public class PlayerAttackController : MonoBehaviour
 
         Vector3 targetPos = _weaponLocalOrigin + localDir * _attackDistance;
 
+        _weapon?.BeginAttack();
+
         while (Vector3.Distance(_weaponTransform.localPosition, targetPos) > 0.01f)
         {
             _weaponTransform.localPosition = Vector3.MoveTowards(
@@ -50,6 +53,8 @@ public class PlayerAttackController : MonoBehaviour
             );
             yield return null;
         }
+
+        _weapon?.EndAttack();
 
         while (Vector3.Distance(_weaponTransform.localPosition, _weaponLocalOrigin) > 0.01f)
         {

@@ -9,7 +9,6 @@ public class FishRoot : MonoBehaviour
     public FishStats Stats { get; private set; }
 
     public Transform PlayerTr { get; private set; }
-    public PlayerStats PlayerStats { get; private set; }
 
     private void Awake()
     {
@@ -24,8 +23,7 @@ public class FishRoot : MonoBehaviour
     public void Init(Transform playerTr)
     {
         PlayerTr = playerTr;
-        PlayerStats = playerTr != null ? playerTr.GetComponent<PlayerStats>() : null;
-
-        Controller?.BindTarget(PlayerTr, PlayerStats);
+        IDamageable dmg = playerTr != null ? playerTr.GetComponentInParent<IDamageable>() : null;
+        Controller?.BindTarget(PlayerTr, dmg);
     }
 }

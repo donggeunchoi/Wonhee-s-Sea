@@ -28,6 +28,8 @@ public class FishController : MonoBehaviour
 
     private FishRoot _owner;
 
+    private IDamageable _targetDamageable;
+
     public void Init(FishRoot owner)
     {
         _owner = owner;
@@ -36,10 +38,10 @@ public class FishController : MonoBehaviour
         _startPosition = transform.position;
     }
 
-    public void BindTarget(Transform playerTr, PlayerStats playerStats)
+    public void BindTarget(Transform playerTr, IDamageable playerDamageable)
     {
         _targetTr = playerTr;
-        _targetStats = playerStats;
+        _targetDamageable = playerDamageable;
     }
 
     private void Update()
@@ -99,13 +101,11 @@ public class FishController : MonoBehaviour
         _cooldownTimer = _attackCooldown;
         _state = FishState.AttackDelay;
 
-        if (_targetStats == null)
-        {
-            return;
-        }
+        if (_targetDamageable == null || _targetDamageable.IsDead) return;
 
-        Debug.Log($"물고기가 공격함 데미지:{_attackDamage}");
-        _targetStats.TakeDamage(_attackDamage);
+        Debug.Log($"플레이어 {_attackDamage}의 데미지 받음");
+        Vector2 dir = (_targetTr.position - transform.position).normalized;
+        _targetDamageable.TakeDamage(new DamageInfo(gameObject, _attackDamage, _targetTr.position, dir));
     }
 
     private void UpdateFacing(Vector3 moveDir)

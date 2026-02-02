@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : MonoBehaviour, IDamageable
 {
     [SerializeField] private int _maxHp = 5;
     [SerializeField] private float _invincibleTime = 0.5f;
@@ -28,6 +28,11 @@ public class PlayerStats : MonoBehaviour
         if (_invTimer > 0f) _invTimer -= Time.deltaTime;
     }
 
+    public void TakeDamage(DamageInfo info)
+    {
+        TakeDamage(info.Damage);
+    }
+
     public void TakeDamage(int amount)
     {
         if (IsDead) return;
@@ -39,10 +44,7 @@ public class PlayerStats : MonoBehaviour
 
         _invTimer = _invincibleTime;
 
-        if (CurrentHp <= 0)
-        {
-            Die();
-        }
+        if (CurrentHp <= 0) Die();
     }
 
     private void Die()
@@ -50,6 +52,6 @@ public class PlayerStats : MonoBehaviour
         if (IsDead) return;
         IsDead = true;
 
-        Debug.Log("Player Dead");
+        Debug.Log("플레이어 사망");
     }
 }

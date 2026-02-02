@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FishStats : MonoBehaviour
+public class FishStats : MonoBehaviour, IDamageable
 {
     [SerializeField] private int _maxHp = 2;
 
@@ -18,6 +18,11 @@ public class FishStats : MonoBehaviour
         IsDead = false;
     }
 
+    public void TakeDamage(DamageInfo info)
+    {
+        TakeDamage(info.Damage);
+    }
+
     public void TakeDamage(int amount)
     {
         if (IsDead) return;
@@ -26,8 +31,7 @@ public class FishStats : MonoBehaviour
         CurrentHp = Mathf.Max(0, CurrentHp - amount);
         Debug.Log($"물고기 데미지 {amount} 받음! (hp {CurrentHp}/{_maxHp})");
 
-        if (CurrentHp <= 0)
-            Die();
+        if (CurrentHp <= 0) Die();
     }
 
     private void Die()
@@ -35,7 +39,7 @@ public class FishStats : MonoBehaviour
         if (IsDead) return;
         IsDead = true;
 
-        Debug.Log("물고기 다이");
+        Debug.Log("물고기 사망");
 
         if (_owner != null && _owner.Controller != null)
             _owner.Controller.enabled = false;
