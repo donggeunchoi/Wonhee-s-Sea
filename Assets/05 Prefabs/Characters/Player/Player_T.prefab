@@ -47,6 +47,8 @@ GameObject:
   - component: {fileID: 1933057559743409018}
   - component: {fileID: 6639080123940286901}
   - component: {fileID: 3597747508761474031}
+  - component: {fileID: 1321929250779426991}
+  - component: {fileID: 1332500943144209571}
   m_Layer: 0
   m_Name: Player_T
   m_TagString: Untagged
@@ -87,11 +89,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxSpeed: 5
   _acceleration: 10
-  _rotationSpeed: 10
   _deadZone: 0.15
-  _useRotation: 0
   _anim: {fileID: 4936942474377037452}
-  sr: {fileID: 2343739468325538707}
+  _sr: {fileID: 2343739468325538707}
 --- !u!50 &3981059177716056206
 Rigidbody2D:
   serializedVersion: 4
@@ -212,10 +212,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41684f6594c179148a09a0d66aaa2e3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory: {fileID: 0}
-  itemId1: 
-  itemId2: 
-  addCount: 3
+  inventory: {fileID: 2565877041576398940}
+  itemId1: 10004
+  itemId2: 60000
+  addCount: 2
+--- !u!114 &1321929250779426991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953774037117694647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 978d83f5ea919a94a92b57db69133797, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _useKeyboardForDebug: 1
+--- !u!114 &1332500943144209571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953774037117694647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39c74b48caf35b6499b740f341b927a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3015049847358812366
 GameObject:
   m_ObjectHideFlags: 0
