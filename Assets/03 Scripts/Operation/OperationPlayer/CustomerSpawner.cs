@@ -30,6 +30,12 @@ public class CustomerSpawner : MonoBehaviour
     [SerializeField]
     private Transform customersContainer;
 
+    [Header("충돌 배당")]
+    [SerializeField]
+    Collider2D colStand;
+    [SerializeField]
+    Collider2D colCheckOut;
+
     private float timer;
     private int aliveCount;
 
@@ -53,7 +59,7 @@ public class CustomerSpawner : MonoBehaviour
     {
         Transform parent = customersContainer != null ? customersContainer : null;
         var npc = Instantiate(customerPrefab, exitPoint.position, Quaternion.identity, parent);
-        npc.Init(targetStand, checkoutStand, exitPoint);
+        npc.Init(targetStand, checkoutStand, exitPoint, colStand,colCheckOut);
 
         // 손님이 사라질 때 aliveCount 줄이기
         //npc.OnDespawn += HandleDespawn;

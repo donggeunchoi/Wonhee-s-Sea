@@ -415,6 +415,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &921894839 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 2592489291704823933, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
+  m_PrefabInstance: {fileID: 5229776066867257993}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &931500927
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,6 +487,8 @@ MonoBehaviour:
   spawnInterval: 1
   maxAlive: 5
   customersContainer: {fileID: 931500928}
+  colStand: {fileID: 921894839}
+  colCheckOut: {fileID: 1800864606}
 --- !u!4 &1019925128
 Transform:
   m_ObjectHideFlags: 0
@@ -719,6 +726,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 211c2599190bd3a41a148f47ed8a60be, type: 3}
+--- !u!58 &1800864606 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 2592489291704823933, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
+  m_PrefabInstance: {fileID: 2094889300}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1972969718
 GameObject:
   m_ObjectHideFlags: 0
