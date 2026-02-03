@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0c1f1020e0affc44ca48e6b361e2dcc0, type: 3}
-  m_Name: "\uC870\uB9AC\uB300"
+  m_Name: "\uC0C8\uC6B0\uCD08\uBC25\uC870\uB9AC\uB300"
   m_EditorClassIdentifier: 
   inputs:
-  - item: {fileID: 11400000, guid: b39517fdf625ed7439412567a24c97e7, type: 2}
+  - item: {fileID: 11400000, guid: c14668a76f2e6f34382543d0c9062285, type: 2}
     count: 1
   - item: {fileID: 11400000, guid: cbbc5661fe69f074b970e8bd85dc519a, type: 2}
     count: 1
   inputItem: {fileID: 0}
-  inputCount: 0
-  outputItem: {fileID: 11400000, guid: 7a6919c6cb2dd72469d86d78380c8232, type: 2}
+  inputCount: 1
+  outputItem: {fileID: 11400000, guid: 48967586b1ae4974a823e18d7d2b338b, type: 2}
   outputCount: 1
   processTime: 1.5
