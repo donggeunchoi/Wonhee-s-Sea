@@ -23,12 +23,14 @@ public class FishSpawner : MonoBehaviour
         if (prefab == null) return;
 
         float spawnX = _player.position.x + Random.Range(-4f, 4f);
-
         float randomDepth = Random.Range(minDepth, maxDepth);
         float spawnY = 4.5f - randomDepth;
 
         Vector3 spawnPos = new Vector3(spawnX, spawnY, 0);
 
-        Instantiate(prefab, spawnPos, Quaternion.identity);
+        var go = Instantiate(prefab, spawnPos, Quaternion.identity);
+
+        var root = go.GetComponent<FishRoot>();
+        root?.Init(_player);
     }
 }

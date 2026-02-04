@@ -15,99 +15,95 @@ public class FishController : MonoBehaviour
     [SerializeField] private float _detectionRange = 3f;
     [SerializeField] private float _attackRange = 0.5f;
     [SerializeField] private float _attackCooldown = 2.0f;
+    [SerializeField] private int _attackDamage = 1;
 
-    private FishState _currentState = FishState.Patrol;
+    private FishState _state = FishState.Patrol;
+
     private Vector3 _startPosition;
     private int _direction = 1;
-    private Transform _target;
     private float _cooldownTimer = 0f;
 
-    private void Awake()
+    private Transform _targetTr;
+    private IDamageable _targetDamageable;
+
+    private FishRoot _owner;
+
+    public void Init(FishRoot owner)
     {
+        _owner = owner;
+
         _direction = Random.Range(0, 2) == 0 ? 1 : -1;
         _startPosition = transform.position;
+    }
 
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null) _target = playerObj.transform;
+    public void BindTarget(Transform targetTr)
+    {
+        _targetTr = targetTr;
+        _targetDamageable = targetTr != null ? targetTr.GetComponentInParent<IDamageable>() : null;
     }
 
     private void Update()
     {
-        if (_target == null) return;
+        if (_targetTr == null) { Patrol(); return; }
 
-        if (_cooldownTimer > 0)
-        {
+        if (_cooldownTimer > 0f)
             _cooldownTimer -= Time.deltaTime;
-        }
 
-        float distanceToPlayer = Vector3.Distance(transform.position, _target.position);
+        float distance = Vector2.Distance(transform.position, _targetTr.position);
 
-        UpdateState(distanceToPlayer);
-
-        switch (_currentState)
+        if (_cooldownTimer > 0f)
         {
-            case FishState.Patrol:
-                Patrol();
-                break;
-            case FishState.Chase:
-                Chase(distanceToPlayer);
-                break;
-            case FishState.AttackDelay:
-                break;
-        }
-    }
-
-    private void UpdateState(float distance)
-    {
-        if (_cooldownTimer > 0)
-        {
-            _currentState = FishState.AttackDelay;
+            _state = FishState.AttackDelay;
+            UpdateFacing((_targetTr.position - transform.position).normalized);
             return;
         }
 
         if (distance <= _attackRange)
         {
-            OnAttack();
+            Attack();
             return;
         }
 
-        if (distance <= _detectionRange)
-        {
-            _currentState = FishState.Chase;
-        }
-        else
-        {
-            _currentState = FishState.Patrol;
-        }
+        _state = (distance <= _detectionRange) ? FishState.Chase : FishState.Patrol;
+
+        if (_state == FishState.Chase) Chase();
+        else Patrol();
     }
 
     private void Patrol()
     {
+        _state = FishState.Patrol;
+
         transform.Translate(Vector3.right * _direction * _moveSpeed * Time.deltaTime);
 
-        float distanceFromStart = transform.position.x - _startPosition.x;
-        if (Mathf.Abs(distanceFromStart) > _moveRangeX)
+        float dx = transform.position.x - _startPosition.x;
+        if (Mathf.Abs(dx) > _moveRangeX)
         {
             _direction *= -1;
-            float clampedX = _startPosition.x + (Mathf.Sign(distanceFromStart) * _moveRangeX);
+            float clampedX = _startPosition.x + (Mathf.Sign(dx) * _moveRangeX);
             transform.position = new Vector3(clampedX, transform.position.y, transform.position.z);
         }
 
         UpdateFacing(Vector3.right * _direction);
     }
 
-    private void Chase(float distance)
+    private void Chase()
     {
-        Vector3 directionToPlayer = (_target.position - transform.position).normalized;
-        transform.position += directionToPlayer * _chaseSpeed * Time.deltaTime;
-
-        UpdateFacing(directionToPlayer);
+        Vector3 dir = (_targetTr.position - transform.position).normalized;
+        transform.position += dir * _chaseSpeed * Time.deltaTime;
+        UpdateFacing(dir);
     }
 
-    private void OnAttack()
+    private void Attack()
     {
         _cooldownTimer = _attackCooldown;
-        _currentState = FishState.AttackDelay;
+        _state = FishState.AttackDelay;
+
+        if (_targetDamageable == null || _targetDamageable.IsDead) return;
+
+        Debug.Log($"플레이어 {_attackDamage}의 데미지 받음");
+        Vector2 dir = (_targetTr.position - transform.position).normalized;
+        _targetDamageable.TakeDamage(new DamageInfo(gameObject, _attackDamage, _targetTr.position, dir));
     }
 
     private void UpdateFacing(Vector3 moveDir)

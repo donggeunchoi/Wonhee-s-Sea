@@ -14,7 +14,41 @@ public class StorageStand : MonoBehaviour
     [SerializeField] private int current;
     [SerializeField] private TextMeshProUGUI countText;
 
+    public string SellItemId => sushiItemId;
+    public int Current => current;
+
     public int FreeSpace => Mathf.Max(0, maxCapacity - current);
+
+    public bool HasStock(int amount = 1)
+    {
+        if (amount <= 0) return true;
+        return current >= amount;
+    }
+
+    // 손님이 재고를 집어감
+    public bool TryTake(int amount = 1)
+    {
+        if (amount <= 0) return true;
+        if (current < amount) return false;
+
+        current -= amount;
+        RefreshUI();
+        return true;
+    }
+
+    // (선택) 생산/보충용
+    public bool TryAddStock(int amount)
+    {
+        if (amount <= 0) return true;
+
+        int space = FreeSpace;
+        if (space <= 0) return false;
+
+        int add = Mathf.Min(space, amount);
+        current += add;
+        RefreshUI();
+        return add == amount;
+    }
 
     public void Interact(Inventory inv)
     {
@@ -33,7 +67,7 @@ public class StorageStand : MonoBehaviour
 
         current += toDeposit;
         RefreshUI();
-        // Debug.Log($"[StorageStand] +{toDeposit} => {current}/{maxCapacity}");
+        
     }
 
     private void RefreshUI()

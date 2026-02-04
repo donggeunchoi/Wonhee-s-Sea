@@ -1,44 +1,50 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[System.Serializable]
+public struct RecipeInput
+{
+    public ItemSO item;
+    public int count;
+}
 
 [CreateAssetMenu(fileName = "Recipe_", menuName = "GameData/Recipe")]
 public class RecipeSO : ScriptableObject
 {
-    [Serializable]
-    public class Input
-    {
-        public string itemId;
-        public int count;
-    }
-    
-    [Header ("다중-조립대용 ")]
-    public List<Input> inputs = new List<Input>();
-    
-    [Header("단일 나머지")]
-    public string inputItemId;
-    public int inputCount = 1;
+    [Header("다중 입력")]
+    public List<RecipeInput> inputs = new();
 
-    [Header("출력")]
-    public string outputItemId;
+    [Header("기존 단일 입력")]
+    [SerializeField] private ItemSO inputItem;
+    [SerializeField] private int inputCount = 1;
+
+    [Header("출력 결과")]
+    public ItemSO outputItem;
     public int outputCount = 1;
 
-    [Header("시간")]
+    [Header("제작 시간")]
     public float processTime = 1.5f;
-    
+
     /// <summary>
-    /// inputs가 비어있으면 기존 단일 입력을 inputs처럼 취급
+    /// 다중 입력이 있으면 inputs를 사용하고,
+    /// 비어있으면 기존 단일 입력을 1개짜리 리스트로 반환
     /// </summary>
-    public List<Input> GetInputs()
+    public List<RecipeInput> GetInputs()
     {
+        // 다중 입력 우선
         if (inputs != null && inputs.Count > 0)
             return inputs;
 
         // 기존 단일 입력 호환
-        return new List<Input>
+        if (inputItem != null && inputCount > 0)
         {
-            new Input { itemId = inputItemId, count = inputCount }
-        };
+            return new List<RecipeInput>
+            {
+                new RecipeInput { item = inputItem, count = inputCount }
+            };
+        }
+
+        // 아무것도 없으면 빈 리스트
+        return new List<RecipeInput>();
     }
 }

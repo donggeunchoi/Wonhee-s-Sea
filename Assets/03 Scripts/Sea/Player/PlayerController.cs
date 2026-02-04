@@ -4,110 +4,60 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Movement")]
-    [SerializeField] private float _maxSpeed;
-    [SerializeField] private float _acceleration = 10f;
-    [SerializeField] private float _rotationSpeed = 10f;
-    [SerializeField] private float _deadZone = 0.15f;
+    [Header("이미지")]
+    [SerializeField] private Animator _anim;
+    [SerializeField] private SpriteRenderer _sr;
 
-    [Header("Options")] 
-    [SerializeField] 
-    private bool _useRotation = true;
+    private float _maxSpeed = 3f;
+    private float _acceleration = 10f;
+    private float _deadZone = 0.15f;
 
-    [Header("애니메이션")]
-    [SerializeField]
-    private Animator _anim;
+    private PlayerRoot _owner;
+    private Rigidbody2D _rb;
 
-    Rigidbody2D _rb;
-    Vector2 _moveInput;
-    private int _lastDir = 0; // 기본값 서있기
-
-    [Header( "이미지" )]
-    [SerializeField]
-    private SpriteRenderer sr;
-
-    private void Awake()
+    public void Init(PlayerRoot owner)
     {
-        if (!TryGetComponent(out Rigidbody2D rb))
-            return;
+        _owner = owner;
+        _rb = owner.Rb;
 
-        if (_anim == null)
-            return;
+        if (_anim == null) _anim = owner.Anim;
+        if (_sr == null) _sr = GetComponentInChildren<SpriteRenderer>();
 
-        _rb = rb;
-        
+        SetupRigidbody();
+    }
+
+    private void SetupRigidbody()
+    {
+        if (_rb == null) return;
+
         _rb.gravityScale = 0f;
         _rb.drag = 3f;
         _rb.angularDrag = 3f;
         _rb.interpolation = RigidbodyInterpolation2D.Interpolate;
-
-    }
-
-    public void SetMoveInput(Vector2 input)
-    {
-        if (input.magnitude < _deadZone)
-            _moveInput = Vector2.zero;
-        else
-            _moveInput = input;
-    }
-
-    private void LateUpdate()
-    {
-        if (sr == null) return;
-        if (_moveInput.x > 0.1f) sr.flipX = false;
-        else if (_moveInput.x < -0.1f) sr.flipX = true;
+        _rb.freezeRotation = true;
     }
 
     private void FixedUpdate()
     {
-        Move();
-        
-        if(_useRotation)
-            Rotate();
+        if (_owner == null || _owner.Input == null || _rb == null) return;
 
-        //작동하는 방식이 달라서 일단 주석처리
-        //UpdateAnim();
+        Vector2 input = GetMoveInput();
 
-        UpdateTownAnim();
-
+        Move(input);
+        UpdateAnimation(input);
     }
 
-    public void UpdateAnim()
+    private Vector2 GetMoveInput()
     {
-        if (_anim == null) return;
+        Vector2 raw = _owner.Input.Move;
 
-        bool isMove = _rb.velocity.sqrMagnitude > 0.01f;
-        _anim.SetBool("isMove", isMove);
+        if (raw.magnitude < _deadZone) return Vector2.zero;
+        return raw.sqrMagnitude > 1f ? raw.normalized : raw;
     }
 
-    public void UpdateTownAnim()
+    private void Move(Vector2 input)
     {
-        if (_anim == null) return;
-
-        bool isMove = _moveInput.sqrMagnitude > 0.01f;
-        _anim.SetBool("isMove", isMove);
-
-        if (!isMove)
-        {
-            _anim.SetInteger("moveDir", _lastDir); // 멈춰도 마지막 방향 유지
-            return;
-        }
-
-        float ax = Mathf.Abs(_moveInput.x);
-        float ay = Mathf.Abs(_moveInput.y);
-
-        int dir;
-        if (ax > ay) dir = 1;                 // Side
-        else dir = (_moveInput.y >= 0) ? 2 : 3; // Up/Down
-
-        _lastDir = dir;
-        _anim.SetInteger("moveDir", dir);
-    }
-
-
-    private void Move()
-    {
-        Vector2 targetVelocity = _moveInput * _maxSpeed;
+        Vector2 targetVelocity = input * _maxSpeed;
 
         _rb.velocity = Vector2.Lerp(
             _rb.velocity,
@@ -116,18 +66,38 @@ public class PlayerController : MonoBehaviour
         );
     }
 
-    private void Rotate()
+    private void UpdateAnimation(Vector2 input)
     {
-        if (_rb.velocity.sqrMagnitude < 0.01f) return;
+        if (_anim == null) return;
 
-        float angle = Mathf.Atan2(_rb.velocity.y, _rb.velocity.x) * Mathf.Rad2Deg;
-        Quaternion targetRot = Quaternion.Euler(0, 0, angle - 90f);
+        bool isMove = input.sqrMagnitude > 0.0001f;
+        _anim.SetBool("isMove", isMove);
 
-        transform.rotation = Quaternion.Lerp(
-            transform.rotation,
-            targetRot,
-            _rotationSpeed * Time.fixedDeltaTime
-        );
+        if (!isMove)
+        {
+            _anim.SetInteger("moveDir", 0);
+            return;
+        }
+
+        Vector2 dir = input.normalized;
+
+        int moveDir;
+        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+        {
+            moveDir = 1;
+
+            if (_sr != null)
+            {
+                if (dir.x < 0f) _sr.flipX = true;
+                else if (dir.x > 0f) _sr.flipX = false;
+            }
+        }
+        else
+        {
+            moveDir = (dir.y > 0f) ? 2 : 3;
+        }
+
+        _anim.SetInteger("moveDir", moveDir);
     }
 }
 

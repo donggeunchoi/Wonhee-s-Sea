@@ -5,36 +5,53 @@ using UnityEngine;
 public class PlayerAttackController : MonoBehaviour
 {
     [SerializeField] private Transform _weaponTransform;
+    [SerializeField] private Weapon _weapon;
 
     [Header("공격 관련")]
     [SerializeField] private float _attackDistance = 1.2f;
     [SerializeField] private float _attackSpeed = 15f;
     [SerializeField] private float _attackCooldown = 0.5f;
 
+    private PlayerRoot _owner;
+
     private Vector3 _weaponLocalOrigin;
     private bool _isAttacking = false;
 
-    private void Start()
+    public void Init(PlayerRoot owner)
     {
+        _owner = owner;
+
         if (_weaponTransform != null)
-        {
             _weaponLocalOrigin = _weaponTransform.localPosition;
+    }
+
+    // 키보드 공격 임시테스트용
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            OnAttack();
         }
     }
 
     public void OnAttack()
     {
-        if (!_isAttacking && _weaponTransform != null)
-        {
-            StartCoroutine(C_Attack());
-        }
+        if (_owner == null || _weaponTransform == null) return;
+        if (_isAttacking) return;
+
+        StartCoroutine(C_Attack());
     }
 
-    IEnumerator C_Attack()
+    private IEnumerator C_Attack()
     {
         _isAttacking = true;
 
-        Vector3 targetPos = _weaponLocalOrigin + Vector3.right * _attackDistance;
+        Vector2 facing = _owner.Input != null ? _owner.Input.FacingDir : Vector2.right;
+        Vector3 localDir = _owner.transform.InverseTransformDirection(facing).normalized;
+
+        Vector3 targetPos = _weaponLocalOrigin + localDir * _attackDistance;
+
+        _weapon?.BeginAttack();
 
         while (Vector3.Distance(_weaponTransform.localPosition, targetPos) > 0.01f)
         {
@@ -45,6 +62,8 @@ public class PlayerAttackController : MonoBehaviour
             );
             yield return null;
         }
+
+        _weapon?.EndAttack();
 
         while (Vector3.Distance(_weaponTransform.localPosition, _weaponLocalOrigin) > 0.01f)
         {

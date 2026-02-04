@@ -11,3 +11,13 @@ public enum EGameData
     TownInfo,
     BuildingInfo,
 }
+
+[Serializable]
+public enum  ENPCState
+{
+    MoveToStand,
+    Pick,
+    MoveToCheckout,
+    Pay,
+    Exit
+}

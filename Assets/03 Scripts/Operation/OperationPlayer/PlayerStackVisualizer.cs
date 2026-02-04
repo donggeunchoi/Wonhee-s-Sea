@@ -13,6 +13,8 @@ public class PlayerStackVisualizer : MonoBehaviour
 
     private int maxStack = 5; // 이후 유저매니저에서 받아오도록 변경예정
 
+    [Header("물건이 쌓이 리스트")]
+    [SerializeField]
     private List<GameObject> visualStack = new List<GameObject>();
 
     public int Count => visualStack.Count;
@@ -35,42 +37,26 @@ public class PlayerStackVisualizer : MonoBehaviour
         return true;
     }
 
-    // 아이템 스택에서 아이템 제거
-    public GameObject Remove()
+    public int RemoveManyById(string itemId, int amount)
     {
-        if(Count == 0)
-        {
-            return null;
-        }
+        if (amount <= 0) return 0;
+        if (string.IsNullOrEmpty(itemId)) return 0;
 
-        int lastIndex = Count - 1;
-
-        GameObject obj = visualStack[lastIndex];
-        visualStack.RemoveAt(lastIndex);
-        if (obj != null) Destroy(obj);
-
-        Reposition();
-        return obj;
-    }
-
-    //여러개 들고 있는경우 없애주는 코드.
-    public int RemoveMany(int amount)
-    {
         int removed = 0;
 
-        for (int i = 0; i < amount; i++)
+        // 뒤에서부터 제거(최근에 쌓인 것부터)
+        for (int i = visualStack.Count - 1; i >= 0 && removed < amount; i--)
         {
-            if (Count == 0) break;
+            var obj = visualStack[i];
+            if (obj == null)
+            {
+                visualStack.RemoveAt(i);
+                continue;
+            }
 
-            int lastIndex = Count - 1;
-            GameObject obj = visualStack[lastIndex];
-            visualStack.RemoveAt(lastIndex);
-
-            if (obj != null) Destroy(obj);  
-            removed++;
         }
 
-        Reposition();
+        if (removed > 0) Reposition();
         return removed;
     }
 
