@@ -765,12 +765,8 @@ MonoBehaviour:
     todayEarnedGold: 0
     customerCount: 0
   buildingSaveData:
-    buildingId: 0
-    level: 0
-    isUnlocked: 0
-    isOperating: 0
-    staffId: 0
-    buildingLevels: 
+    buildings: []
+    buildingsJson: '[]'
   userNickName: 
   userIndate: 
   userGamerID: 
@@ -1132,12 +1128,8 @@ MonoBehaviour:
     todayEarnedGold: 0
     customerCount: 0
   buildingSaveData:
-    buildingId: 0
-    level: 0
-    isUnlocked: 0
-    isOperating: 0
-    staffId: 0
-    buildingLevels: 
+    buildings: []
+    buildingsJson: '[]'
 --- !u!1 &2056451501
 GameObject:
   m_ObjectHideFlags: 0
