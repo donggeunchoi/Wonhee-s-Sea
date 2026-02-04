@@ -58,6 +58,11 @@ public abstract class BaseDB<TKey, TData, TRaw>
         Debug.LogError($"[{this.GetType().Name}] ID {id}를 찾을 수 없습니다.");
         return default;
     }
+
+    public bool TryGetValue(TKey id, out TData data)
+    {
+        return _dict.TryGetValue(id, out data);
+    }
 }
 
 public class FishDB : BaseDB<int, FishDataDef, FishRaw>

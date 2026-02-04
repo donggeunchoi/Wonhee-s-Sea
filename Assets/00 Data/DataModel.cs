@@ -66,6 +66,7 @@ public class FishDataDef
 public class SashimiRaw
 {
     public string sashimiId;
+    public string Name;
     public string Cost;
     public string CookingStand;
     public string DPStand;
@@ -74,6 +75,7 @@ public class SashimiRaw
 public class SashimiDataDef
 {
     public int sashimiId;
+    public string Name;
     public float Cost;
     public int CookingStand;
     public int DPStand;
@@ -81,6 +83,7 @@ public class SashimiDataDef
     public SashimiDataDef(SashimiRaw raw)
     {
         this.sashimiId = DataParse.ParseSafe<int>(raw.sashimiId);
+        this.Name = DataParse.ParseSafe<string>(raw.Name);
         this.Cost = DataParse.ParseSafe<float>(raw.Cost);
         this.CookingStand = DataParse.ParseSafe<int>(raw.CookingStand);
         this.DPStand = DataParse.ParseSafe<int>(raw.DPStand);
@@ -93,6 +96,7 @@ public class SashimiDataDef
 public class SushiRaw
 {
     public string sushiId;
+    public string Name;
     public string Cost;
     public string CookingStand;
     public string DPStand;
@@ -101,6 +105,7 @@ public class SushiRaw
 public class SushiDataDef
 {
     public int sushiId;
+    public string Name;
     public float Cost;
     public int CookingStand;
     public int DPStand;
@@ -108,6 +113,7 @@ public class SushiDataDef
     public SushiDataDef(SushiRaw raw)
     {
         this.sushiId = DataParse.ParseSafe<int>(raw.sushiId);
+        this.Name = DataParse.ParseSafe<string>(raw.Name);
         this.Cost = DataParse.ParseSafe<float>(raw.Cost);
         this.CookingStand = DataParse.ParseSafe<int>(raw.CookingStand);
         this.DPStand = DataParse.ParseSafe<int>(raw.DPStand);

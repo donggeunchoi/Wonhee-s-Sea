@@ -4,31 +4,54 @@ using UnityEngine;
 
 public class DataInstance : Singleton<DataInstance>
 {
-    // 외부에서 접근할 때는 기존과 동일합니다.
-    public FishDB Fishes { get; private set; }
-    public SushiDB Sushis { get; private set; }
-    public SashimiDB Sashimis { get; private set; }
-    public StandDB Stands { get; private set; }           // 추가
-    public EquipmentDB Equipments { get; private set; }   // 추가
+    // 내부 변수들
+    private FishDB _fishes;
+    private SushiDB _sushis;
+    private SashimiDB _sashimis;
+    private StandDB _stands;
+    private EquipmentDB _equipments;
 
-    protected override void Awake()
+    // 프로퍼티 접근 시 null 체크 후 생성
+    public FishDB Fishes => _fishes ??= new FishDB();
+    public SushiDB Sushis => _sushis ??= new SushiDB();
+    public SashimiDB Sashimis => _sashimis ??= new SashimiDB();
+    public StandDB Stands => _stands ??= new StandDB();
+    public EquipmentDB Equipments => _equipments ??= new EquipmentDB();
+
+    public void Find_Id_Group(int id)
     {
-        base.Awake();
-        
-        // 싱글톤이므로 Awake에서 초기화하는 것이 안전합니다.
-        // 만약 다른 스크립트의 Start에서 이 데이터들을 참조한다면, 
-        // 여기서 미리 만들어둬야 NullReference 에러를 방지할 수 있습니다.
-        InitializeDB();
+        if (Fishes == null || Stands == null)
+        {
+            Debug.LogError("DB가 아직 초기화되지 않았습니다! InitializeDB가 호출됐는지 확인하세요.");
+            return;
+        }
+
+        if (TryGetFishes(id, out var fishData))
+        {
+            Debug.Log($"{fishData.Name}");
+        }
+        else if (TryGetSushis(id, out var sushiData))
+        {
+            Debug.Log($"{sushiData.Name}");
+        }
+        else if (TryGetSashimis(id, out var sashimiData))
+        {
+            Debug.Log($"{sashimiData.Name}");
+        }
+        else if (TryGetStands(id, out var standData))
+        {
+            Debug.Log($"{standData.Name}");
+        }
+        else if (TryGetEquipments(id, out var equipmentData))
+        {
+            Debug.Log($"{equipmentData.Name}");
+        }
     }
 
-    private void InitializeDB()
-    {
-        Fishes = new FishDB();
-        Sushis = new SushiDB();
-        Sashimis = new SashimiDB();
-        Stands = new StandDB();
-        Equipments = new EquipmentDB();
-        
-        Debug.Log("[DataInstance] 모든 데이터베이스 초기화 완료.");
-    }
+    public bool TryGetFishes(int id, out FishDataDef fish) => Fishes.TryGetValue(id, out fish);
+    public bool TryGetSushis(int id, out SushiDataDef sushi) => Sushis.TryGetValue(id, out sushi);
+    public bool TryGetSashimis(int id, out SashimiDataDef sashimi) => Sashimis.TryGetValue(id, out sashimi);
+    public bool TryGetStands(int id, out StandDataDef stand) => Stands.TryGetValue(id, out stand);
+    public bool TryGetEquipments(int id, out EquipmentDataDef equipment) => Equipments.TryGetValue(id, out equipment);
+    
 }
