@@ -4,16 +4,27 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public enum Mode { Town, Dungeon }
+
+    [Header("모드 설정")]
+    [SerializeField] private Mode _mode = Mode.Town;
+
     [Header("이미지")]
     [SerializeField] private Animator _anim;
     [SerializeField] private SpriteRenderer _sr;
 
-    private float _maxSpeed = 3f;
-    private float _acceleration = 10f;
-    private float _deadZone = 0.15f;
+    [Header("이동")]
+    [SerializeField] private float _maxSpeed = 3f;
+    [SerializeField] private float _acceleration = 10f;
+    [SerializeField] private float _deadZone = 0.15f;
+    [SerializeField] private Transform _pivot;
+    [SerializeField] private float _angleOffset = 0f;
+    [SerializeField] private float _turnSpeed = 20f;
 
     private PlayerRoot _owner;
     private Rigidbody2D _rb;
+
+    private Vector2 _lastAimDir = Vector2.right;
 
     public void Init(PlayerRoot owner)
     {
@@ -73,6 +84,18 @@ public class PlayerController : MonoBehaviour
         bool isMove = input.sqrMagnitude > 0.0001f;
         _anim.SetBool("isMove", isMove);
 
+        if (_mode == Mode.Town)
+        {
+            UpdateTownAnimation(input, isMove);
+        }
+        else
+        {
+            UpdateDungeonAnimation(input);
+        }
+    }
+
+    private void UpdateTownAnimation(Vector2 input, bool isMove)
+    {
         if (!isMove)
         {
             _anim.SetInteger("moveDir", 0);
@@ -80,8 +103,8 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector2 dir = input.normalized;
-
         int moveDir;
+
         if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
         {
             moveDir = 1;
@@ -99,5 +122,31 @@ public class PlayerController : MonoBehaviour
 
         _anim.SetInteger("moveDir", moveDir);
     }
-}
 
+    private void UpdateDungeonAnimation(Vector2 input)
+    {
+        if (_pivot == null) return;
+
+        if (input != Vector2.zero)
+            _lastAimDir = input.normalized;
+
+        Vector2 dir = _lastAimDir;
+
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + _angleOffset;
+
+        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
+        _pivot.localRotation = Quaternion.Slerp(
+            _pivot.localRotation,
+            targetRot,
+            _turnSpeed * Time.fixedDeltaTime
+        );
+
+        if (_sr != null)
+        {
+            if (dir.x < -0.01f)
+                _sr.flipY = true;
+            else if (dir.x > 0.01f)
+                _sr.flipY = false;
+        }
+    }
+}
