@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class HpUI : MonoBehaviour
+public class PlayerHpUI : MonoBehaviour
 {
     [SerializeField] private PlayerStats _stats;
 
@@ -24,6 +24,12 @@ public class HpUI : MonoBehaviour
 
         if (_flashGroup != null) _flashGroup.alpha = 0f;
         if (_fillImage != null) _fillImage.fillAmount = 1f;
+    }
+
+    private void Start()
+    {
+        if (_flashGroup != null)
+            _flashGroup.gameObject.SetActive(true);
     }
 
     private void OnEnable()

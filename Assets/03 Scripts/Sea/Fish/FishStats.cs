@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ public class FishStats : MonoBehaviour, IDamageable
 
     public int CurrentHp { get; private set; }
     public bool IsDead { get; private set; }
+
+    public event Action<int, int> OnDamaged;
 
     private FishRoot _owner;
 
@@ -29,7 +32,8 @@ public class FishStats : MonoBehaviour, IDamageable
         if (amount <= 0) return;
 
         CurrentHp = Mathf.Max(0, CurrentHp - amount);
-        Debug.Log($"물고기 데미지 {amount} 받음! (hp {CurrentHp}/{_maxHp})");
+
+        OnDamaged?.Invoke(CurrentHp, _maxHp);
 
         if (CurrentHp <= 0) Die();
     }

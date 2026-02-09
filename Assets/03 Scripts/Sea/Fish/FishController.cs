@@ -17,6 +17,8 @@ public class FishController : MonoBehaviour
     [SerializeField] private float _attackCooldown = 2.0f;
     [SerializeField] private int _attackDamage = 1;
 
+    [SerializeField] private Transform _visual;
+
     private FishState _state = FishState.Patrol;
 
     private Vector3 _startPosition;
@@ -108,7 +110,15 @@ public class FishController : MonoBehaviour
 
     private void UpdateFacing(Vector3 moveDir)
     {
-        if (moveDir.x > 0) transform.localScale = new Vector3(-1, 1, 1);
-        else if (moveDir.x < 0) transform.localScale = new Vector3(1, 1, 1);
+        if (_visual == null) return;
+
+        Vector3 s = _visual.localScale;
+
+        float absX = Mathf.Abs(s.x);
+
+        if (moveDir.x > 0) s.x = -absX;
+        else if (moveDir.x < 0) s.x = absX;
+
+        _visual.localScale = s;
     }
 }
