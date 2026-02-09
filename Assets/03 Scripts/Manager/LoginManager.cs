@@ -92,7 +92,9 @@ public class LoginManager : MonoBehaviour
     {
         if (btAuthGoogle != null)
         {
-            btAuthGoogle.OnClickAsObservable().Subscribe(_ =>
+            btAuthGoogle.OnClickAsObservable()
+                .ThrottleFirst(System.TimeSpan.FromSeconds(1)) // 연속클릭 방지
+                .Subscribe(_ =>
             {
                 Debug.Log("Google Login: 아직 미구현");
                 if (txLoading != null) txLoading.text = "Google 로그인은 아직 미구현입니다.";
@@ -101,7 +103,9 @@ public class LoginManager : MonoBehaviour
 
         if (btAuthGuest != null)
         {
-            btAuthGuest.OnClickAsObservable().Subscribe(_ =>
+            btAuthGuest.OnClickAsObservable()
+                .ThrottleFirst(System.TimeSpan.FromSeconds(1)) // 연속클릭 방지
+                .Subscribe(_ =>
             {
                 if (!isInitDone)
                 {
