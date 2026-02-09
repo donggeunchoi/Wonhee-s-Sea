@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 8434019613737336547}
   - component: {fileID: 1483981188085886716}
   - component: {fileID: 1862927204958883090}
+  - component: {fileID: 762198680287444055}
   m_Layer: 0
   m_Name: Player_D
   m_TagString: Player
@@ -117,9 +118,11 @@ MonoBehaviour:
   _maxSpeed: 3
   _acceleration: 10
   _deadZone: 0.15
-  _headPivot: {fileID: 8861928033032145181}
-  _headAngleOffset: 0
-  _headTurnSpeed: 20
+  _pivot: {fileID: 8861928033032145181}
+  _pivotAngleOffset: 0
+  _pivotTurnSpeed: 20
+  _pivotY_Right: 0
+  _pivotY_Left: -0.6
 --- !u!114 &669786632332923128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,12 +136,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponTransform: {fileID: 6059220458822788701}
+  _weaponModel: {fileID: 6059220458822788701}
   _weapon: {fileID: 2639766606385639907}
   _attackDistance: 1.2
   _attackSpeed: 15
   _attackCooldown: 0.5
   _originY_Right: -0.74
-  _originY_Left: 0.3
+  _originY_Left: 0.1
 --- !u!114 &8434019613737336547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,6 +182,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHp: 5
   _invincibleTime: 0.5
+--- !u!114 &762198680287444055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797265196185510909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51dfc0dfdb33cba43ab6b6ba4530ead6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxOxygen: 60
+  _drainPerSec: 3
+  _suffocationDamage: 1
+  _damageInterval: 1
 --- !u!1 &4163217283150640890
 GameObject:
   m_ObjectHideFlags: 0
