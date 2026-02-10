@@ -151,10 +151,20 @@ public class PlayerController : MonoBehaviour
     {
         if (_pivot == null) return;
 
-        if (input != Vector2.zero)
-            _lastAimDir = input.normalized;
+        Vector2 dir;
+        if (_owner != null && _owner.Input != null && _owner.Input.IsAiming)
+        {
+            dir = _owner.Input.FacingDir;
+            if (dir.sqrMagnitude < 0.0001f) dir = _lastAimDir;
+            else _lastAimDir = dir.normalized;
+        }
+        else
+        {
+            if (input != Vector2.zero)
+                _lastAimDir = input.normalized;
 
-        Vector2 dir = _lastAimDir;
+            dir = _lastAimDir;
+        }
 
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + _pivotAngleOffset;
         Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
