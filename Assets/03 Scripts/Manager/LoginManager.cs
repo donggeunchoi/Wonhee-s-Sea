@@ -67,7 +67,7 @@ public class LoginManager : MonoBehaviour
 
         //하나하나 데이터 로드하는 것 체크하기
         int loadedCount = 0;
-        int totalCount = 4;
+        int totalCount = Enum.GetValues(typeof(EGameData)).Length; // 현재는 User, Dungeon, Town, Building
 
         BackendManager.Ins.OnGetLoadData.Subscribe (_ =>
         {

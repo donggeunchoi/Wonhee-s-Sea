@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-// µÚ³¡ SDK namespace Ãß°¡
+// ë’¤ë SDK namespace ì¶”ê°€
 using BackEnd;
 
 public class UserData
@@ -13,10 +13,11 @@ public class UserData
     public Dictionary<string, int> inventory = new Dictionary<string, int>();
     public List<string> equipment = new List<string>();
 
-    // µ¥ÀÌÅÍ¸¦ µğ¹ö±ëÇÏ±â À§ÇÑ ÇÔ¼öÀÔ´Ï´Ù.(Debug.Log(UserData);)
+    // ë°ì´í„°ë¥¼ ë””ë²„ê¹…í•˜ê¸° ìœ„í•œ í•¨ìˆ˜ì…ë‹ˆë‹¤.(Debug.Log(UserData);)
     public override string ToString()
     {
         StringBuilder result = new StringBuilder();
+
         result.AppendLine($"level : {level}");
         result.AppendLine($"atk : {atk}");
         result.AppendLine($"info : {info}");
@@ -24,7 +25,7 @@ public class UserData
         result.AppendLine($"inventory");
         foreach (var itemKey in inventory.Keys)
         {
-            result.AppendLine($"| {itemKey} : {inventory[itemKey]}°³");
+            result.AppendLine($"| {itemKey} : {inventory[itemKey]}ê°œ");
         }
 
         result.AppendLine($"equipment");
@@ -60,26 +61,25 @@ public class BackendGameData
 
     public void GameDataInsert()
     {
-        // Step 2. °ÔÀÓ Á¤º¸ »ğÀÔ ±¸ÇöÇÏ±â 
         if (userData == null)
         {
             userData = new UserData();
         }
 
-        Debug.Log("µ¥ÀÌÅÍ¸¦ ÃÊ±âÈ­ÇÕ´Ï´Ù.");
+        Debug.Log("ë°ì´í„°ë¥¼ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.");
         userData.level = 1;
         userData.atk = 3.5f;
-        userData.info = "Ä£Ãß´Â ¾ğÁ¦³ª È¯¿µÀÔ´Ï´Ù.";
+        userData.info = "ì¹œì¶”ëŠ” ì–¸ì œë‚˜ í™˜ì˜ì…ë‹ˆë‹¤.";
 
-        userData.equipment.Add("Àü»çÀÇ Åõ±¸");
-        userData.equipment.Add("°­Ã¶ °©¿Ê");
-        userData.equipment.Add("Çì¸£¸Ş½ºÀÇ ±ºÈ­");
+        userData.equipment.Add("ì „ì‚¬ì˜ íˆ¬êµ¬");
+        userData.equipment.Add("ê°•ì²  ê°‘ì˜·");
+        userData.equipment.Add("í—¤ë¥´ë©”ìŠ¤ì˜ êµ°í™”");
 
-        userData.inventory.Add("»¡°£Æ÷¼Ç", 1);
-        userData.inventory.Add("ÇÏ¾áÆ÷¼Ç", 1);
-        userData.inventory.Add("ÆÄ¶õÆ÷¼Ç", 1);
+        userData.inventory.Add("ë¹¨ê°„í¬ì…˜", 1);
+        userData.inventory.Add("í•˜ì–€í¬ì…˜", 1);
+        userData.inventory.Add("íŒŒë€í¬ì…˜", 1);
 
-        Debug.Log("µÚ³¡ ¾÷µ¥ÀÌÆ® ¸ñ·Ï¿¡ ÇØ´ç µ¥ÀÌÅÍµéÀ» Ãß°¡ÇÕ´Ï´Ù.");
+        Debug.Log("ë’¤ë ì—…ë°ì´íŠ¸ ëª©ë¡ì— í•´ë‹¹ ë°ì´í„°ë“¤ì„ ì¶”ê°€í•©ë‹ˆë‹¤.");
         Param param = new Param();
         param.Add("level", userData.level);
         param.Add("atk", userData.atk);
@@ -88,44 +88,41 @@ public class BackendGameData
         param.Add("inventory", userData.inventory);
 
 
-        Debug.Log("°ÔÀÓ Á¤º¸ µ¥ÀÌÅÍ »ğÀÔÀ» ¿äÃ»ÇÕ´Ï´Ù.");
+        Debug.Log("ê²Œì„ ì •ë³´ ë°ì´í„° ì‚½ì…ì„ ìš”ì²­í•©ë‹ˆë‹¤.");
         var bro = Backend.GameData.Insert("USER_DATA", param);
 
         if (bro.IsSuccess())
         {
-            Debug.Log("°ÔÀÓ Á¤º¸ µ¥ÀÌÅÍ »ğÀÔ¿¡ ¼º°øÇß½À´Ï´Ù. : " + bro);
+            Debug.Log("ê²Œì„ ì •ë³´ ë°ì´í„° ì‚½ì…ì— ì„±ê³µí–ˆìŠµë‹ˆë‹¤. : " + bro);
 
-            //»ğÀÔÇÑ °ÔÀÓ Á¤º¸ÀÇ °íÀ¯°ªÀÔ´Ï´Ù.  
+            //ì‚½ì…í•œ ê²Œì„ ì •ë³´ì˜ ê³ ìœ ê°’ì…ë‹ˆë‹¤.  
             gameDataRowInDate = bro.GetInDate();
         }
         else
         {
-            Debug.LogError("°ÔÀÓ Á¤º¸ µ¥ÀÌÅÍ »ğÀÔ¿¡ ½ÇÆĞÇß½À´Ï´Ù. : " + bro);
+            Debug.LogError("ê²Œì„ ì •ë³´ ë°ì´í„° ì‚½ì…ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤. : " + bro);
         }
     }
 
     public void GameDataGet()
     {
-        // Step 3. °ÔÀÓ Á¤º¸ ºÒ·¯¿À±â ±¸ÇöÇÏ±â
-        Debug.Log("°ÔÀÓ Á¤º¸ Á¶È¸ ÇÔ¼ö¸¦ È£ÃâÇÕ´Ï´Ù.");
-
+        Debug.Log("ê²Œì„ ì •ë³´ ì¡°íšŒ í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.");
         var bro = Backend.GameData.GetMyData("USER_DATA", new Where());
-
         if (bro.IsSuccess())
         {
-            Debug.Log("°ÔÀÓ Á¤º¸ Á¶È¸¿¡ ¼º°øÇß½À´Ï´Ù. : " + bro);
+            Debug.Log("ê²Œì„ ì •ë³´ ì¡°íšŒì— ì„±ê³µí–ˆìŠµë‹ˆë‹¤. : " + bro);
 
 
-            LitJson.JsonData gameDataJson = bro.FlattenRows(); // JsonÀ¸·Î ¸®ÅÏµÈ µ¥ÀÌÅÍ¸¦ ¹Ş¾Æ¿É´Ï´Ù.  
+            LitJson.JsonData gameDataJson = bro.FlattenRows(); // Jsonìœ¼ë¡œ ë¦¬í„´ëœ ë°ì´í„°ë¥¼ ë°›ì•„ì˜µë‹ˆë‹¤.  
 
-            // ¹Ş¾Æ¿Â µ¥ÀÌÅÍÀÇ °¹¼ö°¡ 0ÀÌ¶ó¸é µ¥ÀÌÅÍ°¡ Á¸ÀçÇÏÁö ¾Ê´Â °ÍÀÔ´Ï´Ù.  
+            // ë°›ì•„ì˜¨ ë°ì´í„°ì˜ ê°¯ìˆ˜ê°€ 0ì´ë¼ë©´ ë°ì´í„°ê°€ ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ê²ƒì…ë‹ˆë‹¤.  
             if (gameDataJson.Count <= 0)
             {
-                Debug.LogWarning("µ¥ÀÌÅÍ°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+                Debug.LogWarning("ë°ì´í„°ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
             }
             else
             {
-                gameDataRowInDate = gameDataJson[0]["inDate"].ToString(); //ºÒ·¯¿Â °ÔÀÓ Á¤º¸ÀÇ °íÀ¯°ªÀÔ´Ï´Ù.  
+                gameDataRowInDate = gameDataJson[0]["inDate"].ToString(); //ë¶ˆëŸ¬ì˜¨ ê²Œì„ ì •ë³´ì˜ ê³ ìœ ê°’ì…ë‹ˆë‹¤.  
 
                 userData = new UserData();
 
@@ -148,24 +145,24 @@ public class BackendGameData
         }
         else
         {
-            Debug.LogError("°ÔÀÓ Á¤º¸ Á¶È¸¿¡ ½ÇÆĞÇß½À´Ï´Ù. : " + bro);
+            Debug.LogError("ê²Œì„ ì •ë³´ ì¡°íšŒì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤. : " + bro);
         }
     }
 
     public void LevelUp()
     {
-        Debug.Log("·¹º§À» 1 Áõ°¡½ÃÅµ´Ï´Ù.");
+        Debug.Log("ë ˆë²¨ì„ 1 ì¦ê°€ì‹œí‚µë‹ˆë‹¤.");
         userData.level += 1;
         userData.atk += 3.5f;
-        userData.info = "³»¿ëÀ» º¯°æÇÕ´Ï´Ù.";
+        userData.info = "ë‚´ìš©ì„ ë³€ê²½í•©ë‹ˆë‹¤.";
     }
 
-    // °ÔÀÓ Á¤º¸ ¼öÁ¤ÇÏ±â
+    // ê²Œì„ ì •ë³´ ìˆ˜ì •í•˜ê¸°
     public void GameDataUpdate()
     {
         if (userData == null)
         {
-            Debug.LogError("¼­¹ö¿¡¼­ ´Ù¿î¹Ş°Å³ª »õ·Î »ğÀÔÇÑ µ¥ÀÌÅÍ°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù. Insert È¤Àº GetÀ» ÅëÇØ µ¥ÀÌÅÍ¸¦ »ı¼ºÇØÁÖ¼¼¿ä.");
+            Debug.LogError("ì„œë²„ì—ì„œ ë‹¤ìš´ë°›ê±°ë‚˜ ìƒˆë¡œ ì‚½ì…í•œ ë°ì´í„°ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤. Insert í˜¹ì€ Getì„ í†µí•´ ë°ì´í„°ë¥¼ ìƒì„±í•´ì£¼ì„¸ìš”.");
             return;
         }
 
@@ -180,24 +177,24 @@ public class BackendGameData
 
         if (string.IsNullOrEmpty(gameDataRowInDate))
         {
-            Debug.Log("³» Á¦ÀÏ ÃÖ½Å °ÔÀÓ Á¤º¸ µ¥ÀÌÅÍ ¼öÁ¤À» ¿äÃ»ÇÕ´Ï´Ù.");
+            Debug.Log("ë‚´ ì œì¼ ìµœì‹  ê²Œì„ ì •ë³´ ë°ì´í„° ìˆ˜ì •ì„ ìš”ì²­í•©ë‹ˆë‹¤.");
 
             bro = Backend.GameData.Update("USER_DATA", new Where(), param);
         }
         else
         {
-            Debug.Log($"{gameDataRowInDate}ÀÇ °ÔÀÓ Á¤º¸ µ¥ÀÌÅÍ ¼öÁ¤À» ¿äÃ»ÇÕ´Ï´Ù.");
+            Debug.Log($"{gameDataRowInDate}ì˜ ê²Œì„ ì •ë³´ ë°ì´í„° ìˆ˜ì •ì„ ìš”ì²­í•©ë‹ˆë‹¤.");
 
             bro = Backend.GameData.UpdateV2("USER_DATA", gameDataRowInDate, Backend.UserInDate, param);
         }
 
         if (bro.IsSuccess())
         {
-            Debug.Log("°ÔÀÓ Á¤º¸ µ¥ÀÌÅÍ ¼öÁ¤¿¡ ¼º°øÇß½À´Ï´Ù. : " + bro);
+            Debug.Log("ê²Œì„ ì •ë³´ ë°ì´í„° ìˆ˜ì •ì— ì„±ê³µí–ˆìŠµë‹ˆë‹¤. : " + bro);
         }
         else
         {
-            Debug.LogError("°ÔÀÓ Á¤º¸ µ¥ÀÌÅÍ ¼öÁ¤¿¡ ½ÇÆĞÇß½À´Ï´Ù. : " + bro);
+            Debug.LogError("ê²Œì„ ì •ë³´ ë°ì´í„° ìˆ˜ì •ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤. : " + bro);
         }
     }
 }
