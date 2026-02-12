@@ -67,7 +67,7 @@ public class LoginManager : MonoBehaviour
 
         //하나하나 데이터 로드하는 것 체크하기
         int loadedCount = 0;
-        int totalCount = 4;
+        int totalCount = Enum.GetValues(typeof(EGameData)).Length; // 현재는 User, Dungeon, Town, Building
 
         BackendManager.Ins.OnGetLoadData.Subscribe (_ =>
         {
@@ -92,7 +92,9 @@ public class LoginManager : MonoBehaviour
     {
         if (btAuthGoogle != null)
         {
-            btAuthGoogle.OnClickAsObservable().Subscribe(_ =>
+            btAuthGoogle.OnClickAsObservable()
+                .ThrottleFirst(System.TimeSpan.FromSeconds(1)) // 연속클릭 방지
+                .Subscribe(_ =>
             {
                 Debug.Log("Google Login: 아직 미구현");
                 if (txLoading != null) txLoading.text = "Google 로그인은 아직 미구현입니다.";
@@ -101,7 +103,9 @@ public class LoginManager : MonoBehaviour
 
         if (btAuthGuest != null)
         {
-            btAuthGuest.OnClickAsObservable().Subscribe(_ =>
+            btAuthGuest.OnClickAsObservable()
+                .ThrottleFirst(System.TimeSpan.FromSeconds(1)) // 연속클릭 방지
+                .Subscribe(_ =>
             {
                 if (!isInitDone)
                 {
