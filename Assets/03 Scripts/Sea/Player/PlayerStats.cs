@@ -8,6 +8,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
     [SerializeField] private int _maxHp = 5;
     [SerializeField] private float _invincibleTime = 0.5f;
 
+    public int MaxHp => _maxHp;
     public int CurrentHp { get; private set; }
     public bool IsDead { get; private set; }
     public bool IsInvincible => _invTimer > 0f;
@@ -37,12 +38,24 @@ public class PlayerStats : MonoBehaviour, IDamageable
     {
         if (IsDead) return;
         if (IsInvincible) return;
+        ApplyDamage(amount, ignoreInvincible: false);
+    }
+
+    public void TakeDamageIgnoreInvincible(int amount)
+    {
+        if (IsDead) return;
+        ApplyDamage(amount, ignoreInvincible: true);
+    }
+
+    private void ApplyDamage(int amount, bool ignoreInvincible)
+    {
         if (amount <= 0) return;
 
         CurrentHp = Mathf.Max(0, CurrentHp - amount);
         OnHpChanged?.Invoke(CurrentHp, _maxHp);
 
-        _invTimer = _invincibleTime;
+        if (!ignoreInvincible)
+            _invTimer = _invincibleTime;
 
         if (CurrentHp <= 0) Die();
     }
