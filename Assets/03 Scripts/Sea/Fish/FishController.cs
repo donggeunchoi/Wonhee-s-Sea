@@ -103,7 +103,6 @@ public class FishController : MonoBehaviour
 
         if (_targetDamageable == null || _targetDamageable.IsDead) return;
 
-        Debug.Log($"플레이어 {_attackDamage}의 데미지 받음");
         Vector2 dir = (_targetTr.position - transform.position).normalized;
         _targetDamageable.TakeDamage(new DamageInfo(gameObject, _attackDamage, _targetTr.position, dir));
     }

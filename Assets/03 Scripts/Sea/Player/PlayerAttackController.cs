@@ -18,7 +18,6 @@ public class PlayerAttackController : MonoBehaviour
     [SerializeField] private float _attackSpeed = 15f;
     [SerializeField] private float _attackCooldown = 0.5f;
 
-    
     [Header("원거리")]
     [SerializeField] private SpearProjectile _projectilePrefab;
     [SerializeField] private Transform _firePoint;
@@ -112,16 +111,18 @@ public class PlayerAttackController : MonoBehaviour
         StartCoroutine(C_Attack());
     }
 
-    public void FireRanged(Vector2 dir)
+    public void FireRanged(Vector2 shootDir)
     {
         if (_weaponType != WeaponType.Ranged) return;
         if (_rangedCdTimer > 0f) return;
         if (_projectilePrefab == null) return;
-        if (dir.sqrMagnitude < 0.0001f) return;
+        if (shootDir.sqrMagnitude < 0.0001f) return;
 
-        Vector2 shootDir = (-dir).normalized;
+        shootDir = shootDir.normalized;
 
         Transform fp = _firePoint != null ? _firePoint : _weaponTransform;
+        if (fp == null) return;
+
         var proj = Instantiate(_projectilePrefab, fp.position, Quaternion.identity);
         proj.Init(_owner.gameObject, shootDir, _projectileDamage, _projectileSpeed);
 

@@ -11,34 +11,17 @@ public class PlayerInputHandler : MonoBehaviour
 
     [Header("공격 조이스틱")]
     [SerializeField] private FloatingJoystick _aimJoystick;
-    
-    private float _aimDeadZone = 0.15f;
+
+    [SerializeField] private float _aimDeadZone = 0.15f;
 
     private Vector2 _joystickMove;
     private Vector2 _move;
-
     private Vector2 _lastNonZeroDir = Vector2.right;
-
-    private bool _isAiming;
     private Vector2 _aimShootDir = Vector2.right;
-
-    public bool IsAiming => _isAiming;
-
     public Vector2 Move => _move;
 
-    public Vector2 FacingDir
-    {
-        get
-        {
-            if (_isAiming && _aimShootDir.sqrMagnitude > 0.0001f)
-                return _aimShootDir.normalized;
-
-            if (_lastNonZeroDir.sqrMagnitude > 0.0001f)
-                return _lastNonZeroDir.normalized;
-
-            return Vector2.right;
-        }
-    }
+    private bool _isAiming;
+    public bool IsAiming => _isAiming;
 
     public void Init(PlayerRoot owner)
     {
@@ -47,6 +30,9 @@ public class PlayerInputHandler : MonoBehaviour
         _joystickMove = Vector2.zero;
         _move = Vector2.zero;
         _lastNonZeroDir = Vector2.right;
+
+        _aimShootDir = Vector2.right;
+        _isAiming = false;
 
         if (_aimJoystick != null)
         {
@@ -66,9 +52,23 @@ public class PlayerInputHandler : MonoBehaviour
         _joystickMove = v;
     }
 
+    public Vector2 FacingDir
+    {
+        get
+        {
+            if (_isAiming && _aimShootDir.sqrMagnitude > 0.0001f)
+                return _aimShootDir.normalized;
+
+            if (_lastNonZeroDir.sqrMagnitude > 0.0001f)
+                return _lastNonZeroDir.normalized;
+
+            return Vector2.right;
+        }
+    }
+
     private void HandleAimReleased(Vector2 dir)
     {
-        _owner?.Attack?.FireRanged(dir);
+        _owner?.Attack?.FireRanged(_aimShootDir);
     }
 
     private void Update()
@@ -105,17 +105,13 @@ public class PlayerInputHandler : MonoBehaviour
         }
 
         Vector2 aimRaw = _aimJoystick.Direction;
-        if (aimRaw.sqrMagnitude >= _aimDeadZone * _aimDeadZone)
+        _isAiming = aimRaw.sqrMagnitude >= _aimDeadZone * _aimDeadZone;
+
+        if (_isAiming)
         {
-            _isAiming = true;
-
-            _aimShootDir = (-aimRaw).normalized;
-
+            Vector2 desiredShootDir = (-aimRaw).normalized;
+            _aimShootDir = desiredShootDir;
             _lastNonZeroDir = _aimShootDir;
-        }
-        else
-        {
-            _isAiming = false;
         }
     }
 }

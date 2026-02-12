@@ -20,11 +20,10 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Transform _pivot;
     [SerializeField] private float _pivotAngleOffset = 0f;
-    [SerializeField] private float _pivotTurnSpeed = 20f;
-    [SerializeField] private float _pivotY_Right = 0f;
-    [SerializeField] private float _pivotY_Left = -0.6f;
 
-
+    private float _maxTurnSpeed = 360f;
+    private float _pivotY_Right = 0f;
+    private float _pivotY_Left = -0.6f;
     private bool _isFrozen = false;
 
     public bool IsFlipY { get; private set; } = false;
@@ -166,13 +165,11 @@ public class PlayerController : MonoBehaviour
             dir = _lastAimDir;
         }
 
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + _pivotAngleOffset;
-        Quaternion targetRot = Quaternion.Euler(0f, 0f, angle);
-        _pivot.localRotation = Quaternion.Slerp(
-            _pivot.localRotation,
-            targetRot,
-            _pivotTurnSpeed * Time.fixedDeltaTime
-        );
+        float targetAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + _pivotAngleOffset;
+        float currentAngle = _pivot.localEulerAngles.z;
+        float nextAngle = Mathf.MoveTowardsAngle(currentAngle, targetAngle, _maxTurnSpeed * Time.fixedDeltaTime);
+
+        _pivot.localRotation = Quaternion.Euler(0f, 0f, nextAngle);
 
         if (_sr == null) return;
 

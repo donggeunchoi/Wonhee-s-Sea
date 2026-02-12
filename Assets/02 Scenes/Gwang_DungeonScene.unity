@@ -2538,7 +2538,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 107, y: 127}
+  m_AnchoredPosition: {x: 169, y: 156}
   m_SizeDelta: {x: 1080, y: 1920}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1724782003
@@ -2745,14 +2745,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 317856848839911226, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 669786632332923128, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
-      propertyPath: _weaponType
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 669786632332923128, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
       propertyPath: _aimJoystickObj
       value: 
@@ -2807,10 +2799,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7371114770619277345, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8333074507692548208, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
