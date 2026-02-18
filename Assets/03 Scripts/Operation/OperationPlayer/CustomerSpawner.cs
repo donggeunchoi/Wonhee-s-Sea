@@ -53,6 +53,11 @@ public class CustomerSpawner : MonoBehaviour
 
         timer = 0f;
         SpawnCustomer();
+
+        if(customersContainer.childCount == 0)
+        {
+            SpawnCustomer();
+        }
     }
 
     private void SpawnCustomer()

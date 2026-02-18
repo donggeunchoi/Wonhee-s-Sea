@@ -10,6 +10,10 @@ public class RecipeStand : MonoBehaviour
     [Header("옵션")]
     [SerializeField] private bool autoPickupIfPossible = false;
 
+    [Header("출력 선반(아이콘 표시)")]
+    [SerializeField]
+    StorageItem storageItem;
+
     private bool isProcessing;
 
     private ItemSO outputItem;
@@ -66,25 +70,40 @@ public class RecipeStand : MonoBehaviour
     private IEnumerator CoProcess()
     {
         isProcessing = true;
+        storageItem?.ClearAll();
 
         yield return new WaitForSeconds(recipe.processTime);
 
         outputItem = recipe.outputItem;
         outputCount = recipe.outputCount;
-
+        
         isProcessing = false;
 
         if (autoPickupIfPossible && lastInventory != null && outputItem != null && outputCount > 0)
         {
             bool ok = lastInventory.TryAdd(outputItem.itemId, outputCount);
             if (ok)
+            {
                 ClearOutput();
+                yield break;
+                
+            }
         }
+
+        if (storageItem != null && outputItem != null && outputCount > 0)
+        {
+            // StorageItem 쪽에서 itemId에 맞는 아이콘 스프라이트를 표시하도록
+            storageItem.Show(outputItem, outputCount);
+        }
+
     }
 
     private void ClearOutput()
     {
         outputItem = null;
         outputCount = 0;
+
+        if (storageItem != null)
+            storageItem.ClearAll();
     }
 }

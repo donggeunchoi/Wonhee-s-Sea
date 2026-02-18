@@ -472,6 +472,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &621669119 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7906805919955966154, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
+  m_PrefabInstance: {fileID: 5229776066867257993}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!58 &921894839 stripped
 CircleCollider2D:
   m_CorrespondingSourceObject: {fileID: 2592489291704823933, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
@@ -538,11 +549,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customerPrefab: {fileID: 2463217834082812064, guid: b9f9c2668ca5a254b9aae1e80c4ac834, type: 3}
-  targetStand: {fileID: 0}
+  targetStand: {fileID: 5229776066867257997}
   checkoutStand: {fileID: 2094889302}
   exitPoint: {fileID: 350675678}
   spawnInterval: 1
-  maxAlive: 5000
+  maxAlive: 3
   customersContainer: {fileID: 931500928}
   colStand: {fileID: 921894839}
   colCheckOut: {fileID: 1800864606}
@@ -828,11 +839,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_T
       objectReference: {fileID: 0}
+    - target: {fileID: 9093967632307368169, guid: 211c2599190bd3a41a148f47ed8a60be, type: 3}
+      propertyPath: orthographic size
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 211c2599190bd3a41a148f47ed8a60be, type: 3}
+--- !u!1 &1760122252 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8181795494453440701, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
+  m_PrefabInstance: {fileID: 5229776066867257993}
+  m_PrefabAsset: {fileID: 0}
 --- !u!58 &1800864606 stripped
 CircleCollider2D:
   m_CorrespondingSourceObject: {fileID: 2592489291704823933, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
@@ -1123,10 +1143,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4210263480702868517, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6926910911305224289, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6
@@ -1171,11 +1187,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: StorageStand
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1399856047940233489, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8181795494453440701, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5229776066867257997}
   m_SourcePrefab: {fileID: 100100000, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
+--- !u!114 &5229776066867257997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760122252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49ed88cc20359df4697134d652ac58dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sushiItemId: 30004
+  maxCapacity: 20
+  current: 0
+  countText: {fileID: 621669119}
 --- !u!1001 &8061371886037494990
 PrefabInstance:
   m_ObjectHideFlags: 0
