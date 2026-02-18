@@ -9,36 +9,72 @@ public class PlayerInputHandler : MonoBehaviour
     [Header("Debug (PC 테스트용)")]
     [SerializeField] private bool _useKeyboardForDebug = true;
 
+    [Header("공격 조이스틱")]
+    [SerializeField] private FloatingJoystick _aimJoystick;
+
+    [SerializeField] private float _aimDeadZone = 0.15f;
+
     private Vector2 _joystickMove;
     private Vector2 _move;
     private Vector2 _lastNonZeroDir = Vector2.right;
-
+    private Vector2 _aimShootDir = Vector2.right;
     public Vector2 Move => _move;
+
+    private bool _isAiming;
+    public bool IsAiming => _isAiming;
+
+    public void Init(PlayerRoot owner)
+    {
+        _owner = owner;
+
+        _joystickMove = Vector2.zero;
+        _move = Vector2.zero;
+        _lastNonZeroDir = Vector2.right;
+
+        _aimShootDir = Vector2.right;
+        _isAiming = false;
+
+        if (_aimJoystick != null)
+        {
+            _aimJoystick.OnReleased -= HandleAimReleased;
+            _aimJoystick.OnReleased += HandleAimReleased;
+        }
+    }
+
+    public void SetMove(Vector2 v)
+    {
+        if (_isAiming)
+        {
+            _joystickMove = Vector2.zero;
+            return;
+        }
+
+        _joystickMove = v;
+    }
 
     public Vector2 FacingDir
     {
         get
         {
-            if (_lastNonZeroDir.sqrMagnitude > 0.0001f) return _lastNonZeroDir.normalized;
+            if (_isAiming && _aimShootDir.sqrMagnitude > 0.0001f)
+                return _aimShootDir.normalized;
+
+            if (_lastNonZeroDir.sqrMagnitude > 0.0001f)
+                return _lastNonZeroDir.normalized;
+
             return Vector2.right;
         }
     }
 
-    public void Init(PlayerRoot owner)
+    private void HandleAimReleased(Vector2 dir)
     {
-        _owner = owner;
-        _joystickMove = Vector2.zero;
-        _move = Vector2.zero;
-        _lastNonZeroDir = Vector2.right;
-    }
-
-    public void SetMove(Vector2 v)
-    {
-        _joystickMove = v;
+        _owner?.Attack?.FireRanged(_aimShootDir);
     }
 
     private void Update()
     {
+        UpdateAimingState();
+
         Vector2 keyboard = Vector2.zero;
         if (_useKeyboardForDebug)
         {
@@ -48,9 +84,34 @@ public class PlayerInputHandler : MonoBehaviour
             if (keyboard.sqrMagnitude > 1f) keyboard.Normalize();
         }
 
+        if (_isAiming)
+        {
+            _move = Vector2.zero;
+            return;
+        }
+
         _move = (keyboard.sqrMagnitude > 0.0001f) ? keyboard : _joystickMove;
 
         if (_move.sqrMagnitude > 0.0001f)
             _lastNonZeroDir = _move.normalized;
+    }
+
+    private void UpdateAimingState()
+    {
+        if (_aimJoystick == null)
+        {
+            _isAiming = false;
+            return;
+        }
+
+        Vector2 aimRaw = _aimJoystick.Direction;
+        _isAiming = aimRaw.sqrMagnitude >= _aimDeadZone * _aimDeadZone;
+
+        if (_isAiming)
+        {
+            Vector2 desiredShootDir = (-aimRaw).normalized;
+            _aimShootDir = desiredShootDir;
+            _lastNonZeroDir = _aimShootDir;
+        }
     }
 }

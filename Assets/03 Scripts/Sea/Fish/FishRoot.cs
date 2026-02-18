@@ -7,6 +7,7 @@ public class FishRoot : MonoBehaviour
     public Rigidbody2D Rb { get; private set; }
     public FishController Controller { get; private set; }
     public FishStats Stats { get; private set; }
+    public FishHpUI HpUI { get; private set; }
 
     public Transform PlayerTr { get; private set; }
 
@@ -15,9 +16,11 @@ public class FishRoot : MonoBehaviour
         Rb = GetComponent<Rigidbody2D>();
         Controller = GetComponent<FishController>();
         Stats = GetComponent<FishStats>();
+        HpUI = GetComponentInChildren<FishHpUI>();
 
         Controller?.Init(this);
         Stats?.Init(this);
+        HpUI?.Init(Stats);
     }
 
     public void Init(Transform playerTr)
