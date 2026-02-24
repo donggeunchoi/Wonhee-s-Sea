@@ -7,39 +7,128 @@ public class RecipeStand : MonoBehaviour
     [Header("레시피")]
     [SerializeField] private RecipeSO recipe;
 
+    [Header("아이템 DB (월드 오브젝트 스폰용)")]
+    [SerializeField] private ItemDatabaseSO itemDatabase;
+
     [Header("옵션")]
     [SerializeField] private bool autoPickupIfPossible = false;
 
-    [Header("출력 선반(아이콘 표시)")]
-    [SerializeField]
-    StorageItem storageItem;
+    [Header("출력 표시 - B(UI 아이콘)")]
+    [SerializeField] private StorageItem storageItem;
+
+    [Header("출력 표시 - A(월드 오브젝트 쌓기)")]
+    [SerializeField] private bool useWorldStack = true;
+    [SerializeField] private Transform worldStackRoot;
+    [SerializeField] private float worldStackOffsetY = 0.15f;
+    [SerializeField] private int worldMaxVisible = 10; // 실제로 쌓아두는 오브젝트는 제한(성능)
+
+    [Header("스탠드 저장공간")]
+    [SerializeField] private int maxOutputCapacity = 30; // 출력 최대 보관
+    [SerializeField] private bool autoContinueIfHasInput = true; // 입력이 남아있으면 연속 생산
 
     private bool isProcessing;
 
+    private Dictionary<string, int> inputBuffer = new Dictionary<string, int>();
+
     private ItemSO outputItem;
-    private int outputCount;
+    private int outputStockCount;
 
     private Inventory lastInventory;
 
+    private readonly List<GameObject> worldSpawned = new List<GameObject>();
+
     public void Interact(Inventory inv)
     {
-        if (recipe == null || inv == null)
-            return;
-
+        if (recipe == null || inv == null) return;
         lastInventory = inv;
 
-        if (outputItem != null && outputCount > 0)
+        // 1) 출력이 쌓여있으면 -> 회수 먼저
+        if (outputItem != null && outputStockCount > 0)
         {
-            bool ok = inv.TryAdd(outputItem.itemId, outputCount);
-            if (!ok) return; 
-
-            ClearOutput();
+            TryPickupOutput(inv);
             return;
         }
 
+        // 2) 생산 중이면 추가 투입만(선택)
+        //    (체인소주스킹 느낌이면 생산 중에도 투입 가능하게 해도 됨)
+        //    여기서는 "생산 중에는 투입만 받고 시작은 생산 종료 후"로 처리
+        DepositInputFromInventory(inv);
+
+        // 3) 생산 시작 조건
         if (isProcessing) return;
 
-        List<RecipeInput> inputs = recipe.GetInputs();
+        if (CanConsumeInputForOneCraft())
+        {
+            ConsumeInputForOneCraft();
+            StartCoroutine(CoProcess());
+        }
+    }
+
+    private void DepositInputFromInventory(Inventory inv)
+    {
+        var inputs = recipe.GetInputs();
+        if (inputs == null || inputs.Count == 0) return;
+
+        // 한 번 상호작용당 "1회 제작분"만큼만 투입(자동 상호작용이 반복되며 여러 번 투입됨)
+        for (int i = 0; i < inputs.Count; i++)
+        {
+            var req = inputs[i];
+            if (req.item == null || req.count <= 0) continue;
+
+            string id = req.item.itemId;
+
+            int buffered = GetBufferedCount(id);
+            int need = req.count - buffered;
+            if (need <= 0) continue;
+
+            int have = inv.CountOf(id);
+            if (have <= 0) continue;
+
+            int toMove = Mathf.Min(have, need);
+
+            if (inv.TryRemove(id, toMove))
+                AddToBuffer(id, toMove);
+        }
+    }
+
+    private void AddToBuffer(string itemId, int add)
+    {
+        if (add <= 0) return;
+        if (inputBuffer.ContainsKey(itemId)) inputBuffer[itemId] += add;
+        else inputBuffer[itemId] = add;
+    }
+
+    private int GetBufferedCount(string itemId)
+    {
+        if (inputBuffer.TryGetValue(itemId, out int v)) return v;
+        return 0;
+    }
+
+    private bool CanConsumeInputForOneCraft()
+    {
+        var inputs = recipe.GetInputs();
+        if (inputs == null || inputs.Count == 0) return false;
+
+        // 출력 용량 체크
+        if (outputItem == null) outputItem = recipe.outputItem;
+        if (outputItem == null) return false;
+
+        if (outputStockCount >= maxOutputCapacity) return false;
+
+        for (int i = 0; i < inputs.Count; i++)
+        {
+            var req = inputs[i];
+            if (req.item == null || req.count <= 0) continue;
+
+            int buffered = GetBufferedCount(req.item.itemId);
+            if (buffered < req.count) return false;
+        }
+        return true;
+    }
+
+    private void ConsumeInputForOneCraft()
+    {
+        var inputs = recipe.GetInputs();
         if (inputs == null || inputs.Count == 0) return;
 
         for (int i = 0; i < inputs.Count; i++)
@@ -47,63 +136,137 @@ public class RecipeStand : MonoBehaviour
             var req = inputs[i];
             if (req.item == null || req.count <= 0) continue;
 
-            int have = inv.CountOf(req.item.itemId);
-            if (have < req.count) return;
+            string id = req.item.itemId;
+            inputBuffer[id] -= req.count;
+            if (inputBuffer[id] <= 0) inputBuffer.Remove(id);
         }
-
-        for (int i = 0; i < inputs.Count; i++)
-        {
-            var req = inputs[i];
-            if (req.item == null || req.count <= 0) continue;
-
-            bool removed = inv.TryRemove(req.item.itemId, req.count);
-            if (!removed)
-            {
-                Debug.LogWarning("RecipeStand: 재료 차감 실패");
-                return;
-            }
-        }
-
-        StartCoroutine(CoProcess());
     }
 
     private IEnumerator CoProcess()
     {
         isProcessing = true;
-        storageItem?.ClearAll();
+
+        // 생산 중 표시(필요하면)
+        // storageItem?.ClearAll();
 
         yield return new WaitForSeconds(recipe.processTime);
 
         outputItem = recipe.outputItem;
-        outputCount = recipe.outputCount;
-        
+        if (outputItem != null && recipe.outputCount > 0)
+        {
+            int canStore = Mathf.Max(0, maxOutputCapacity - outputStockCount);
+            int add = Mathf.Min(canStore, recipe.outputCount);
+            outputStockCount += add;
+        }
+
         isProcessing = false;
 
-        if (autoPickupIfPossible && lastInventory != null && outputItem != null && outputCount > 0)
+        // 자동 픽업 옵션(원하면 유지)
+        if (autoPickupIfPossible && lastInventory != null && outputItem != null && outputStockCount > 0)
         {
-            bool ok = lastInventory.TryAdd(outputItem.itemId, outputCount);
-            if (ok)
-            {
-                ClearOutput();
-                yield break;
-                
-            }
+            // 한 번에 다 못 넣을 수도 있으니 "가능한 만큼" 넣고 남기기
+            TryPickupOutput(lastInventory);
         }
 
-        if (storageItem != null && outputItem != null && outputCount > 0)
-        {
-            // StorageItem 쪽에서 itemId에 맞는 아이콘 스프라이트를 표시하도록
-            storageItem.Show(outputItem, outputCount);
-        }
+        RefreshOutputVisual();
 
+        // 입력이 버퍼에 남아있고, 출력 공간도 있고, 연속 생산 켜져 있으면 다시 제작
+        if (autoContinueIfHasInput && !isProcessing && CanConsumeInputForOneCraft())
+        {
+            ConsumeInputForOneCraft();
+            StartCoroutine(CoProcess());
+        }
     }
 
-    private void ClearOutput()
+    private void TryPickupOutput(Inventory inv)
     {
-        outputItem = null;
-        outputCount = 0;
+        if (inv == null) return;
+        if (outputItem == null || outputStockCount <= 0) return;
 
-        if (storageItem != null)
-            storageItem.ClearAll();
+        // Inventory.TryAdd가 "전부 들어가야 true" 구조라서,
+        // partial 지원이 없다면 1개씩 넣는 방식으로 처리(안전)
+        int moved = 0;
+        while (outputStockCount > 0)
+        {
+            bool ok = inv.TryAdd(outputItem.itemId, 1);
+            if (!ok) break;
+
+            outputStockCount--;
+            moved++;
+        }
+
+        if (outputStockCount <= 0)
+        {
+            outputStockCount = 0;
+            // outputItem은 유지해도 되지만 명확하게 지우고 싶으면 아래 주석 해제
+            // outputItem = null;
+        }
+
+        RefreshOutputVisual();
     }
+
+    private void RefreshOutputVisual()
+    {
+        // B) UI 아이콘 표시
+        if (storageItem != null && outputItem != null && outputStockCount > 0)
+            storageItem.Show(outputItem, outputStockCount);
+        else
+            storageItem?.ClearAll();
+
+        // A) 월드 오브젝트 표시
+        if (!useWorldStack) return;
+
+        if (worldStackRoot == null || itemDatabase == null || outputItem == null || outputStockCount <= 0)
+        {
+            ClearWorldStack();
+            return;
+        }
+
+        int visible = Mathf.Min(outputStockCount, worldMaxVisible);
+        SyncWorldStackToCount(outputItem.itemId, visible);
+    }
+
+
+    private void SyncWorldStackToCount(string itemId, int targetCount)
+    {
+        // 필요한 prefab
+        var prefab = itemDatabase.GetPrefab(itemId);
+        if (prefab == null)
+        {
+            Debug.LogError($"RecipeStand: world prefab 없음 itemId={itemId}");
+            ClearWorldStack();
+            return;
+        }
+
+        // 줄이기
+        for (int i = worldSpawned.Count - 1; i >= targetCount; i--)
+        {
+            if (worldSpawned[i] != null) Destroy(worldSpawned[i]);
+            worldSpawned.RemoveAt(i);
+        }
+
+        // 늘리기
+        while (worldSpawned.Count < targetCount)
+        {
+            var obj = Instantiate(prefab, worldStackRoot);
+            obj.transform.localRotation = Quaternion.identity;
+            worldSpawned.Add(obj);
+        }
+
+        // 위치 재배치
+        for (int i = 0; i < worldSpawned.Count; i++)
+        {
+            if (worldSpawned[i] == null) continue;
+            worldSpawned[i].transform.localPosition = Vector3.up * (worldStackOffsetY * i);
+        }
+    }
+
+    private void ClearWorldStack()
+    {
+        for (int i = 0; i < worldSpawned.Count; i++)
+            if (worldSpawned[i] != null) Destroy(worldSpawned[i]);
+
+        worldSpawned.Clear();
+    }
+
 }
