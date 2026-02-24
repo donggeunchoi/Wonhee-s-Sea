@@ -18,28 +18,8 @@ public class StorageItem : MonoBehaviour
     [SerializeField] private Vector2 cellSize = new Vector2(80, 80);
     [SerializeField] private Vector2 startOffset = Vector2.zero;
 
-    [Header("풀링 프리워밍")]
-    [SerializeField] private int prewarm = 10;
-
     private readonly Stack<OutputIcon> pool = new Stack<OutputIcon>();
     private readonly List<OutputIcon> active = new List<OutputIcon>();
-
-    private void Awake()
-    {
-        Prewarm();
-    }
-
-    private void Prewarm()
-    {
-        if (iconPrefab == null) return;
-
-        for (int i = 0; i < prewarm; i++)
-        {
-            var icon = Instantiate(iconPrefab, transform);
-            icon.gameObject.SetActive(false);
-            pool.Push(icon);
-        }
-    }
 
     private OutputIcon Get()
     {
