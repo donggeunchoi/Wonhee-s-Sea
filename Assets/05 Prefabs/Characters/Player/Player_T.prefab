@@ -87,11 +87,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6758dbe6b89497448a52f44ec1897da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mode: 0
+  _anim: {fileID: 4936942474377037452}
+  _sr: {fileID: 2343739468325538707}
   _maxSpeed: 5
   _acceleration: 10
   _deadZone: 0.15
-  _anim: {fileID: 4936942474377037452}
-  _sr: {fileID: 2343739468325538707}
+  _pivot: {fileID: 0}
+  _pivotAngleOffset: 0
 --- !u!50 &3981059177716056206
 Rigidbody2D:
   serializedVersion: 4
@@ -151,6 +154,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 2565877041576398940}
   range: 1.5
+  interactCooldown: 0.2
+  holdFrames: 2
 --- !u!70 &1933057559743409018
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -229,6 +234,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _useKeyboardForDebug: 1
+  _aimJoystick: {fileID: 0}
+  _aimDeadZone: 0.15
 --- !u!114 &1332500943144209571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,7 +366,7 @@ Transform:
   m_GameObject: {fileID: 7855338092927116003}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.341, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -403,9 +410,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1833700157
+  m_SortingLayer: 1
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 8558a4ee88f168d48877f7897df52177, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -445,8 +452,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 868387555599319051}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -488,9 +495,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: -190295959
+  m_SortingLayer: 2
+  m_SortingOrder: 0
   m_Sprite: {fileID: -1324213077, guid: 5dbee617cda760b47abcfba0008fe80e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -501,7 +508,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &4936942474377037452
 Animator:
   serializedVersion: 5
