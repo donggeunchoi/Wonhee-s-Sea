@@ -42,3 +42,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 2461267139
+    locked: 0
+  - name: Player/Deco
+    uniqueID: 4104671337
+    locked: 0
