@@ -463,11 +463,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 414908727}
   m_CullTransparentMesh: 1
---- !u!224 &486342666 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7826996227429665026, guid: aad4bd62527c60141b63d5b285e167b8, type: 3}
-  m_PrefabInstance: {fileID: 1153133084}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &513786175
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,10 +733,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CT_Salmon
       objectReference: {fileID: 0}
-    - target: {fileID: 2936238470706682737, guid: aad4bd62527c60141b63d5b285e167b8, type: 3}
-      propertyPath: worldStackRoot
-      value: 
-      objectReference: {fileID: 486342666}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
