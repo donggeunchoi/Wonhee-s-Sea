@@ -15,8 +15,8 @@ public class StorageItem : MonoBehaviour
 
     [Header("배치(그리드)")]
     [SerializeField] private int columns = 5;
-    [SerializeField] private Vector2 cellSize = new Vector2(80, 80);
-    [SerializeField] private Vector2 startOffset = Vector2.zero;
+    [SerializeField] private Vector2 cellSize;
+    [SerializeField] private Vector2 startOffset;
 
     private readonly Stack<OutputIcon> pool = new Stack<OutputIcon>();
     private readonly List<OutputIcon> active = new List<OutputIcon>();
