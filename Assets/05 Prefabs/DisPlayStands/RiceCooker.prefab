@@ -1,55 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1142140026568019843
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5829719211334472275}
-  - component: {fileID: 708484332687570833}
-  m_Layer: 0
-  m_Name: StandView
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5829719211334472275
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1142140026568019843}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3430299013020933380}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &708484332687570833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1142140026568019843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44c129b04f12ea479b901b4b6e42297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  db: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
-  imgOutputIcon: {fileID: 5782026424619722287}
-  objOutputGroup: {fileID: 8166698145490221878}
-  objProcessingGroup: {fileID: 4863248009876536119}
-  imgProgressFill: {fileID: 985510904820822683}
-  txtRemainTime: {fileID: 5487596656222657141}
 --- !u!1 &1488694565719584560
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,7 +701,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2165417626257438689}
-  - {fileID: 5829719211334472275}
   - {fileID: 6241235023810989650}
   - {fileID: 3177989874858200432}
   - {fileID: 2076958179302409490}
@@ -816,7 +765,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipe: {fileID: 11400000, guid: 5e6cfdc12bb5bb44db557dce06fdea69, type: 2}
+  itemDatabase: {fileID: 0}
   autoPickupIfPossible: 1
+  storageItem: {fileID: 0}
+  useWorldStack: 1
+  worldStackRoot: {fileID: 0}
+  worldStackOffsetY: 0.15
+  worldMaxVisible: 10
+  maxOutputCapacity: 30
+  autoContinueIfHasInput: 1
 --- !u!1 &9042625879935554321
 GameObject:
   m_ObjectHideFlags: 0
