@@ -542,6 +542,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &656026613 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1232625220218327407, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
+  m_PrefabInstance: {fileID: 5229776066867257993}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &876759754 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1820820348927550821, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
+  m_PrefabInstance: {fileID: 5229776066867257993}
+  m_PrefabAsset: {fileID: 0}
 --- !u!58 &921894839 stripped
 CircleCollider2D:
   m_CorrespondingSourceObject: {fileID: 2592489291704823933, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
@@ -1544,7 +1554,6 @@ MonoBehaviour:
   recipe: {fileID: 11400000, guid: e1e3c1d8c2f7c64448e9835360efe4a8, type: 2}
   itemDatabase: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
   autoPickupIfPossible: 0
-  storageItem: {fileID: 0}
   useWorldStack: 1
   worldStackRoot: {fileID: 7826996228582794014}
   worldStackOffsetY: 0.15
@@ -2137,6 +2146,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4585979866259679161, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: d866cc33f7ce88f4d9ce4b2900bf1445, type: 3}
     - target: {fileID: 6926910911305224289, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6
@@ -2204,6 +2217,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sushiItemId: 30004
   maxCapacity: 20
+  useWorldStack: 1
+  worldStackRoot: {fileID: 876759754}
+  worldStackOffsetY: 0.15
+  worldStackOffsetX: 0
+  worldMaxVisible: 10
+  worldStackPrefab: {fileID: 656026613}
   current: 0
   countText: {fileID: 621669119}
 --- !u!1 &5300328771897061371
