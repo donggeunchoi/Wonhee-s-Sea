@@ -13,9 +13,6 @@ public class RecipeStand : MonoBehaviour
     [Header("옵션")]
     [SerializeField] private bool autoPickupIfPossible = false;
 
-    [Header("출력 표시 - B(UI 아이콘)")]
-    [SerializeField] private StorageItem storageItem;
-
     [Header("출력 표시 - A(월드 오브젝트 쌓기)")]
     [SerializeField] private bool useWorldStack = true;
     [SerializeField] private Transform worldStackRoot;
@@ -207,12 +204,6 @@ public class RecipeStand : MonoBehaviour
 
     private void RefreshOutputVisual()
     {
-        // B) UI 아이콘 표시
-        if (storageItem != null && outputItem != null && outputStockCount > 0)
-            storageItem.Show(outputItem, outputStockCount);
-        else
-            storageItem?.ClearAll();
-
         // A) 월드 오브젝트 표시
         if (!useWorldStack) return;
 

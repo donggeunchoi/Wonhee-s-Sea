@@ -540,56 +540,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5349436964218368646}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8145640686624698190
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1250523230791839112}
-  - component: {fileID: 1302658026536641537}
-  m_Layer: 0
-  m_Name: StandView
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1250523230791839112
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8145640686624698190}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5349436964218368646}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1302658026536641537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8145640686624698190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44c129b04f12ea479b901b4b6e42297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  db: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
-  imgOutputIcon: {fileID: 47282121900645956}
-  objOutputGroup: {fileID: 4243821321514667801}
-  objProcessingGroup: {fileID: 213992431914783854}
-  imgProgressFill: {fileID: 4959311707206867861}
-  txtRemainTime: {fileID: 7259756060985005034}
 --- !u!1 &8493815109346695191
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,7 +707,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8760278541775094021}
-  - {fileID: 1250523230791839112}
   - {fileID: 8280198984097642603}
   - {fileID: 6193601628283130314}
   - {fileID: 6762353099361138848}
@@ -874,11 +823,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   recipe: {fileID: 11400000, guid: e1e3c1d8c2f7c64448e9835360efe4a8, type: 2}
-  view: {fileID: 1302658026536641537}
+  itemDatabase: {fileID: 0}
   autoPickupIfPossible: 1
-  StandNametext: {fileID: 8761533485826721673}
-  imgIcon: {fileID: 0}
-  Prefab: {fileID: 1429106973084477284, guid: fa6532fc5b926f345b77f7f8779b033f, type: 3}
+  useWorldStack: 1
+  worldStackRoot: {fileID: 0}
+  worldStackOffsetY: 0.15
+  worldMaxVisible: 10
+  maxOutputCapacity: 30
+  autoContinueIfHasInput: 1
 --- !u!1 &9012204673746462670
 GameObject:
   m_ObjectHideFlags: 0
