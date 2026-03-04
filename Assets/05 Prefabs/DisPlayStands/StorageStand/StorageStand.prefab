@@ -1,55 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &217677096322927245
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8742491082052986021}
-  - component: {fileID: 7792406298483165781}
-  m_Layer: 0
-  m_Name: StandView
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8742491082052986021
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 217677096322927245}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6926910911305224289}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7792406298483165781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 217677096322927245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44c129b04f12ea479b901b4b6e42297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  db: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
-  imgOutputIcon: {fileID: 4585979866259679161}
-  objOutputGroup: {fileID: 6504120513539677761}
-  objProcessingGroup: {fileID: 7688270938702095832}
-  imgProgressFill: {fileID: 6435146087629175685}
-  txtRemainTime: {fileID: 3458403454561175905}
 --- !u!1 &1232625220218327407
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: d866cc33f7ce88f4d9ce4b2900bf1445, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -893,7 +843,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6926910911305224289}
   - component: {fileID: 4342056118061808121}
-  - component: {fileID: 1399856047940233489}
+  - component: {fileID: 3547943462786049706}
   m_Layer: 0
   m_Name: StorageStand
   m_TagString: Untagged
@@ -916,7 +866,6 @@ Transform:
   m_Children:
   - {fileID: 8591459900023828869}
   - {fileID: 4231930313932736354}
-  - {fileID: 8742491082052986021}
   - {fileID: 3794735777102881143}
   - {fileID: 1820820348927550821}
   - {fileID: 2635003775896813437}
@@ -967,7 +916,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.9898148, y: 0.6954365}
   m_EdgeRadius: 0
---- !u!114 &1399856047940233489
+--- !u!114 &3547943462786049706
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -976,10 +925,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8181795494453440701}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 504d3a6f9d428b54b9e9739bf63cb7b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 49ed88cc20359df4697134d652ac58dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  money: 0
+  sushiItemId: 30004
+  maxCapacity: 20
+  useWorldStack: 1
+  worldStackRoot: {fileID: 1820820348927550821}
+  worldStackOffsetY: 0.15
+  worldStackOffsetX: 0.15
+  worldMaxVisible: 10
+  worldStackPrefab: {fileID: 1232625220218327407}
+  current: 0
+  countText: {fileID: 7906805919955966154}
 --- !u!1 &8333850424603965139
 GameObject:
   m_ObjectHideFlags: 0
