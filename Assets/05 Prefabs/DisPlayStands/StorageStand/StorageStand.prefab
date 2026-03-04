@@ -1,55 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &217677096322927245
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8742491082052986021}
-  - component: {fileID: 7792406298483165781}
-  m_Layer: 0
-  m_Name: StandView
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8742491082052986021
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 217677096322927245}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6926910911305224289}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7792406298483165781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 217677096322927245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c44c129b04f12ea479b901b4b6e42297, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  db: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
-  imgOutputIcon: {fileID: 4585979866259679161}
-  objOutputGroup: {fileID: 6504120513539677761}
-  objProcessingGroup: {fileID: 7688270938702095832}
-  imgProgressFill: {fileID: 6435146087629175685}
-  txtRemainTime: {fileID: 3458403454561175905}
 --- !u!1 &1232625220218327407
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,8 +546,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -190295959
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 2dc42d0aa6fd7044a8db1b8d42f97767, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -916,7 +866,6 @@ Transform:
   m_Children:
   - {fileID: 8591459900023828869}
   - {fileID: 4231930313932736354}
-  - {fileID: 8742491082052986021}
   - {fileID: 3794735777102881143}
   - {fileID: 1820820348927550821}
   - {fileID: 2635003775896813437}
