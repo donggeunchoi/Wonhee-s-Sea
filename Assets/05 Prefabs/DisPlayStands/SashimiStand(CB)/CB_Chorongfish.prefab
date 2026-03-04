@@ -132,7 +132,6 @@ GameObject:
   - component: {fileID: 2428862281740651485}
   - component: {fileID: 7919859004140008053}
   - component: {fileID: 2136522094779347468}
-  - component: {fileID: 2896994438134848638}
   m_Layer: 0
   m_Name: CB_Chorongfish
   m_TagString: Untagged
@@ -221,31 +220,12 @@ MonoBehaviour:
   recipe: {fileID: 11400000, guid: f5d3cc1c0d0b4734bb7d5732aa919adb, type: 2}
   itemDatabase: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
   autoPickupIfPossible: 0
-  storageItem: {fileID: 2896994438134848638}
   useWorldStack: 1
   worldStackRoot: {fileID: 116189201450562816}
   worldStackOffsetY: 0.15
   worldMaxVisible: 10
   maxOutputCapacity: 30
   autoContinueIfHasInput: 1
---- !u!114 &2896994438134848638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 549904902222355111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 802fcc0e4b3bcb54bb4c16ff4d4211b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outputGroup: {fileID: 7402317586763846583}
-  iconPrefab: {fileID: 4896293176482616400}
-  maxVisible: 10
-  columns: 5
-  cellSize: {x: 80, y: 80}
-  startOffset: {x: 0, y: 0}
 --- !u!1 &778234269671233590
 GameObject:
   m_ObjectHideFlags: 0

@@ -1135,7 +1135,6 @@ GameObject:
   - component: {fileID: 5295837276742205259}
   - component: {fileID: 2147144132470296756}
   - component: {fileID: 6667581947259545929}
-  - component: {fileID: 1839624074598365869}
   m_Layer: 0
   m_Name: CB_Shrimp
   m_TagString: Untagged
@@ -1224,28 +1223,9 @@ MonoBehaviour:
   recipe: {fileID: 11400000, guid: de496730dfb165244b99cc3006dd3df5, type: 2}
   itemDatabase: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
   autoPickupIfPossible: 0
-  storageItem: {fileID: 1839624074598365869}
   useWorldStack: 1
   worldStackRoot: {fileID: 2256785130618905816}
   worldStackOffsetY: 0.15
   worldMaxVisible: 10
   maxOutputCapacity: 30
   autoContinueIfHasInput: 1
---- !u!114 &1839624074598365869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7878086159299565452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 802fcc0e4b3bcb54bb4c16ff4d4211b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outputGroup: {fileID: 8880132473687289501}
-  iconPrefab: {fileID: 2063914929066259444}
-  maxVisible: 10
-  columns: 5
-  cellSize: {x: 80, y: 80}
-  startOffset: {x: 0, y: 0}

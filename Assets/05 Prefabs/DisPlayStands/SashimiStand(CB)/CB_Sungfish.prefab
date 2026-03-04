@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3449723459807960295}
   - component: {fileID: 50306494328372445}
   - component: {fileID: 2616852153740907810}
-  - component: {fileID: 6385388077760269306}
   m_Layer: 0
   m_Name: CB_Sungfish
   m_TagString: Untagged
@@ -100,31 +99,12 @@ MonoBehaviour:
   recipe: {fileID: 11400000, guid: f2035b866ef664d45a5469f27c3030d4, type: 2}
   itemDatabase: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
   autoPickupIfPossible: 0
-  storageItem: {fileID: 6385388077760269306}
   useWorldStack: 1
   worldStackRoot: {fileID: 7329966619658459365}
   worldStackOffsetY: 0.15
   worldMaxVisible: 10
   maxOutputCapacity: 30
   autoContinueIfHasInput: 1
---- !u!114 &6385388077760269306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2686055257779162595}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 802fcc0e4b3bcb54bb4c16ff4d4211b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outputGroup: {fileID: 1499871449839016482}
-  iconPrefab: {fileID: 2700706448094180850}
-  maxVisible: 10
-  columns: 5
-  cellSize: {x: 80, y: 80}
-  startOffset: {x: 0, y: 0}
 --- !u!1 &2842670577047866567
 GameObject:
   m_ObjectHideFlags: 0

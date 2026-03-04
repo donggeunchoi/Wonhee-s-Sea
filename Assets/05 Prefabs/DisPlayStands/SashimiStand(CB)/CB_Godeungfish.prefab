@@ -360,7 +360,6 @@ GameObject:
   - component: {fileID: 5882046583646873028}
   - component: {fileID: 5429185531033362418}
   - component: {fileID: 7802455301495068616}
-  - component: {fileID: 7246422097538119022}
   m_Layer: 0
   m_Name: CB_Godeungfish
   m_TagString: Untagged
@@ -449,31 +448,12 @@ MonoBehaviour:
   recipe: {fileID: 11400000, guid: a4e35ee07071b4a408d5e707d26d4e7a, type: 2}
   itemDatabase: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
   autoPickupIfPossible: 0
-  storageItem: {fileID: 7246422097538119022}
   useWorldStack: 1
   worldStackRoot: {fileID: 4625442890867375871}
   worldStackOffsetY: 0.15
   worldMaxVisible: 10
   maxOutputCapacity: 30
   autoContinueIfHasInput: 1
---- !u!114 &7246422097538119022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3678671015782863225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 802fcc0e4b3bcb54bb4c16ff4d4211b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outputGroup: {fileID: 9049806798018734169}
-  iconPrefab: {fileID: 6236755711506031475}
-  maxVisible: 10
-  columns: 5
-  cellSize: {x: 80, y: 80}
-  startOffset: {x: 0, y: 0}
 --- !u!1 &3891697632682532585
 GameObject:
   m_ObjectHideFlags: 0

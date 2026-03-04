@@ -187,9 +187,8 @@ MonoBehaviour:
   recipe: {fileID: 11400000, guid: 9122a940e3f69514293e75a35bb0f5b6, type: 2}
   itemDatabase: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
   autoPickupIfPossible: 1
-  storageItem: {fileID: 0}
   useWorldStack: 1
-  worldStackRoot: {fileID: 0}
+  worldStackRoot: {fileID: 4317046214399969273}
   worldStackOffsetY: 0.15
   worldMaxVisible: 10
   maxOutputCapacity: 30
