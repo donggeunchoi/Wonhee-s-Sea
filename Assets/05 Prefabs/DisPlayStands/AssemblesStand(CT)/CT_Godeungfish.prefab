@@ -776,7 +776,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipe: {fileID: 11400000, guid: f0d8ab1965b45eb408b2a87177a399f4, type: 2}
   itemDatabase: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
-  autoPickupIfPossible: 1
+  autoPickupIfPossible: 0
   useWorldStack: 1
   worldStackRoot: {fileID: 1001141841597236673}
   columnCount: 5
