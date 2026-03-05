@@ -99,10 +99,11 @@ MonoBehaviour:
   recipe: {fileID: 11400000, guid: ecfe6bc0fc510444b9fbb04145227a76, type: 2}
   itemDatabase: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
   autoPickupIfPossible: 0
-  storageItem: {fileID: 3699973801284488723}
   useWorldStack: 1
   worldStackRoot: {fileID: 7716681723135350290}
-  worldStackOffsetY: 0.15
+  columnCount: 5
+  worldStackOffsetX: 0.25
+  worldStackOffsetY: 0.25
   worldMaxVisible: 10
   maxOutputCapacity: 30
   autoContinueIfHasInput: 1

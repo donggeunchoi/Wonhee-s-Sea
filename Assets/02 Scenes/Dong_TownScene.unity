@@ -1519,6 +1519,8 @@ MonoBehaviour:
   autoPickupIfPossible: 0
   useWorldStack: 1
   worldStackRoot: {fileID: 7826996228582794014}
+  columnCount: 0
+  worldStackOffsetX: 0
   worldStackOffsetY: 0.15
   worldMaxVisible: 10
   maxOutputCapacity: 30
@@ -1905,6 +1907,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 518749082410158048, guid: d359aae4999876d4daab828c085d75f9, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 518749082410158048, guid: d359aae4999876d4daab828c085d75f9, type: 3}
       propertyPath: itemDatabase
       value: 
       objectReference: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
@@ -1912,6 +1918,14 @@ PrefabInstance:
       propertyPath: worldStackRoot
       value: 
       objectReference: {fileID: 1647406698}
+    - target: {fileID: 518749082410158048, guid: d359aae4999876d4daab828c085d75f9, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 518749082410158048, guid: d359aae4999876d4daab828c085d75f9, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 518749082410158048, guid: d359aae4999876d4daab828c085d75f9, type: 3}
       propertyPath: autoPickupIfPossible
       value: 0
