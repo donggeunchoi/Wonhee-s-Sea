@@ -1009,12 +1009,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 30004
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 1579328241}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sushi_Salmon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -4958,6 +4975,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!4 &99595259 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1001141841597236673, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+  m_PrefabInstance: {fileID: 1986814825}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &107236281
 GameObject:
   m_ObjectHideFlags: 0
@@ -5368,6 +5390,26 @@ PrefabInstance:
       propertyPath: recipe
       value: 
       objectReference: {fileID: 11400000, guid: 3be9a0ea0b404de4d82e2f005fbb3cff, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: itemDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 511327106}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8254919141940784240, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
@@ -5377,7 +5419,8 @@ PrefabInstance:
       value: CT_Chorongfish
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3293345152541317900, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 731108318036285833, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
@@ -5486,12 +5529,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 20001
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 523036769}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sashimi_Shirimp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -5777,6 +5837,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: iconPrefab
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2158873589416332778, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.330002
@@ -5825,12 +5889,26 @@ PrefabInstance:
       propertyPath: recipe
       value: 
       objectReference: {fileID: 11400000, guid: 7f9319e710760004bb806289ae06df3e, type: 2}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8567753141649950940, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 3868647556250269897, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
@@ -6024,6 +6102,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &232446382 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1001141841597236673, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+  m_PrefabInstance: {fileID: 2557116287013609599}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &249294936
 GameObject:
   m_ObjectHideFlags: 0
@@ -6306,6 +6389,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: iconPrefab
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2158873589416332778, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.330002
@@ -6354,12 +6441,26 @@ PrefabInstance:
       propertyPath: recipe
       value: 
       objectReference: {fileID: 11400000, guid: dfb3447faed8aa547bc5dedf9294c753, type: 2}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8567753141649950940, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 3868647556250269897, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
@@ -8895,7 +8996,7 @@ Tilemap:
       - {fileID: 159013337, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
       - {fileID: 1193998649, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
       - {fileID: 1891356098, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -20, y: -23, z: 0}
@@ -9060,7 +9161,7 @@ Tilemap:
       - {fileID: 159013337, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
       - {fileID: 1193998649, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
       - {fileID: 1891356098, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -9, y: -23, z: 0}
@@ -9120,7 +9221,7 @@ Tilemap:
       - {fileID: 159013337, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
       - {fileID: 1193998649, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
       - {fileID: 1891356098, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 1, y: -23, z: 0}
@@ -9300,7 +9401,7 @@ Tilemap:
       - {fileID: 159013337, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
       - {fileID: 1193998649, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
       - {fileID: 1891356098, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 7, y: -21, z: 0}
@@ -9795,7 +9896,7 @@ Tilemap:
       - {fileID: 159013337, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
       - {fileID: 1193998649, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
       - {fileID: 1891356098, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
-      m_AnimationSpeed: 5.0000005
+      m_AnimationSpeed: 5
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 7, y: -15, z: 0}
@@ -10260,7 +10361,7 @@ Tilemap:
       - {fileID: 159013337, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
       - {fileID: 1193998649, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
       - {fileID: 1891356098, guid: a60be8ef2624d85479efb6fa1e809505, type: 3}
-      m_AnimationSpeed: 5
+      m_AnimationSpeed: 5.0000005
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -37, y: -2, z: 0}
@@ -10735,6 +10836,11 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!4 &370637705 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1001141841597236673, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+  m_PrefabInstance: {fileID: 2007835466}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &377137406
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10743,6 +10849,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: iconPrefab
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2158873589416332778, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.330002
@@ -10787,12 +10897,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: CB_Salmon
       objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8567753141649950940, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 3868647556250269897, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
@@ -11154,6 +11278,26 @@ PrefabInstance:
       propertyPath: recipe
       value: 
       objectReference: {fileID: 11400000, guid: 494e52b93cfd998449e18276e4b13420, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: itemDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 1535220430}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8254919141940784240, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
@@ -11163,7 +11307,8 @@ PrefabInstance:
       value: CT_Shrimp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3293345152541317900, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 731108318036285833, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
@@ -11644,15 +11789,37 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 20004
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 1113720001}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sashimi_Salmon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+--- !u!4 &480344097 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 889846377107519498}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &482375596
 GameObject:
   m_ObjectHideFlags: 0
@@ -11821,6 +11988,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &511327106 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1001141841597236673, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+  m_PrefabInstance: {fileID: 147654503}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &523036769 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 161211501}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &534561966
 GameObject:
   m_ObjectHideFlags: 0
@@ -27391,6 +27568,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!4 &677929035 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 2036127142}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &684083333
 GameObject:
   m_ObjectHideFlags: 0
@@ -29049,6 +29231,26 @@ PrefabInstance:
       propertyPath: recipe
       value: 
       objectReference: {fileID: 11400000, guid: d68297368caf95b468820eec903d496d, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: itemDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 1426039421}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8254919141940784240, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
@@ -29058,7 +29260,8 @@ PrefabInstance:
       value: CT_Doksafish
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3293345152541317900, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 731108318036285833, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
@@ -30889,12 +31092,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 30000
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 1910610631}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sushi_Sung
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -31520,12 +31740,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 20003
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 1685992116}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sashimi_Godeung
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -31917,6 +32154,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!4 &931181410 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 2144528589}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &936618535
 GameObject:
   m_ObjectHideFlags: 0
@@ -32405,6 +32647,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: iconPrefab
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2158873589416332778, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.330002
@@ -32453,12 +32699,26 @@ PrefabInstance:
       propertyPath: recipe
       value: 
       objectReference: {fileID: 11400000, guid: f5d3cc1c0d0b4734bb7d5732aa919adb, type: 2}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8567753141649950940, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 3868647556250269897, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
@@ -33941,7 +34201,8 @@ PrefabInstance:
       value: -0.66
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6385008789477503333, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72de57268df9f0449bb30e1a24bc6aef, type: 3}
@@ -34081,12 +34342,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 30006
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 1278701612}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sushi_Doksa
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -34386,6 +34664,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!4 &1108514323 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 1809957748}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1113720001 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 479514111}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1125636640
 GameObject:
   m_ObjectHideFlags: 0
@@ -35504,6 +35792,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &1262211953 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 1953028640}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1262983328
 GameObject:
   m_ObjectHideFlags: 0
@@ -35728,7 +36021,7 @@ Tilemap:
       - {fileID: 1852316237, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: 408028490, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: -1426478158, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
-      m_AnimationSpeed: 4.7192564
+      m_AnimationSpeed: 4.5365486
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -9, y: -25, z: 0}
@@ -35743,7 +36036,7 @@ Tilemap:
       - {fileID: 959462563, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
       - {fileID: -1386991375, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
       - {fileID: 2033010056, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
-      m_AnimationSpeed: 4.9348717
+      m_AnimationSpeed: 4.7157745
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 1, y: -25, z: 0}
@@ -35758,7 +36051,7 @@ Tilemap:
       - {fileID: 959462563, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
       - {fileID: -1386991375, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
       - {fileID: 2033010056, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
-      m_AnimationSpeed: 4.382168
+      m_AnimationSpeed: 4.3449745
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: 2, y: -25, z: 0}
@@ -35773,7 +36066,7 @@ Tilemap:
       - {fileID: 1852316237, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: 408028490, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: -1426478158, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
-      m_AnimationSpeed: 4.401202
+      m_AnimationSpeed: 4.0749187
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -39, y: -19, z: 0}
@@ -35788,7 +36081,7 @@ Tilemap:
       - {fileID: 1852316237, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: 408028490, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: -1426478158, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
-      m_AnimationSpeed: 4.9124775
+      m_AnimationSpeed: 4.4106917
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -30, y: -19, z: 0}
@@ -35803,7 +36096,7 @@ Tilemap:
       - {fileID: 959462563, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
       - {fileID: -1386991375, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
       - {fileID: 2033010056, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
-      m_AnimationSpeed: 4.4934587
+      m_AnimationSpeed: 4.5221677
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -29, y: -19, z: 0}
@@ -35818,7 +36111,7 @@ Tilemap:
       - {fileID: 1852316237, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: 408028490, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: -1426478158, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
-      m_AnimationSpeed: 4.17084
+      m_AnimationSpeed: 4.9992857
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -37, y: -10, z: 0}
@@ -35833,7 +36126,7 @@ Tilemap:
       - {fileID: 959462563, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
       - {fileID: -1386991375, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
       - {fileID: 2033010056, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
-      m_AnimationSpeed: 4.7368627
+      m_AnimationSpeed: 4.177018
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -38, y: -9, z: 0}
@@ -35848,7 +36141,7 @@ Tilemap:
       - {fileID: 1852316237, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: 408028490, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: -1426478158, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
-      m_AnimationSpeed: 4.54609
+      m_AnimationSpeed: 4.0420856
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -39, y: 0, z: 0}
@@ -35863,7 +36156,7 @@ Tilemap:
       - {fileID: 1852316237, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: 408028490, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: -1426478158, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
-      m_AnimationSpeed: 4.167331
+      m_AnimationSpeed: 4.40146
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -36, y: 2, z: 0}
@@ -35878,7 +36171,7 @@ Tilemap:
       - {fileID: 959462563, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
       - {fileID: -1386991375, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
       - {fileID: 2033010056, guid: f29f5bd93e651ae45a8bb8d3b5531f75, type: 3}
-      m_AnimationSpeed: 4.5774746
+      m_AnimationSpeed: 4.934071
       m_AnimationTimeOffset: 0
       m_Flags: 0
   - first: {x: -35, y: 11, z: 0}
@@ -35893,7 +36186,7 @@ Tilemap:
       - {fileID: 1852316237, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: 408028490, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
       - {fileID: -1426478158, guid: cc4c8d18a1ccaa64ea155535722926bc, type: 3}
-      m_AnimationSpeed: 4.647117
+      m_AnimationSpeed: 4.561194
       m_AnimationTimeOffset: 0
       m_Flags: 0
   m_TileAssetArray:
@@ -36396,6 +36689,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!4 &1278701612 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 1064946817}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1284492928
 GameObject:
   m_ObjectHideFlags: 0
@@ -36554,6 +36852,26 @@ PrefabInstance:
       propertyPath: recipe
       value: 
       objectReference: {fileID: 11400000, guid: 9122a940e3f69514293e75a35bb0f5b6, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: itemDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 2006422449}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8254919141940784240, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
@@ -36563,7 +36881,8 @@ PrefabInstance:
       value: CT_Bogfish
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3293345152541317900, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 731108318036285833, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
@@ -41369,6 +41688,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: iconPrefab
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2158873589416332778, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.330002
@@ -41417,12 +41740,26 @@ PrefabInstance:
       propertyPath: recipe
       value: 
       objectReference: {fileID: 11400000, guid: a4e35ee07071b4a408d5e707d26d4e7a, type: 2}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8567753141649950940, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 3868647556250269897, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
@@ -41434,6 +41771,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: iconPrefab
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2158873589416332778, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.330002
@@ -41482,12 +41823,26 @@ PrefabInstance:
       propertyPath: recipe
       value: 
       objectReference: {fileID: 11400000, guid: de496730dfb165244b99cc3006dd3df5, type: 2}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8567753141649950940, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 3868647556250269897, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
@@ -41575,6 +41930,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &1388191600 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 1922440900}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1389412801
 GameObject:
   m_ObjectHideFlags: 0
@@ -41955,6 +42315,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!4 &1426039421 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1001141841597236673, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+  m_PrefabInstance: {fileID: 719099791}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1427588093
 GameObject:
   m_ObjectHideFlags: 0
@@ -42455,12 +42820,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 20002
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 1686499551}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sashimi_Bog
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -42738,6 +43120,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!4 &1535220430 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1001141841597236673, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+  m_PrefabInstance: {fileID: 447128229}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1544014448
 GameObject:
   m_ObjectHideFlags: 0
@@ -42852,9 +43239,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3064149372766270466, guid: e659949cd5883904680b00c4ce0b02e5, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3064149372766270466, guid: e659949cd5883904680b00c4ce0b02e5, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -190295959
+      objectReference: {fileID: 0}
     - target: {fileID: 3430299013020933380, guid: e659949cd5883904680b00c4ce0b02e5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.48
+      value: -27.2
       objectReference: {fileID: 0}
     - target: {fileID: 3430299013020933380, guid: e659949cd5883904680b00c4ce0b02e5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -42897,7 +43292,8 @@ PrefabInstance:
       value: RiceCooker
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4097244109825694057, guid: e659949cd5883904680b00c4ce0b02e5, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e659949cd5883904680b00c4ce0b02e5, type: 3}
@@ -43007,6 +43403,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!4 &1579328241 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 58382803}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1593809585
 GameObject:
   m_ObjectHideFlags: 0
@@ -43708,12 +44109,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 30002
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 1714415981}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sushi_Bog
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -43801,6 +44219,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &1685992116 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 910854743}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1686499551 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 1500162979}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1714415981 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 1663793420}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1722209313
 GameObject:
   m_ObjectHideFlags: 0
@@ -44529,12 +44962,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 30001
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 1108514323}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sushi_Shirimp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -45342,6 +45792,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!4 &1910610631 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8231818339678425135, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+  m_PrefabInstance: {fileID: 834674507}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1911223408
 GameObject:
   m_ObjectHideFlags: 0
@@ -45668,12 +46123,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 20005
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 1388191600}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sashimi_Chorong
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -45835,12 +46307,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 30003
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 1262211953}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sushi_Godeung
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -46148,6 +46637,26 @@ PrefabInstance:
       propertyPath: recipe
       value: 
       objectReference: {fileID: 11400000, guid: f0d8ab1965b45eb408b2a87177a399f4, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: itemDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 99595259}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8254919141940784240, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
@@ -46157,7 +46666,8 @@ PrefabInstance:
       value: CT_Godeungfish
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3293345152541317900, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 731108318036285833, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
@@ -46214,6 +46724,11 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 0.63}
   m_EdgeRadius: 0
+--- !u!4 &2006422449 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1001141841597236673, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+  m_PrefabInstance: {fileID: 1287291710}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2007835466
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46262,6 +46777,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: itemDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 370637705}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8254919141940784240, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
@@ -46271,7 +46806,8 @@ PrefabInstance:
       value: CT_Salmon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3293345152541317900, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 731108318036285833, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
@@ -46464,12 +47000,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 20006
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 677929035}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sashimi_Doksa
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -60327,12 +60880,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 30005
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 931181410}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sushi_Chorong
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -60388,12 +60958,29 @@ PrefabInstance:
       propertyPath: sushiItemId
       value: 20000
       objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 480344097}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldMaxVisible
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263220169945209298, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4178773255840952251, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
       propertyPath: m_Name
       value: DS_Sashimi_Sung
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5558774586816411424, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626c03308182974cb5a3f7e360fdc2c, type: 3}
@@ -60405,6 +60992,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: iconPrefab
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2158873589416332778, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_LocalPosition.x
       value: -22.330002
@@ -60453,12 +61044,26 @@ PrefabInstance:
       propertyPath: recipe
       value: 
       objectReference: {fileID: 11400000, guid: f2035b866ef664d45a5469f27c3030d4, type: 2}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5972867023978031106, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8567753141649950940, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 1060925762976914486, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 3868647556250269897, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de4ea47e8cf149e4aaf46718f0d7dad4, type: 3}
@@ -60514,6 +61119,26 @@ PrefabInstance:
       propertyPath: recipe
       value: 
       objectReference: {fileID: 11400000, guid: 1ea8746d57e0e4544abdb2b1284a179c, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: columnCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: itemDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackRoot
+      value: 
+      objectReference: {fileID: 232446382}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetX
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2232122120970763793, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
+      propertyPath: worldStackOffsetY
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8254919141940784240, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
       propertyPath: m_SpriteSortPoint
       value: 1
@@ -60523,7 +61148,8 @@ PrefabInstance:
       value: CT_Sungfish
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3293345152541317900, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 731108318036285833, guid: 2831621969c0b314a9575f466fcf4200, type: 3}
