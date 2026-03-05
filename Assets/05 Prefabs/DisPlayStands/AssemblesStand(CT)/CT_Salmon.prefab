@@ -1023,7 +1023,9 @@ MonoBehaviour:
   autoPickupIfPossible: 0
   useWorldStack: 1
   worldStackRoot: {fileID: 1993022261577617603}
-  worldStackOffsetY: 0.15
+  columnCount: 5
+  worldStackOffsetX: 0.5
+  worldStackOffsetY: 0.5
   worldMaxVisible: 10
   maxOutputCapacity: 30
   autoContinueIfHasInput: 1

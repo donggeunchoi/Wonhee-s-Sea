@@ -342,8 +342,8 @@ MonoBehaviour:
   useWorldStack: 1
   worldStackRoot: {fileID: 7786654261443172880}
   columnCount: 5
-  worldStackOffsetX: 0.25
-  worldStackOffsetY: 0.25
+  worldStackOffsetX: 0.5
+  worldStackOffsetY: 0.5
   worldMaxVisible: 10
   maxOutputCapacity: 30
   autoContinueIfHasInput: 1
