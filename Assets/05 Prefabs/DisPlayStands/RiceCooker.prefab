@@ -767,6 +767,7 @@ MonoBehaviour:
   recipe: {fileID: 11400000, guid: 5e6cfdc12bb5bb44db557dce06fdea69, type: 2}
   itemDatabase: {fileID: 0}
   autoPickupIfPossible: 1
+  storageItem: {fileID: 0}
   useWorldStack: 1
   worldStackRoot: {fileID: 0}
   worldStackOffsetY: 0.15
