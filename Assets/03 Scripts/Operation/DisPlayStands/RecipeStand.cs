@@ -13,29 +13,27 @@ public class RecipeStand : MonoBehaviour
     [Header("옵션")]
     [SerializeField] private bool autoPickupIfPossible = false;
 
-    [Header("출력 표시 - B(UI 아이콘)")]
-    [SerializeField] private StorageItem storageItem;
-
     [Header("출력 표시 - A(월드 오브젝트 쌓기)")]
-    [SerializeField] private bool useWorldStack = true;
+    [SerializeField] private bool useWorldStack;
     [SerializeField] private Transform worldStackRoot;
-    [SerializeField] private float worldStackOffsetY = 0.15f;
-    [SerializeField] private int worldMaxVisible = 10; // 실제로 쌓아두는 오브젝트는 제한(성능)
+    [SerializeField] private int columnCount;
+    [SerializeField] private float worldStackOffsetX;
+    [SerializeField] private float worldStackOffsetY;
+    [SerializeField] private int worldMaxVisible; // 실제로 쌓아두는 오브젝트는 제한(성능)
 
     [Header("스탠드 저장공간")]
     [SerializeField] private int maxOutputCapacity = 30; // 출력 최대 보관
     [SerializeField] private bool autoContinueIfHasInput = true; // 입력이 남아있으면 연속 생산
 
     private bool isProcessing;
-
     private Dictionary<string, int> inputBuffer = new Dictionary<string, int>();
-
     private ItemSO outputItem;
     private int outputStockCount;
-
     private Inventory lastInventory;
-
     private readonly List<GameObject> worldSpawned = new List<GameObject>();
+
+    private List<GameObject> pooled = new List<GameObject>();
+    private GameObject cachedPrefab;//현재 풀링이 어떤 프리펩 기준인지 확인하기위해
 
     public void Interact(Inventory inv)
     {
@@ -207,66 +205,88 @@ public class RecipeStand : MonoBehaviour
 
     private void RefreshOutputVisual()
     {
-        // B) UI 아이콘 표시
-        if (storageItem != null && outputItem != null && outputStockCount > 0)
-            storageItem.Show(outputItem, outputStockCount);
-        else
-            storageItem?.ClearAll();
-
         // A) 월드 오브젝트 표시
-        if (!useWorldStack) return;
+        if (!useWorldStack) 
+            return;
 
         if (worldStackRoot == null || itemDatabase == null || outputItem == null || outputStockCount <= 0)
         {
-            ClearWorldStack();
+            SetPoolActiveCount(0);
             return;
         }
 
-        int visible = Mathf.Min(outputStockCount, worldMaxVisible);
-        SyncWorldStackToCount(outputItem.itemId, visible);
-    }
-
-
-    private void SyncWorldStackToCount(string itemId, int targetCount)
-    {
-        // 필요한 prefab
-        var prefab = itemDatabase.GetPrefab(itemId);
+        var prefab = outputItem.prefab;
         if (prefab == null)
         {
-            Debug.LogError($"RecipeStand: world prefab 없음 itemId={itemId}");
-            ClearWorldStack();
+            SetPoolActiveCount(0);
             return;
         }
 
-        // 줄이기
-        for (int i = worldSpawned.Count - 1; i >= targetCount; i--)
+        if (cachedPrefab != prefab)
         {
-            if (worldSpawned[i] != null) Destroy(worldSpawned[i]);
-            worldSpawned.RemoveAt(i);
+            ClearPool();
+            cachedPrefab = prefab;
         }
 
-        // 늘리기
-        while (worldSpawned.Count < targetCount)
-        {
-            var obj = Instantiate(prefab, worldStackRoot);
-            obj.transform.localRotation = Quaternion.identity;
-            worldSpawned.Add(obj);
-        }
+        int visible = Mathf.Clamp(outputStockCount, 0, worldMaxVisible);
 
-        // 위치 재배치
-        for (int i = 0; i < worldSpawned.Count; i++)
-        {
-            if (worldSpawned[i] == null) continue;
-            worldSpawned[i].transform.localPosition = Vector3.up * (worldStackOffsetY * i);
-        }
+        EnsurePool(prefab, visible);
+        SetPoolActiveCount(visible);
+        LayoutPoolGrid(visible);
+        
     }
 
-    private void ClearWorldStack()
+    private void EnsurePool(GameObject prefab, int needCount)
     {
-        for (int i = 0; i < worldSpawned.Count; i++)
-            if (worldSpawned[i] != null) Destroy(worldSpawned[i]);
+        if (pooled.Count >= needCount) return;
 
-        worldSpawned.Clear();
+        int toCreate = needCount - pooled.Count;
+        for (int i = 0; i < toCreate; i++)
+        {
+            var go = Instantiate(prefab, worldStackRoot);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            go.SetActive(false);
+            pooled.Add(go);
+        }
     }
+
+    private void SetPoolActiveCount(int activeCount)
+    {
+        for (int i = 0; i < pooled.Count; i++)
+        {
+            bool active = i < activeCount;
+            if (pooled[i] != null && pooled[i].activeSelf != active)
+                pooled[i].SetActive(active);
+        }
+    }
+
+    private void LayoutPoolGrid(int visibleCount)
+    {
+        // 안전장치
+        if (columnCount <= 0) columnCount = 5;
+
+        for (int i = 0; i < visibleCount; i++)
+        {
+            var go = pooled[i];
+            if (go == null) continue;
+
+            int col = i % columnCount;  // 0~(columnCount-1)
+            int row = i / columnCount;  // 0,1,2...
+
+            go.transform.localPosition = new Vector3(col * worldStackOffsetX, row * worldStackOffsetY, 0f);
+            go.transform.localRotation = Quaternion.identity;
+        }
+    }
+
+    private void ClearPool()
+    {
+        for (int i = 0; i < pooled.Count; i++)
+        {
+            if (pooled[i] != null) Destroy(pooled[i]);
+        }
+        pooled.Clear();
+    }
+
 
 }
