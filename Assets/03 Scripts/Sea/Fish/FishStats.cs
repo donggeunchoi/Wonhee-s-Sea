@@ -43,6 +43,8 @@ public class FishStats : MonoBehaviour, IDamageable
         if (IsDead) return;
         IsDead = true;
 
+        //playerInventory.AddFish(fishID);
+
         Debug.Log("물고기 사망");
 
         if (_owner != null && _owner.Controller != null)

@@ -65,6 +65,10 @@ public class PlayerStats : MonoBehaviour, IDamageable
         if (IsDead) return;
         IsDead = true;
 
+        var inv = GetComponent<PlayerInventory>();
+        if (inv != null)
+            inv.LoseFishPercent(0.9f);
+
         Debug.Log("플레이어 사망");
     }
 }
