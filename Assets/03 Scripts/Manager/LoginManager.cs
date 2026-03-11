@@ -62,6 +62,7 @@ public class LoginManager : MonoBehaviour
             if(txLoading != null)
                 txLoading.text = "로그인에 성공했습니다. 데이터를 불러오는 중...";
             BackendManager.Ins.LoadAll();
+            BackendManager.Ins.LoadCharItem();
         }).AddTo(this);
 
 

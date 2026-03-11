@@ -20,6 +20,13 @@ public class BackendManager : Singleton<BackendManager>
 
     private BackendReturnObject backendInit = null;
 
+    public List<ChartItemData> chartItemDatas = new List<ChartItemData>();
+
+    public Subject<bool> OnLoadChartItem = new Subject<bool>();
+
+    [Header("Chart")]
+    [SerializeField] private string itemChartFileId = "";
+
 
     public void InitBackEnd()
     {
@@ -331,6 +338,144 @@ public class BackendManager : Singleton<BackendManager>
 
         Debug.LogError($"[Backend] GetParamGameData Error: {eGameData}");
         return new Param();
+    }
+
+
+    
+    public void LoadCharItem()
+    {
+        if (string.IsNullOrEmpty(itemChartFileId))
+        {
+            Debug.LogError("[Backend] LoadChartItem fail : itemChartFileId is empty");
+            OnLoadChartItem.OnNext(false);
+            return;
+        }
+
+        BackendReturnObject bro = Backend.Chart.GetChartContents(itemChartFileId);
+
+        if (bro == null)
+        {
+            Debug.LogError("[Backend] LoadChartItem fail : bro is null");
+            OnLoadChartItem.OnNext(false);
+            return;
+        }
+
+        if (!bro.IsSuccess())
+        {
+            Debug.LogError("[Backend] LoadChartItem fail : " + bro);
+            OnLoadChartItem.OnNext(false);
+            return;
+        }
+
+        List<ChartItemData> loadedList = new List<ChartItemData>();
+
+        try
+        {
+            JsonData rows = bro.FlattenRows();
+
+            if (rows == null)
+            {
+                Debug.LogError("[Backend] LoadChartItem fail : rows is null");
+                OnLoadChartItem.OnNext(false);
+                return;
+            }
+
+            for (int i = 0; i < rows.Count; i++)
+            {
+                JsonData row = rows[i];
+                ChartItemData data = ParseChartItemData(row);
+
+                if (data == null)
+                    continue;
+
+                if (!data.IsValid())
+                {
+                    Debug.LogWarning($"[Backend] LoadChartItem invalid item skip : index = {i}");
+                    continue;
+                }
+
+                loadedList.Add(data);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("[Backend] LoadChartItem parse exception : " + e);
+            OnLoadChartItem.OnNext(false);
+            return;
+        }
+
+        chartItemDatas = loadedList;
+
+        Debug.Log($"[Backend] LoadChartItem success : count = {chartItemDatas.Count}");
+        OnLoadChartItem.OnNext(true);
+    }
+
+    private ChartItemData ParseChartItemData(JsonData row)
+    {
+        if (row == null)
+            return null;
+
+        ChartItemData data = new ChartItemData();
+
+        data.itemId = GetChartString(row, "itemId");
+        data.displayName = GetChartString(row, "displayName");
+        data.category = GetChartInt(row, "category");
+        data.stackable = GetChartBool(row, "stackable");
+        data.maxStack = GetChartInt(row, "maxStack", 1);
+        data.iconKey = GetChartString(row, "iconKey");
+        data.prefabKey = GetChartString(row, "prefabKey");
+
+        return data;
+    }
+
+    private string GetChartString(JsonData row, string key, string defaultValue = "")
+    {
+        if (row == null)
+            return defaultValue;
+
+        if (!row.ContainsKey(key))
+            return defaultValue;
+
+        if (row[key] == null)
+            return defaultValue;
+
+        return row[key].ToString();
+    }
+
+    private int GetChartInt(JsonData row, string key, int defaultValue = 0)
+    {
+        if (row == null)
+            return defaultValue;
+
+        if (!row.ContainsKey(key))
+            return defaultValue;
+
+        if (row[key] == null)
+            return defaultValue;
+
+        int value;
+        if (int.TryParse(row[key].ToString(), out value))
+            return value;
+
+        return defaultValue;
+    }
+
+    private bool GetChartBool(JsonData row, string key, bool defaultValue = false)
+    {
+        if (row == null)
+            return defaultValue;
+
+        if (!row.ContainsKey(key))
+            return defaultValue;
+
+        if (row[key] == null)
+            return defaultValue;
+
+        bool value;
+        if (bool.TryParse(row[key].ToString(), out value))
+            return value;
+
+        return defaultValue;
     }
 
 }
