@@ -8,7 +8,36 @@ public class ItemRuntimeDatabase : MonoBehaviour
 
     public bool IsLoaded => itemMap != null && itemMap.Count > 0;
 
-    public void SetItemS(List<ChartItemData> items)
+    private void Start()
+    {
+        List<ChartItemData> testItems = new List<ChartItemData>
+    {
+        new ChartItemData
+        {
+            itemId = "fish_salmon",
+            displayName = "연어",
+            category = 0,
+            stackable = true,
+            maxStack = 30,
+            iconKey = "fish_salmon",
+            prefabKey = "fish_salmon"
+        },
+        new ChartItemData
+        {
+            itemId = "sushi_salmon",
+            displayName = "연어초밥",
+            category = 1,
+            stackable = true,
+            maxStack = 30,
+            iconKey = "sushi_salmon",
+            prefabKey = "sushi_salmon"
+        }
+    };
+
+        SetItems(testItems);
+    }
+
+    public void SetItems(List<ChartItemData> items)
     {
         itemMap.Clear();
 

@@ -48,6 +48,6 @@ public class ItemAssetManager : MonoBehaviour
     public GameObject GetPrefab(string itemId)
     {
         if (string.IsNullOrEmpty(itemId)) return null;
-        return map.TryGetValue(itemId, out var data) ? data.prefab : null;
+        return itemMap.TryGetValue(itemId, out var data) ? data.prefab : null;
     }
 }
