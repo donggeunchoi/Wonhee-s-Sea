@@ -27,6 +27,15 @@ public class StandData
 }
 
 [Serializable]
+public class  ItemDataTable
+{
+    public int Id;
+    public string Name;
+    public string Type1;
+    public string Type2;
+}
+
+[Serializable]
 public class EquipmentData
 {
     public int equipmentId;

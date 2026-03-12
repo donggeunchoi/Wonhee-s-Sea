@@ -18,8 +18,7 @@ public class BackendManager : Singleton<BackendManager>
 
     [Header("뒤끝 차트 고정 데이터")]
     public List<FishData> fishDatas = new List<FishData>();
-    public List<SashimiData> sashimiDatas = new List<SashimiData>();
-    public List<SushiData> sushiDatas = new List<SushiData>();
+    public List<ItemDataTable> itemDataTables = new List<ItemDataTable>();
     public List<StandData> standDatas = new List<StandData>();
     public List<EquipmentData> equipmentDatas = new List<EquipmentData>();
     public List<IngredientData> ingredientDatas = new List<IngredientData>();
@@ -34,8 +33,7 @@ public class BackendManager : Singleton<BackendManager>
 
     [Header("Chart File Id")]
     [SerializeField] private string fishChartFileId = "";
-    [SerializeField] private string sashimiChartFileId = "";
-    [SerializeField] private string sushiChartFileId = "";
+    [SerializeField] private string itemDataTableChartFileId = "";
     [SerializeField] private string standChartFileId = "";
     [SerializeField] private string equipmentChartFileId = "";
     [SerializeField] private string ingredientChartFileId = "";
@@ -357,13 +355,33 @@ public class BackendManager : Singleton<BackendManager>
         bool isSuccess = true;
 
         isSuccess &= LoadFishChart();
-        isSuccess &= LoadSashimiChart();
-        isSuccess &= LoadSushiChart();
+        isSuccess &= LoadItemDataTable();
         isSuccess &= LoadStandChart();
         isSuccess &= LoadEquipmentChart();
         isSuccess &= LoadIngredientChart();
 
         OnLoadAllChartData.OnNext(isSuccess);
+    }
+
+    private bool LoadItemDataTable()
+    {
+        itemDataTables.Clear();
+        JsonData rows = GetChartRows(itemDataTableChartFileId, "ItemDataTable");
+        if(rows == null)
+            return false;
+
+        for( int i = 0; i < rows.Count; i++)
+        {
+            JsonData row = rows[i];
+            ItemDataTable data = new ItemDataTable();
+            data.Id = GetInt(row, "ItemId");
+            data.Name = GetString(row, "Name");
+            data.Type1 = GetString(row, "Type1");
+            data.Type2 = GetString(row, "Type2");
+            itemDataTables.Add(data);
+        }
+        Debug.Log($"[Backend] Fish chart load success : {itemDataTables.Count}");
+        return true;
     }
 
     private bool LoadFishChart()
@@ -378,7 +396,7 @@ public class BackendManager : Singleton<BackendManager>
             JsonData row = rows[i];
             FishData data = new FishData();
 
-            data.fishId = GetInt(row, "fishId");
+            data.fishId = GetInt(row, "FishId");
             data.name = GetString(row, "Name");
             data.hp = GetFloat(row, "Hp");
             data.attackDamage = GetFloat(row, "AttackDamage");
@@ -395,55 +413,7 @@ public class BackendManager : Singleton<BackendManager>
         return true;
     }
 
-    private bool LoadSashimiChart()
-    {
-        sashimiDatas.Clear();
-        JsonData rows = GetChartRows(sashimiChartFileId, "Sashimi");
-        if (rows == null)
-            return false;
 
-        for (int i = 0; i < rows.Count; i++)
-        {
-            JsonData row = rows[i];
-            SashimiData data = new SashimiData();
-
-            data.sashimiId = GetInt(row, "sashimiId");
-            data.name = GetString(row, "Name");
-            data.cost = GetInt(row, "Cost");
-            data.cookingStand = GetInt(row, "CookingStand");
-            data.dPStand = GetInt(row, "DPStand");
-
-            sashimiDatas.Add(data);
-        }
-
-        Debug.Log($"[Backend] Sashimi chart load success : {sashimiDatas.Count}");
-        return true;
-    }
-
-    private bool LoadSushiChart()
-    {
-        sushiDatas.Clear();
-        JsonData rows = GetChartRows(sushiChartFileId, "Sushi");
-        if (rows == null)
-            return false;
-
-        for (int i = 0; i < rows.Count; i++)
-        {
-            JsonData row = rows[i];
-            SushiData data = new SushiData();
-
-            data.sushiId = GetInt(row, "sushiId");
-            data.name = GetString(row, "Name");
-            data.cost = GetInt(row, "Cost");
-            data.cookingStand = GetInt(row, "CookingStand");
-            data.dPStand = GetInt(row, "DPStand");
-
-            sushiDatas.Add(data);
-        }
-
-        Debug.Log($"[Backend] Sushi chart load success : {sushiDatas.Count}");
-        return true;
-    }
 
     private bool LoadStandChart()
     {
@@ -457,7 +427,7 @@ public class BackendManager : Singleton<BackendManager>
             JsonData row = rows[i];
             StandData data = new StandData();
 
-            data.standId = GetInt(row, "standId");
+            data.standId = GetInt(row, "StandId");
             data.name = GetString(row, "Name");
             data.standType = GetString(row, "StandType");
             data.ingredient_1 = GetInt(row, "Ingredient_1", -1);
@@ -508,7 +478,7 @@ public class BackendManager : Singleton<BackendManager>
             JsonData row = rows[i];
             IngredientData data = new IngredientData();
 
-            data.ingredientId = GetInt(row, "ingredientId");
+            data.ingredientId = GetInt(row, "IngredientId");
             data.name = GetString(row, "Name");
             data.cost = GetInt(row, "Cost");
 
