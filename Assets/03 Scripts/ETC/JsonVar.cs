@@ -15,26 +15,6 @@ public class FishData
 }
 
 [Serializable]
-public class SashimiData
-{
-    public int sashimiId;
-    public string name;
-    public int cost;
-    public int cookingStand;
-    public int dPStand;
-}
-
-[Serializable]
-public class SushiData
-{
-    public int sushiId;
-    public string name;
-    public int cost;
-    public int cookingStand;
-    public int dPStand;
-}
-
-[Serializable]
 public class StandData
 {
     public int standId;
