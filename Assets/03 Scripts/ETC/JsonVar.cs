@@ -1,13 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 
 [Serializable]
 public class FishData
 {
-    public int id;
+    public int fishId;
     public string name;
     public float hp;
     public float attackDamage;
@@ -19,50 +15,38 @@ public class FishData
 }
 
 [Serializable]
-public class SashimiData
+public class StandData
 {
-    public int id;
+    public int standId;
     public string name;
+    public string standType;
+    public int ingredient_1;
+    public int ingredient_2;
+    public float time;
     public int cost;
-    public float cookingTime;
-    public int cookingStand;
-    public int dPStand;
 }
 
 [Serializable]
-public class SushiData
+public class  ItemDataTable
 {
-    public int id;
-    public string name;
-    public int cost;
-    public float cookingTime;
-    public int cookingStand;
-    public int dPStand;
-}
-
-[Serializable]
-public class DpStandData
-{
-    public int id;
-    public int standType;
-    public string standName;
-}
-
-[Serializable]
-public class ItemChart
-{
-    public string itemId;
-    public string name;
-    public string itemType;
-    public int itemPower;
-    public string itemInfo;
-
+    public int Id;
+    public string Name;
+    public string Type1;
+    public string Type2;
 }
 
 [Serializable]
 public class EquipmentData
 {
-    public string itemId;
+    public int equipmentId;
     public string name;
-    public string equipType;
+    public string equipmentType;
+}
+
+[Serializable]
+public class IngredientData
+{
+    public int ingredientId;
+    public string name;
+    public int cost;
 }

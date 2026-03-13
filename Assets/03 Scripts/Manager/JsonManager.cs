@@ -10,10 +10,9 @@ public class JsonManager : Singleton<JsonManager>
 {
    // 사용하는 방법은 JsonManager.Ins.fishData.Id 이런 식으로 사용합니다.
    List<FishData> fishData = new List<FishData>();
-   List<SashimiData> sashimiData = new List<SashimiData>();
-   List<SushiData> sushiData = new List<SushiData>();
-   List<DpStandData> dpStandData = new List<DpStandData>();
-   List<ItemChart> itemChartData = new List<ItemChart>();
+   List<ItemDataTable> itemDataTables = new List<ItemDataTable>();
+    List<StandData> standData = new List<StandData>();
+   List<IngredientData> ingredientData = new List<IngredientData>();
    List<EquipmentData> equipmentData = new List<EquipmentData>();
 
     private string basePath;

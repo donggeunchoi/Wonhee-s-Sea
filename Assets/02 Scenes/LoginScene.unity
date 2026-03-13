@@ -1130,6 +1130,17 @@ MonoBehaviour:
   buildingSaveData:
     buildings: []
     buildingsJson: '[]'
+  chartItemDatas: []
+  fishDatas: []
+  itemDataTables: []
+  standDatas: []
+  equipmentDatas: []
+  ingredientDatas: []
+  fishChartFileId: 231056
+  itemDataTableChartFileId: 231058
+  standChartFileId: 231059
+  equipmentChartFileId: 231054
+  ingredientChartFileId: 231057
 --- !u!1 &2056451501
 GameObject:
   m_ObjectHideFlags: 0
