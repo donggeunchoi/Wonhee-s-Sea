@@ -31,7 +31,7 @@ public class BackendManager : Singleton<BackendManager>
 
     private BackendReturnObject backendInit = null;
 
-    [Header("Chart File Id")]
+    [Header("Chart File Id")]// 키값은 차트마다 다르니 각자 뒤끝 콘솔에서 확인해서 입력할 것
     [SerializeField] private string fishChartFileId = "";
     [SerializeField] private string itemDataTableChartFileId = "";
     [SerializeField] private string standChartFileId = "";
@@ -376,8 +376,8 @@ public class BackendManager : Singleton<BackendManager>
             ItemDataTable data = new ItemDataTable();
             data.Id = GetInt(row, "ItemId");
             data.Name = GetString(row, "Name");
-            data.Type1 = GetString(row, "Type1");
-            data.Type2 = GetString(row, "Type2");
+            data.ItemType1 = GetString(row, "ItemType1");
+            data.ItemType2 = GetString(row, "ItemType2");
             itemDataTables.Add(data);
         }
         Debug.Log($"[Backend] Fish chart load success : {itemDataTables.Count}");
@@ -429,7 +429,8 @@ public class BackendManager : Singleton<BackendManager>
 
             data.standId = GetInt(row, "StandId");
             data.name = GetString(row, "Name");
-            data.standType = GetString(row, "StandType");
+            data.standType1 = GetString(row, "StandType1");
+            data.standType2 = GetString(row, "StandType2");
             data.ingredient_1 = GetInt(row, "Ingredient_1", -1);
             data.ingredient_2 = GetInt(row, "Ingredient_2", -1);
             data.time = GetFloat(row, "Time");
