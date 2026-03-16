@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 public class JsonManager : Singleton<JsonManager>
 {
-   // 사용하는 방법은 JsonManager.Ins.fishData.Id 이런 식으로 사용합니다.
+   // 사용하는 방법은 JsonManager.Ins.GetJson<FishData>("FishData") 이런식으로 사용합니다.
    List<FishData> fishData = new List<FishData>();
    List<ItemDataTable> itemDataTables = new List<ItemDataTable>();
     List<StandData> standData = new List<StandData>();
@@ -113,8 +113,28 @@ public class JsonManager : Singleton<JsonManager>
         jsonCache.Clear();
     }
 
-    public List<T> GetItems<T>(string fileName)
+    private Dictionary<Type, string> fileNameMap = new Dictionary<Type, string>()
+{
+    { typeof(FishData), "Fish_Data" },
+    { typeof(ItemDataTable), "ItemDataTable" },
+    { typeof(IngredientData), "Ingredient_Data" },
+    { typeof(EquipmentData), "Equipment_Data" },
+    { typeof(StandData), "Stand_Data" },
+};
+
+    private string GetFileNameByType<T>()
     {
+        Type type = typeof(T);
+
+        if (fileNameMap.TryGetValue(type, out string fileName))
+            return fileName;
+
+        return type.Name;
+    }
+
+    public List<T> GetJson<T>()
+    {
+        string fileName = GetFileNameByType<T>();
         string cacheKey = $"ITEMS:{typeof(T).FullName}:{fileName}";
 
         // 1. 캐시 체크

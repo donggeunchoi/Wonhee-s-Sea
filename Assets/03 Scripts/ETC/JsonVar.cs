@@ -19,7 +19,8 @@ public class StandData
 {
     public int standId;
     public string name;
-    public string standType;
+    public string standType1;
+    public string standType2;
     public int ingredient_1;
     public int ingredient_2;
     public float time;
@@ -31,8 +32,8 @@ public class  ItemDataTable
 {
     public int Id;
     public string Name;
-    public string Type1;
-    public string Type2;
+    public string ItemType1;
+    public string ItemType2;
 }
 
 [Serializable]
