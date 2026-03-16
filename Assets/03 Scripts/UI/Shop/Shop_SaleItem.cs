@@ -19,6 +19,6 @@ public class Shop_SaleItem : MonoBehaviour
 
     public void BuyItem()
     {
-        DataInstance.Ins.Find_Id_Group(itemid);
+       // DataInstance.Ins.Find_Id_Group(itemid);
     }
 }
