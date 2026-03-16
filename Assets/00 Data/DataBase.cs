@@ -13,7 +13,7 @@ public abstract class BaseDB<TKey, TData, TRaw>
     protected void Load(string fileName, System.Func<TRaw, TData> transform, System.Func<TData, TKey> keySelector)
     {
         // 1. 실제 파일 내용이 메모리에 들어오는지 확인
-        var rawList = JsonManager.Ins.GetItems<TRaw>(fileName);
+        var rawList = JsonManager.Ins.GetJson<TRaw>();
 
         if (rawList == null || rawList.Count == 0)
         {
