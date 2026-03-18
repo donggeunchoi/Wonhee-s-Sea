@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -20,7 +21,12 @@ public struct ItemStack
 public class Inventory : MonoBehaviour
 {
     [Header("아이템 데이터 베이스")]
-    [SerializeField] private ItemDatabaseSO dataBase;
+    //[SerializeField] private ItemDatabaseSO dataBase;
+
+    [SerializeField]
+    ItemRuntimeDatabase itemDatabase;
+    [SerializeField]
+    ItemAssetManager itemAssetManager;
 
     [Header("시작시 가지게 될 슬롯 개수(=수용량)")]
     [SerializeField] private int startSlot;
@@ -84,12 +90,16 @@ public class Inventory : MonoBehaviour
     public bool TryAdd(string itemId, int amount)
     {
         if (amount <= 0) return true;
-        if (dataBase == null) { Debug.LogError("Inventory: db 미할당"); return false; }
+        if (itemDatabase == null) { Debug.LogError("Inventory: db 미할당"); return false; }
 
         int before = CountOf(itemId);
 
-        bool stackable = dataBase.IsStackable(itemId);
-        int maxStack = dataBase.GetMaxStack(itemId);
+        bool stackable = itemDatabase.IsStackable(itemId);
+        int maxStack = itemDatabase.GetMaxStack(itemId);
+
+
+
+
         int left = amount;
 
         if (stackable)
@@ -179,9 +189,9 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        var itemSO = dataBase.Get(itemId);
+        var itemSO = itemDatabase.Get(itemId);
 
-        var prefab = dataBase.GetPrefab(itemId);
+        var prefab = itemAssetManager.GetPrefab(itemId);
 
         if (itemSO == null)
         {
@@ -191,7 +201,7 @@ public class Inventory : MonoBehaviour
 
         if (prefab == null)
         {
-            Debug.LogError($"Inventory: prefab 없음 itemId={itemId} (ItemSO: {itemSO.name})");
+            Debug.LogError($"Inventory: prefab 없음 itemId={itemId}");
             return;
         }
 
@@ -252,7 +262,7 @@ public class Inventory : MonoBehaviour
         visualStack.Clear();
 
         if (!useHeadStackVisual) return;
-        if (dataBase == null) return;
+        if (itemDatabase == null || itemAssetManager == null) return;
 
         for (int i = 0; i < Slots.Count; i++)
         {
