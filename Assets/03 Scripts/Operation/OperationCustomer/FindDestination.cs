@@ -29,11 +29,11 @@ public class Node
 
     public int fCost => gCost + hCost; // 총 점수
 
-    public Node(bool _walkable, Vector3 _worldPos, Vector2 _gridPos)
+    public Node(bool _walkable, Vector3 _worldPos, Vector2Int _gridPos)
     {
-        _walkable = walkable;
-        _worldPos = worldPos;
-        _gridPos = gridPos;
+        walkable = _walkable;
+        worldPos = _worldPos;
+        gridPos = _gridPos;
     }
 
 }

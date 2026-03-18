@@ -33,6 +33,8 @@ public class GridManager : MonoBehaviour
                 grid[x, y] = new Node(isWalkable, worldPos, new Vector2Int(x, y));
             }
         }
+
+        Test();
     }
 
     public Node GetNodeFromWorldPos(Vector3 worldPos)
@@ -48,6 +50,29 @@ public class GridManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public List<Node> GetNeighbors(Node node)
+    {
+        List<Node> neighbors = new List<Node>();
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == 0 && y == 0) continue;
+
+                int checkX = node.gridPos.x + x;
+                int checkY = node.gridPos.y + y;
+
+                if (checkX >= 0 && checkX < gridSize.x && checkY >= 0 && checkY < gridSize.y)
+                {
+                    neighbors.Add(grid[checkX, checkY]);
+                }
+            }
+        }
+
+        return neighbors;
     }
 
     void OnDrawGizmos()
@@ -69,6 +94,14 @@ public class GridManager : MonoBehaviour
                 printPos.z = -1f;
                 Gizmos.DrawCube(printPos, Vector3.one * 0.3f);
             }
+        }
+    }
+
+    void Test()
+    {
+        foreach (Node n in grid)
+        {
+            Debug.Log($"{n.worldPos}");
         }
     }
 }
