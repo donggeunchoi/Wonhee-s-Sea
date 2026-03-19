@@ -1,7 +1,6 @@
 using BackEnd;
 using LitJson;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniRx;
@@ -13,8 +12,6 @@ public class BackendManager : Singleton<BackendManager>
     public PDungeonInfo dungeonInfo = new PDungeonInfo();
     public PTownInfo townInfo = new PTownInfo();
     public PBuildingSaveData buildingSaveData = new PBuildingSaveData();
-
-    public List<ChartItemData> chartItemDatas = new List<ChartItemData>();
 
     [Header("뒤끝 차트 고정 데이터")]
     public List<FishData> fishDatas = new List<FishData>();
@@ -31,7 +28,7 @@ public class BackendManager : Singleton<BackendManager>
 
     private BackendReturnObject backendInit = null;
 
-    [Header("Chart File Id")]// 키값은 차트마다 다르니 각자 뒤끝 콘솔에서 확인해서 입력할 것
+    [Header("Chart File Id")]
     [SerializeField] private string fishChartFileId = "";
     [SerializeField] private string itemDataTableChartFileId = "";
     [SerializeField] private string standChartFileId = "";
@@ -71,14 +68,12 @@ public class BackendManager : Singleton<BackendManager>
                 return;
             }
 
-            // 로그인 성공 후 유저 정보 가져오기
             LoginGetUserInfo();
         });
     }
 
     private void LoginGetUserInfo()
     {
-        // 동기식: 간단하고 확실
         var bro = Backend.BMember.GetUserInfo();
 
         if (bro == null)
@@ -106,7 +101,6 @@ public class BackendManager : Singleton<BackendManager>
         if (!json.ContainsKey("row") || json["row"] == null)
         {
             Debug.LogWarning("[Backend] GetUserInfo has no row. First login?");
-            //이 경우에도 로그인 자체는 성공으로 봄
             OnBackEndLogin.OnNext(true);
             return;
         }
@@ -121,7 +115,6 @@ public class BackendManager : Singleton<BackendManager>
 
         if (row.ContainsKey("gamerId") && row["gamerId"] != null)
             UserManager.Ins.userGamerID = row["gamerId"].ToString();
-
 
         OnBackEndLogin.OnNext(true);
     }
@@ -144,7 +137,6 @@ public class BackendManager : Singleton<BackendManager>
 
             JsonData rows = bro.GetFlattenJSON()["rows"];
 
-            // 저장된 것이 없으면 기본값 Insert
             if (rows.Count <= 0)
             {
                 var insertParam = GetParamGameData(eGameData);
@@ -156,9 +148,7 @@ public class BackendManager : Singleton<BackendManager>
                         return;
                     }
 
-                    // Insert 완료 후 로컬 캐시 동기화 (기본값 저장됨)
                     CacheSnapshot(eGameData);
-
                     OnGetLoadData.OnNext(eGameData);
                     Debug.Log($"[Backend] Insert Done: {eGameData}");
                 });
@@ -166,10 +156,7 @@ public class BackendManager : Singleton<BackendManager>
                 return;
             }
 
-            // 저장된 값 로컬 반영
             ApplyLoadedData(eGameData, rows[0]);
-
-            // “현재 상태”를 스냅샷으로 캐싱해서 IsDifferent 비교 기준으로 삼는다
             CacheSnapshot(eGameData);
 
             OnGetLoadData.OnNext(eGameData);
@@ -180,35 +167,36 @@ public class BackendManager : Singleton<BackendManager>
     private void ApplyLoadedData(EGameData eGameData, JsonData row0)
     {
         string json = row0.ToJson();
+
         switch (eGameData)
         {
             case EGameData.UserInfo:
-            {
-                var data = JsonConvert.DeserializeObject<PUserInfo>(json);
-                UserManager.Ins.userInfo = data;
-                userInfo = data;
-            }
-            break;
+                {
+                    var data = JsonConvert.DeserializeObject<PUserInfo>(json);
+                    UserManager.Ins.userInfo = data;
+                    userInfo = data;
+                }
+                break;
 
             case EGameData.DungeonInfo:
-            {
-                var data = JsonConvert.DeserializeObject<PDungeonInfo>(json);
-                UserManager.Ins.dungeonInfo = data;
-                dungeonInfo = data;
-            }
-            break;
+                {
+                    var data = JsonConvert.DeserializeObject<PDungeonInfo>(json);
+                    UserManager.Ins.dungeonInfo = data;
+                    dungeonInfo = data;
+                }
+                break;
 
             case EGameData.TownInfo:
-            {
-                var data = JsonConvert.DeserializeObject<PTownInfo>(json);
-                UserManager.Ins.townInfo = data;
-                townInfo = data;
-            }
-            break;
+                {
+                    var data = JsonConvert.DeserializeObject<PTownInfo>(json);
+                    UserManager.Ins.townInfo = data;
+                    townInfo = data;
+                }
+                break;
 
             case EGameData.BuildingInfo:
-            {
-                var data = JsonConvert.DeserializeObject<PBuildingSaveData>(json);
+                {
+                    var data = JsonConvert.DeserializeObject<PBuildingSaveData>(json);
                     if (data == null) data = new PBuildingSaveData();
 
                     data.SyncFromJson();
@@ -216,17 +204,12 @@ public class BackendManager : Singleton<BackendManager>
                     UserManager.Ins.buildingSaveData = data;
                     buildingSaveData = data;
                 }
-            break;
-
-            default:
-                // 프로젝트에서 다른 데이터가 있으면 여기에 추가
                 break;
         }
     }
 
     public void SaveData()
     {
-        // 변경된 데이터만 모아서 TransactionWriteV2로 저장
         List<EGameData> changed = new List<EGameData>();
         foreach (EGameData e in Enum.GetValues(typeof(EGameData)))
         {
@@ -247,7 +230,6 @@ public class BackendManager : Singleton<BackendManager>
             ));
         }
 
-        // 배치(10개씩) 순차 저장
         const int batchSize = 10;
         int total = transactionList.Count;
 
@@ -268,7 +250,6 @@ public class BackendManager : Singleton<BackendManager>
                     return;
                 }
 
-                // 저장 성공한 것만 캐싱 갱신
                 foreach (var e in subChanged)
                 {
                     CacheSnapshot(e);
@@ -283,6 +264,7 @@ public class BackendManager : Singleton<BackendManager>
 
         sendNext(0);
     }
+
     private bool IsDifferent(EGameData eGameData)
     {
         switch (eGameData)
@@ -298,7 +280,6 @@ public class BackendManager : Singleton<BackendManager>
 
             case EGameData.BuildingInfo:
                 return UserManager.Ins.buildingSaveData.IsDifferent(buildingSaveData);
-
         }
 
         return false;
@@ -323,13 +304,11 @@ public class BackendManager : Singleton<BackendManager>
             case EGameData.BuildingInfo:
                 buildingSaveData = CloneUtil.DeepClone(UserManager.Ins.buildingSaveData);
                 break;
-
         }
     }
 
     private Param GetParamGameData(EGameData eGameData)
     {
-        //프로젝트의 PXXX.FormatJsonData() 그대로 사용
         switch (eGameData)
         {
             case EGameData.UserInfo:
@@ -343,7 +322,6 @@ public class BackendManager : Singleton<BackendManager>
 
             case EGameData.BuildingInfo:
                 return UserManager.Ins.buildingSaveData.FormatJsonData();
-
         }
 
         Debug.LogError($"[Backend] GetParamGameData Error: {eGameData}");
@@ -366,27 +344,38 @@ public class BackendManager : Singleton<BackendManager>
     private bool LoadItemDataTable()
     {
         itemDataTables.Clear();
-        JsonData rows = GetChartRows(itemDataTableChartFileId, "ItemDataTable");
-        if(rows == null)
-            return false;
 
-        for( int i = 0; i < rows.Count; i++)
+        JsonData rows = GetChartRows(itemDataTableChartFileId, "ItemDataTable");
+        if (rows == null)
+        {
+            OnLoadChartItem.OnNext(false);
+            return false;
+        }
+
+        for (int i = 0; i < rows.Count; i++)
         {
             JsonData row = rows[i];
             ItemDataTable data = new ItemDataTable();
-            data.Id = GetInt(row, "ItemId");
+
+            data.ItemId = GetInt(row, "ItemId");
             data.Name = GetString(row, "Name");
             data.ItemType1 = GetString(row, "ItemType1");
             data.ItemType2 = GetString(row, "ItemType2");
+
             itemDataTables.Add(data);
         }
-        Debug.Log($"[Backend] Fish chart load success : {itemDataTables.Count}");
+
+        JsonManager.Ins.SetJson<ItemDataTable>(itemDataTables);
+        OnLoadChartItem.OnNext(true);
+
+        Debug.Log($"[Backend] ItemDataTable chart load success : {itemDataTables.Count}");
         return true;
     }
 
     private bool LoadFishChart()
     {
         fishDatas.Clear();
+
         JsonData rows = GetChartRows(fishChartFileId, "Fish");
         if (rows == null)
             return false;
@@ -409,15 +398,15 @@ public class BackendManager : Singleton<BackendManager>
             fishDatas.Add(data);
         }
 
+        JsonManager.Ins.SetJson<FishData>(fishDatas);
         Debug.Log($"[Backend] Fish chart load success : {fishDatas.Count}");
         return true;
     }
 
-
-
     private bool LoadStandChart()
     {
         standDatas.Clear();
+
         JsonData rows = GetChartRows(standChartFileId, "Stand");
         if (rows == null)
             return false;
@@ -439,6 +428,7 @@ public class BackendManager : Singleton<BackendManager>
             standDatas.Add(data);
         }
 
+        JsonManager.Ins.SetJson<StandData>(standDatas);
         Debug.Log($"[Backend] Stand chart load success : {standDatas.Count}");
         return true;
     }
@@ -446,6 +436,7 @@ public class BackendManager : Singleton<BackendManager>
     private bool LoadEquipmentChart()
     {
         equipmentDatas.Clear();
+
         JsonData rows = GetChartRows(equipmentChartFileId, "Equipment");
         if (rows == null)
             return false;
@@ -462,14 +453,15 @@ public class BackendManager : Singleton<BackendManager>
             equipmentDatas.Add(data);
         }
 
+        JsonManager.Ins.SetJson<EquipmentData>(equipmentDatas);
         Debug.Log($"[Backend] Equipment chart load success : {equipmentDatas.Count}");
         return true;
     }
 
-
     private bool LoadIngredientChart()
     {
         ingredientDatas.Clear();
+
         JsonData rows = GetChartRows(ingredientChartFileId, "Ingredient");
         if (rows == null)
             return false;
@@ -486,6 +478,7 @@ public class BackendManager : Singleton<BackendManager>
             ingredientDatas.Add(data);
         }
 
+        JsonManager.Ins.SetJson<IngredientData>(ingredientDatas);
         Debug.Log($"[Backend] Ingredient chart load success : {ingredientDatas.Count}");
         return true;
     }
@@ -573,5 +566,4 @@ public class BackendManager : Singleton<BackendManager>
 
         return defaultValue;
     }
-
 }

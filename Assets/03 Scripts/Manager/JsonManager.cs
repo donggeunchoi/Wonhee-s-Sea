@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -17,94 +16,7 @@ public class JsonManager : Singleton<JsonManager>
     }
 
     private Dictionary<string, object> jsonCache = new Dictionary<string, object>();
-    protected override void Awake()
-    {
-        base.Awake();
-        // 플랫폼 안전 경로
-        basePath = Path.Combine(Application.persistentDataPath, "Json");
-
-        if (!Directory.Exists(basePath))
-        {
-            Directory.CreateDirectory(basePath);
-        }
-    }
-
-
-    #region Save
-
-    /// <summary>
-    /// 데이터를 JSON 파일로 저장
-    /// </summary>
-    public void Save<T>(string fileName, T data)
-    {
-        string path = GetPath(fileName);
-
-        try
-        {
-            string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-            File.WriteAllText(path, json);
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"[JsonManager] Save Error ({fileName}) : {e}");
-        }
-    }
-
-    #endregion
-
-    #region Load
-
-    /// <summary>
-    /// JSON 파일 로드 (없으면 기본값 반환)
-    /// </summary>
-    public T Load<T>(string fileName) where T : new()
-    {
-        string path = GetPath(fileName);
-
-        if (!File.Exists(path))
-        {
-            // 파일이 없으면 기본 객체 생성 후 저장
-            T newData = new T();
-            Save(fileName, newData);
-            return newData;
-        }
-
-        try
-        {
-            string json = File.ReadAllText(path);
-            return JsonConvert.DeserializeObject<T>(json);
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"[JsonManager] Load Error ({fileName}) : {e}");
-            return new T();
-        }
-    }
-
-    #endregion
-
-    //#region Util
-
-    private string GetPath(string fileName)
-    {
-        if (!fileName.EndsWith(".json"))
-            fileName += ".json";
-
-        return Path.Combine(basePath, fileName);
-    }
-
-    /// <summary>
-    /// 특정 JSON 파일 삭제
-    /// </summary>
-    public void Delete(string fileName)
-    {
-        string path = GetPath(fileName);
-        if (File.Exists(path))
-            File.Delete(path);
-
-        // 캐시도 같이 날리기(간단 버전)
-        jsonCache.Clear();
-    }
+    private Dictionary<string, object> jsonDictionaryCache = new Dictionary<string, object>();
 
     private Dictionary<Type, string> fileNameMap = new Dictionary<Type, string>()
     {
@@ -114,6 +26,76 @@ public class JsonManager : Singleton<JsonManager>
         { typeof(EquipmentData), "Equipment_Data" },
         { typeof(StandData), "Stand_Data" },
     };
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        basePath = Path.Combine(Application.persistentDataPath, "Json");
+
+        if (!Directory.Exists(basePath))
+            Directory.CreateDirectory(basePath);
+    }
+
+    #region Save / Load
+
+    public void Save<T>(string fileName, T data)
+    {
+        string path = GetPath(fileName);
+
+        try
+        {
+            string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+            File.WriteAllText(path, json);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[JsonManager] Save Error ({fileName}) : {e}");
+        }
+    }
+
+    public T Load<T>(string fileName) where T : new()
+    {
+        string path = GetPath(fileName);
+
+        if (!File.Exists(path))
+            return new T();
+
+        try
+        {
+            string json = File.ReadAllText(path);
+            T data = JsonConvert.DeserializeObject<T>(json);
+            return data == null ? new T() : data;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[JsonManager] Load Error ({fileName}) : {e}");
+            return new T();
+        }
+    }
+
+    #endregion
+
+    #region Util
+
+    private string GetPath(string fileName)
+    {
+        if (!fileName.EndsWith(".json"))
+            fileName += ".json";
+
+        return Path.Combine(basePath, fileName);
+    }
+
+    public void Delete(string fileName)
+    {
+        string path = GetPath(fileName);
+
+        if (File.Exists(path))
+            File.Delete(path);
+
+        jsonCache.Clear();
+        jsonDictionaryCache.Clear();
+    }
 
     private string GetFileNameByType<T>()
     {
@@ -125,47 +107,67 @@ public class JsonManager : Singleton<JsonManager>
         return type.Name;
     }
 
+    private string GetListCacheKey<T>(string fileName)
+    {
+        return $"ITEMS:{typeof(T).FullName}:{fileName}";
+    }
+
+    private string GetStringDictCacheKey<T>(string fileName)
+    {
+        return $"DICT_STRING:{typeof(T).FullName}:{fileName}";
+    }
+
+    private string GetIntDictCacheKey<T>(string fileName)
+    {
+        return $"DICT_INT:{typeof(T).FullName}:{fileName}";
+    }
+
+    #endregion
+
+    #region List
+
     public List<T> GetJson<T>()
     {
         string fileName = GetFileNameByType<T>();
-        string cacheKey = $"ITEMS:{typeof(T).FullName}:{fileName}";
+        string cacheKey = GetListCacheKey<T>(fileName);
 
-        // 1. 캐시 체크
         if (jsonCache.TryGetValue(cacheKey, out var cached))
             return (List<T>)cached;
 
         string path = GetPath(fileName);
-        List<T> list;
 
-        bool forceReload = true; // 임시 변수
-
-        // 2. 파일 없으면 Resources에서 읽어서 저장
-        if (!File.Exists(path) || forceReload)
-        {
-            list = LoadItemsFromResources<T>(fileName);
-            Save(fileName, new ItemWrapper<T> { items = list });
-        }
-        else
+        if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            list = ParseItems<T>(json);
+            List<T> list = ParseItems<T>(json);
+            jsonCache[cacheKey] = list;
+            return list;
         }
 
-        jsonCache[cacheKey] = list;
-        return list;
+        return new List<T>();
     }
 
-    private List<T> LoadItemsFromResources<T>(string fileName)
+    public void SetJson<T>(List<T> list)
     {
-        TextAsset asset = Resources.Load<TextAsset>($"Json/{fileName}");
-        if (asset == null)
-        {
-            Debug.LogWarning($"[JsonManager] Resources/Json/{fileName}.json 없음");
-            return new List<T>();
-        }
+        string fileName = GetFileNameByType<T>();
+        string cacheKey = GetListCacheKey<T>(fileName);
+        string stringDictKey = GetStringDictCacheKey<T>(fileName);
+        string intDictKey = GetIntDictCacheKey<T>(fileName);
 
-        return ParseItems<T>(asset.text);
+        if (list == null)
+            list = new List<T>();
+
+        jsonCache[cacheKey] = new List<T>(list);
+
+        if (jsonDictionaryCache.ContainsKey(stringDictKey))
+            jsonDictionaryCache.Remove(stringDictKey);
+
+        if (jsonDictionaryCache.ContainsKey(intDictKey))
+            jsonDictionaryCache.Remove(intDictKey);
+
+        Save(fileName, new ItemWrapper<T> { items = list });
     }
+
     private List<T> ParseItems<T>(string json)
     {
         try
@@ -174,13 +176,11 @@ public class JsonManager : Singleton<JsonManager>
             if (string.IsNullOrEmpty(json))
                 return new List<T>();
 
-            // 배열이면 그대로 시도
             if (json.StartsWith("["))
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(json) ?? new List<T>();
+                return JsonConvert.DeserializeObject<List<T>>(json) ?? new List<T>();
 
-            // 객체면 items 배열 뽑기
-            var root = Newtonsoft.Json.Linq.JObject.Parse(json);
-            var itemsToken = root["items"] as Newtonsoft.Json.Linq.JArray;
+            JObject root = JObject.Parse(json);
+            JArray itemsToken = root["items"] as JArray;
 
             if (itemsToken == null)
             {
@@ -188,19 +188,18 @@ public class JsonManager : Singleton<JsonManager>
                 return new List<T>();
             }
 
-            var result = new List<T>();
+            List<T> result = new List<T>();
 
-            // 한 줄씩 안전 파싱(실패한 행은 스킵)
             foreach (var row in itemsToken)
             {
                 try
                 {
-                    var obj = row.ToObject<T>();
-                    if (obj != null) result.Add(obj);
+                    T obj = row.ToObject<T>();
+                    if (obj != null)
+                        result.Add(obj);
                 }
                 catch
                 {
-                    // 여기서 "int" 같은 타입행/헤더행이 걸러짐
                     continue;
                 }
             }
@@ -214,22 +213,20 @@ public class JsonManager : Singleton<JsonManager>
         }
     }
 
+    #endregion
 
-    ///<summory>
-    ///string 키용 딕셔너리
-    ///</summory>>
-    private Dictionary<string, object> jsonDictionaryCache = new Dictionary<string, object>();
+    #region Dictionary
+
     public Dictionary<string, T> GetJsonDicString<T>(Func<T, string> keySelector)
     {
         string fileName = GetFileNameByType<T>();
-        string cacheKey = $"DICT_STRING:{typeof(T).FullName}:{fileName}";
+        string cacheKey = GetStringDictCacheKey<T>(fileName);
 
         if (jsonDictionaryCache.TryGetValue(cacheKey, out var cached))
             return (Dictionary<string, T>)cached;
 
         List<T> lists = GetJson<T>();
         Dictionary<string, T> dict = new Dictionary<string, T>();
-
 
         for (int i = 0; i < lists.Count; i++)
         {
@@ -238,13 +235,13 @@ public class JsonManager : Singleton<JsonManager>
 
             if (string.IsNullOrEmpty(key))
             {
-                Debug.LogWarning("JsonManager Key가 없습니다.");
+                Debug.LogWarning($"[JsonManager] Key가 없습니다. Type : {typeof(T).Name}, Index : {i}");
                 continue;
             }
 
             if (dict.ContainsKey(key))
             {
-                Debug.LogWarning($"JsonManager 중복된 Key: {key}");
+                Debug.LogWarning($"[JsonManager] 중복된 Key : {key}, Type : {typeof(T).Name}");
                 continue;
             }
 
@@ -258,8 +255,7 @@ public class JsonManager : Singleton<JsonManager>
     public Dictionary<int, T> GetJsonDicInt<T>(Func<T, int> keySelector)
     {
         string fileName = GetFileNameByType<T>();
-
-        string cacheKey = $"DICT_INT:{typeof(T).FullName}:{fileName}";
+        string cacheKey = GetIntDictCacheKey<T>(fileName);
 
         if (jsonDictionaryCache.TryGetValue(cacheKey, out var cached))
             return (Dictionary<int, T>)cached;
@@ -274,7 +270,7 @@ public class JsonManager : Singleton<JsonManager>
 
             if (dict.ContainsKey(key))
             {
-                Debug.LogWarning($"[JsonManager] 중복 key 발견: {key}, Type: {typeof(T).Name}");
+                Debug.LogWarning($"[JsonManager] 중복 key 발견 : {key}, Type : {typeof(T).Name}");
                 continue;
             }
 
@@ -283,7 +279,6 @@ public class JsonManager : Singleton<JsonManager>
 
         jsonDictionaryCache[cacheKey] = dict;
         return dict;
-
     }
 
     public T GetDataByKey<T>(string key, Func<T, string> keySelector)
@@ -305,4 +300,6 @@ public class JsonManager : Singleton<JsonManager>
 
         return default;
     }
+
+    #endregion
 }

@@ -30,7 +30,7 @@ public class StandData
 [Serializable]
 public class  ItemDataTable
 {
-    public int Id;
+    public int ItemId;
     public string Name;
     public string ItemType1;
     public string ItemType2;
