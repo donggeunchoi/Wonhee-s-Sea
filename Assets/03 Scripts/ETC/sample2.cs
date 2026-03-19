@@ -17,36 +17,33 @@ public class sample2 : MonoBehaviour
     [SerializeField]
     List<fishMan> fishMen = new List<fishMan>();
 
+
+    public int fishID = 10001;
+
+    public int equipID = 50000;
+
     FishData fishData = null;
-    private void Awake()
-    {
-        UserManager.Ins.OnFishID.AsObservable().Subscribe(fishId =>
-        {
-            Debug.Log(fishId);
-
-            var fishDatas = JsonManager.Ins.GetJson<FishData>();
-
-            foreach( var data in fishDatas)
-            {
-                Debug.Log(data.name);
-            }
-
-            var fishData = fishDatas.Find(x => x.fishId == fishId);
-
-            fishDatas.Add(fishData);
-
-            Debug.Log(fishData.name);
-
-        }).AddTo(this);
-
-        
-    }
+   
 
     private void Start()
     {
-        foreach (var data in fishMen)
-        {
-            fishData = JsonManager.Ins.GetJson<FishData>().Find(info => info.fishId == data.fishid);
-        }
+        initData();
+    }
+
+    private void initData()
+    {
+        Dictionary<int, FishData> fishDict = JsonManager.Ins.GetJsonDicInt<FishData>(info => info.fishId);
+
+        string name = fishDict[fishID].name;
+
+        Debug.Log($"1번 : {name}");
+
+        FishData fishData = JsonManager.Ins.GetDataByKey<FishData>(fishID, info => info.fishId);
+
+        Debug.Log($"2번 : {fishData.hp}");
+
+        EquipmentData equipmentData = JsonManager.Ins.GetDataByKey<EquipmentData>(equipID, info => info.equipmentId);
+        
+        Debug.Log($"3번 :{equipmentData.equipmentType}");
     }
 }

@@ -883,6 +883,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1082891027}
   - component: {fileID: 1082891026}
+  - component: {fileID: 1082891028}
   m_Layer: 0
   m_Name: GameDataManager
   m_TagString: Untagged
@@ -917,6 +918,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1082891028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082891025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e01f8aaec74d72540a8bed8a631ea4d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fishMen: []
 --- !u!1 &1133683361 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8802631220187408137, guid: e1ab9cd1f55e00645840c5a5a232c147, type: 3}
