@@ -16,7 +16,7 @@ public class LoginManager : MonoBehaviour
     [SerializeField] private Text txLoading;
 
     [Header("로그인 후 이동할 씬 이름")]
-    [SerializeField] private string nextSceneName = "Dong_TownScene";
+    [SerializeField] private string nextSceneName;
 
     private bool isInitDone = false;
     private bool isLoginDone = false;
