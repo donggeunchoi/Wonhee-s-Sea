@@ -51,3 +51,23 @@ public class IngredientData
     public string name;
     public int cost;
 }
+
+//전체적인 레시피 결과물은 결국 1개일 태니 레시피는 이렇게 관리하는게 효율적일듯
+[Serializable]
+public class  StandRecipeData
+{
+    public int standId;
+    public string recipeId;
+    public float progressTime;
+    public string outputItemId;
+    public int outputCount;
+}
+
+//레시피 인풋을 따로 뺀 이유는 재료의 확장성때문 재료가 n개로 늘어날 수 있다고 생각하기에 따로 뺌
+[Serializable]
+public class  StandRecipeInputData
+{
+    public string recipeId;
+    public string inputItemId;
+    public int inputCount;
+}
