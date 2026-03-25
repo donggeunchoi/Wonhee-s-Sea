@@ -25,11 +25,13 @@ public class LoginManager : MonoBehaviour
 
     private bool isInitDone = false;
     private bool isLoginDone = false;
+    private bool isChartDataLoaded = false;
 
     private void Start()
     {
         if (txLoading != null)
             txLoading.text = "";
+
         if(objAuthGroup != null)
             objAuthGroup.SetActive(false);
 
@@ -62,6 +64,7 @@ public class LoginManager : MonoBehaviour
             if(txLoading != null)
                 txLoading.text = "로그인에 성공했습니다. 데이터를 불러오는 중...";
             BackendManager.Ins.LoadAll();
+            BackendManager.Ins.LoadAllChartData();
         }).AddTo(this);
 
 
@@ -84,6 +87,7 @@ public class LoginManager : MonoBehaviour
         
         if(txLoading != null)
             txLoading.text = "백엔드 초기화 중...";
+
         BackendManager.Ins.InitBackEnd();
 
     }
@@ -93,7 +97,7 @@ public class LoginManager : MonoBehaviour
         if (btAuthGoogle != null)
         {
             btAuthGoogle.OnClickAsObservable()
-                .ThrottleFirst(System.TimeSpan.FromSeconds(1)) // 연속클릭 방지
+                .ThrottleFirst(TimeSpan.FromSeconds(1)) // 연속클릭 방지
                 .Subscribe(_ =>
             {
                 Debug.Log("Google Login: 아직 미구현");
