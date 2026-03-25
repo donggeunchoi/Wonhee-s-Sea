@@ -786,6 +786,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 8330619942998301793}
+  playerInventory: {fileID: 8330619942998301799}
   _fishA: {fileID: 1125256895149406171, guid: 915521448d5b3d94284586ada6a1c38f, type: 3}
   _fishB: {fileID: 1125256895149406171, guid: 915521448d5b3d94284586ada6a1c38f, type: 3}
   _fishC: {fileID: 1125256895149406171, guid: 915521448d5b3d94284586ada6a1c38f, type: 3}
@@ -2853,6 +2854,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b9778e4d11c82343b698252288570dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8330619942998301799 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8016387427201149895, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
+  m_PrefabInstance: {fileID: 1573791908899552320}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b5a82f192e7c74a8b1c6c1838a6d15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807

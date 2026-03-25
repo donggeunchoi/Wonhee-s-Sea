@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 1483981188085886716}
   - component: {fileID: 1862927204958883090}
   - component: {fileID: 762198680287444055}
+  - component: {fileID: 8016387427201149895}
   m_Layer: 0
   m_Name: Player_D
   m_TagString: Player
@@ -245,6 +246,18 @@ MonoBehaviour:
   _drainAmountPerTick: 3
   _suffocationDamage: 1
   _damageInterval: 1
+--- !u!114 &8016387427201149895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797265196185510909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b5a82f192e7c74a8b1c6c1838a6d15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1807016465476563991
 GameObject:
   m_ObjectHideFlags: 0

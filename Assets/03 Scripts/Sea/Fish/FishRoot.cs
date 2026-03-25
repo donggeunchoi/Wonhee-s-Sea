@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class FishRoot : MonoBehaviour
 {
+    // 임시
+    public int fishId;
+
     public Rigidbody2D Rb { get; private set; }
     public FishController Controller { get; private set; }
     public FishStats Stats { get; private set; }

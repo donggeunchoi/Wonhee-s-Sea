@@ -5,6 +5,7 @@ using UnityEngine;
 public class FishSpawner : MonoBehaviour
 {
     [SerializeField] private Transform _player;
+    [SerializeField] private PlayerInventory playerInventory;
 
     [Header("물고기 프리팹")]
     [SerializeField] private GameObject _fishA; // 수심1~3m
@@ -31,6 +32,18 @@ public class FishSpawner : MonoBehaviour
         var go = Instantiate(prefab, spawnPos, Quaternion.identity);
 
         var root = go.GetComponent<FishRoot>();
+        var stats = go.GetComponent<FishStats>();
+
         root?.Init(_player);
+
+        if (stats != null)
+        {
+            stats.OnDead += OnFishDead;
+        }
+    }
+
+    private void OnFishDead(int fishId)
+    {
+        playerInventory.AddFish(fishId);
     }
 }

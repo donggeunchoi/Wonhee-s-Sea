@@ -12,11 +12,14 @@ public class FishStats : MonoBehaviour, IDamageable
 
     public event Action<int, int> OnDamaged;
 
+    public event Action<int> OnDead;
+
     private FishRoot _owner;
 
     public void Init(FishRoot owner)
     {
         _owner = owner;
+
         CurrentHp = _maxHp;
         IsDead = false;
     }
@@ -35,7 +38,8 @@ public class FishStats : MonoBehaviour, IDamageable
 
         OnDamaged?.Invoke(CurrentHp, _maxHp);
 
-        if (CurrentHp <= 0) Die();
+        if (CurrentHp <= 0)
+            Die();
     }
 
     private void Die()
@@ -43,11 +47,13 @@ public class FishStats : MonoBehaviour, IDamageable
         if (IsDead) return;
         IsDead = true;
 
-        //playerInventory.AddFish(fishID);
+        OnDead?.Invoke(_owner.fishId);
 
         Debug.Log("물고기 사망");
 
-        if (_owner != null && _owner.Controller != null)
+        if (_owner?.Controller != null)
             _owner.Controller.enabled = false;
+
+        Destroy(gameObject);
     }
 }
