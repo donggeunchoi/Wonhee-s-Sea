@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,12 +14,13 @@ public class PlayerInventory : MonoBehaviour
     public float MaxWeight => _maxWeight;
     public float CurrentWeight { get; private set; }
 
+    public event Action<float, float> OnWeightChanged;
+
     public void AddFish(int fishID)
     {
-        var data = DungeonDataManager.Get(fishID);
+        var data = JsonManager.Ins.GetDataByKey<FishData>(fishID, x => x.fishId);
 
-        if (data == null)
-            return;
+        if (data == null) return;
 
         if (CurrentWeight + data.weight > _maxWeight)
         {
@@ -28,6 +30,8 @@ public class PlayerInventory : MonoBehaviour
 
         _fishList.Add(fishID);
         CurrentWeight += data.weight;
+
+        OnWeightChanged?.Invoke(CurrentWeight, _maxWeight);
 
         Debug.Log($"획득: {data.name} / 현재 무게: {CurrentWeight}");
     }
@@ -40,16 +44,20 @@ public class PlayerInventory : MonoBehaviour
 
         for (int i = 0; i < loseCount; i++)
         {
-            int index = Random.Range(0, _fishList.Count);
+            int index = UnityEngine.Random.Range(0, _fishList.Count);
             int fishID = _fishList[index];
 
-            var data = DungeonDataManager.Get(fishID);
+            var data = JsonManager.Ins.GetDataByKey<FishData>(fishID, x => x.fishId);
 
             if (data != null)
                 CurrentWeight -= data.weight;
 
             _fishList.RemoveAt(index);
         }
+
+        CurrentWeight = Mathf.Max(0f, CurrentWeight);
+
+        OnWeightChanged?.Invoke(CurrentWeight, _maxWeight);
 
         Debug.Log($"물고기 {loseCount}개 잃음 / 현재 무게: {CurrentWeight}");
     }

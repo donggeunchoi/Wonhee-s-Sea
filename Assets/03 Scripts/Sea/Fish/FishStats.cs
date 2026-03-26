@@ -5,20 +5,25 @@ using UnityEngine;
 
 public class FishStats : MonoBehaviour, IDamageable
 {
-    [SerializeField] private int _maxHp = 2;
+    private float _maxHp;
+    private float _attackDamage;
 
-    public int CurrentHp { get; private set; }
-    public bool IsDead { get; private set; }
-
-    public event Action<int, int> OnDamaged;
-
-    public event Action<int> OnDead;
-
+    private FishData _data;
     private FishRoot _owner;
 
-    public void Init(FishRoot owner)
+    public float CurrentHp { get; private set; }
+    public bool IsDead { get; private set; }
+
+    public event Action<float, float> OnDamaged;
+    public event Action<int> OnDead;
+
+    public void Init(FishRoot owner, FishData data)
     {
         _owner = owner;
+        _data = data;
+
+        _maxHp = data.hp;
+        _attackDamage = data.attackDamage;
 
         CurrentHp = _maxHp;
         IsDead = false;
@@ -29,16 +34,16 @@ public class FishStats : MonoBehaviour, IDamageable
         TakeDamage(info.Damage);
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         if (IsDead) return;
-        if (amount <= 0) return;
+        if (amount <= 0f) return;
 
-        CurrentHp = Mathf.Max(0, CurrentHp - amount);
+        CurrentHp = Mathf.Max(0f, CurrentHp - amount);
 
         OnDamaged?.Invoke(CurrentHp, _maxHp);
 
-        if (CurrentHp <= 0)
+        if (CurrentHp <= 0f)
             Die();
     }
 
@@ -49,7 +54,7 @@ public class FishStats : MonoBehaviour, IDamageable
 
         OnDead?.Invoke(_owner.fishId);
 
-        Debug.Log("물고기 사망");
+        Debug.Log($"물고기 사망: {_data.name}");
 
         if (_owner?.Controller != null)
             _owner.Controller.enabled = false;

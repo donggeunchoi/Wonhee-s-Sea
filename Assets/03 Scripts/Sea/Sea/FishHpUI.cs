@@ -19,9 +19,11 @@ public class FishHpUI : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnDamaged(int current, int max)
+    private void OnDamaged(float current, float max)
     {
-        float ratio = (float)current / max;
+        if (max <= 0f) return;
+
+        float ratio = Mathf.Clamp01(current / max);
         _fillImage.fillAmount = ratio;
 
         gameObject.SetActive(true);

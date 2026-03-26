@@ -21,8 +21,16 @@ public class FishRoot : MonoBehaviour
         Stats = GetComponent<FishStats>();
         HpUI = GetComponentInChildren<FishHpUI>();
 
+        FishData data = JsonManager.Ins.GetDataByKey<FishData>(fishId, x => x.fishId);
+
+        if (data == null)
+        {
+            Debug.LogError($"FishData 없음: {fishId}");
+            return;
+        }
+
         Controller?.Init(this);
-        Stats?.Init(this);
+        Stats?.Init(this, data);
         HpUI?.Init(Stats);
     }
 

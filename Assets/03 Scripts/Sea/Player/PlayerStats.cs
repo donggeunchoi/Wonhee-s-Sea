@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour, IDamageable
 {
-    [SerializeField] private int _maxHp = 5;
+    [SerializeField] private float _maxHp = 5f;
     [SerializeField] private float _invincibleTime = 0.5f;
 
-    public int MaxHp => _maxHp;
-    public int CurrentHp { get; private set; }
+    public float MaxHp => _maxHp;
+    public float CurrentHp { get; private set; }
     public bool IsDead { get; private set; }
     public bool IsInvincible => _invTimer > 0f;
 
     private float _invTimer;
 
-    public event Action<int, int> OnHpChanged;
+    public event Action<float, float> OnHpChanged;
 
     private void Awake()
     {
@@ -26,7 +26,8 @@ public class PlayerStats : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        if (_invTimer > 0f) _invTimer -= Time.deltaTime;
+        if (_invTimer > 0f)
+            _invTimer -= Time.deltaTime;
     }
 
     public void TakeDamage(DamageInfo info)
@@ -34,30 +35,32 @@ public class PlayerStats : MonoBehaviour, IDamageable
         TakeDamage(info.Damage);
     }
 
-    public void TakeDamage(int amount)
+    public void TakeDamage(float amount)
     {
         if (IsDead) return;
         if (IsInvincible) return;
+
         ApplyDamage(amount, ignoreInvincible: false);
     }
 
-    public void TakeDamageIgnoreInvincible(int amount)
+    public void TakeDamageIgnoreInvincible(float amount)
     {
         if (IsDead) return;
         ApplyDamage(amount, ignoreInvincible: true);
     }
 
-    private void ApplyDamage(int amount, bool ignoreInvincible)
+    private void ApplyDamage(float amount, bool ignoreInvincible)
     {
-        if (amount <= 0) return;
+        if (amount <= 0f) return;
 
-        CurrentHp = Mathf.Max(0, CurrentHp - amount);
+        CurrentHp = Mathf.Max(0f, CurrentHp - amount);
         OnHpChanged?.Invoke(CurrentHp, _maxHp);
 
         if (!ignoreInvincible)
             _invTimer = _invincibleTime;
 
-        if (CurrentHp <= 0) Die();
+        if (CurrentHp <= 0f)
+            Die();
     }
 
     private void Die()
