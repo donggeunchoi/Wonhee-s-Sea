@@ -54,8 +54,6 @@ public class FishStats : MonoBehaviour, IDamageable
 
         OnDead?.Invoke(_owner.fishId);
 
-        Debug.Log($"물고기 사망: {_data.name}");
-
         if (_owner?.Controller != null)
             _owner.Controller.enabled = false;
 

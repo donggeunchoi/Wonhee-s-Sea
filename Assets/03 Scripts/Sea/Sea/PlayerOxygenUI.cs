@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class OxygenUI : MonoBehaviour
+public class PlayerOxygenUI : MonoBehaviour
 {
-    [SerializeField] private Oxygen _oxygen;
+    [SerializeField] private PlayerOxygen _oxygen;
 
     [Header("UI")]
     [SerializeField] private Image _fillImage;
@@ -20,7 +20,7 @@ public class OxygenUI : MonoBehaviour
 
     private void Awake()
     {
-        if (_oxygen == null) _oxygen = FindAnyObjectByType<Oxygen>();
+        if (_oxygen == null) _oxygen = FindAnyObjectByType<PlayerOxygen>();
         if (_warnObj != null) _warnObj.SetActive(false);
     }
 
