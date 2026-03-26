@@ -19,6 +19,8 @@ public class BackendManager : Singleton<BackendManager>
     public List<StandData> standDatas = new List<StandData>();
     public List<EquipmentData> equipmentDatas = new List<EquipmentData>();
     public List<IngredientData> ingredientDatas = new List<IngredientData>();
+    public List<StandRecipeData> standRecipeDatas = new List<StandRecipeData>();
+    public List<StandRecipeInputData> standRecipeInputDatas = new List<StandRecipeInputData>();
 
     public Subject<bool> OnInitBackEnd = new Subject<bool>();
     public Subject<bool> OnBackEndLogin = new Subject<bool>();
@@ -34,6 +36,8 @@ public class BackendManager : Singleton<BackendManager>
     [SerializeField] private string standChartFileId = "";
     [SerializeField] private string equipmentChartFileId = "";
     [SerializeField] private string ingredientChartFileId = "";
+    [SerializeField] private string standRecipeChartFileId = "";
+    [SerializeField] private string standRecipeInputChartFileId = "";
 
     public void InitBackEnd()
     {
@@ -328,6 +332,8 @@ public class BackendManager : Singleton<BackendManager>
         return new Param();
     }
 
+
+    //수정해야하는 함수들 모아놓은 곳
     public void LoadAllChartData()
     {
         bool isSuccess = true;
@@ -337,8 +343,67 @@ public class BackendManager : Singleton<BackendManager>
         isSuccess &= LoadStandChart();
         isSuccess &= LoadEquipmentChart();
         isSuccess &= LoadIngredientChart();
+        isSuccess &= LoadStandRecipeChart();
+        isSuccess &= LoadStandRecipeInputChart();
 
         OnLoadAllChartData.OnNext(isSuccess);
+    }
+
+
+
+    //수정해야하는 함수들 모아놓은 곳
+    private bool LoadStandRecipeInputChart()
+    {
+        standRecipeInputDatas.Clear();
+        JsonData rows = GetChartRows(standRecipeInputChartFileId, "StandRecipeInputData");
+        if (rows == null)
+        {
+            OnLoadChartItem.OnNext(false);
+            return false;
+        }
+        for (int i = 0; i < rows.Count; i++)
+        {
+            JsonData row = rows[i];
+            StandRecipeInputData data = new StandRecipeInputData();
+            data.recipeId = GetInt(row, "RecipeId");
+            data.inputItemId1 = GetInt(row, "InputItemId1");
+            data.inputItemId2 = GetInt(row, "InputItemId2");
+            data.inputCount = GetInt(row, "InputCount");
+            standRecipeInputDatas.Add(data);
+
+        }
+
+        JsonManager.Ins.SetJson<StandRecipeInputData>(standRecipeInputDatas);
+        Debug.Log($"[Backend] StandRecipeInput chart load success : {standRecipeInputDatas.Count}");
+        return true;
+    }
+
+    private bool LoadStandRecipeChart()
+    {
+        standRecipeDatas.Clear();
+        JsonData rows = GetChartRows(standRecipeChartFileId, "StandRecipeData");
+        if (rows == null)
+        {
+            OnLoadChartItem.OnNext(false);
+            return false;
+        }
+
+        for (int i = 0; i < rows.Count; i++)
+        {
+            JsonData row = rows[i];
+            StandRecipeData data = new StandRecipeData();
+
+            data.standId = GetInt(row, "StandId");
+            data.recipeId = GetInt(row, "RecipeId");
+            data.ProcessTime = GetInt(row, "ProcessTime");
+            data.outputItemId = GetInt(row, "OutputItemId");
+            data.outputCount = GetInt(row, "OutputCount");
+            standRecipeDatas.Add(data);
+        }
+
+        JsonManager.Ins.SetJson<StandRecipeData>(standRecipeDatas);
+        Debug.Log($"[Backend] StandRecipe chart load success : {standRecipeDatas.Count}");
+        return true;
     }
 
     private bool LoadItemDataTable()
@@ -357,10 +422,10 @@ public class BackendManager : Singleton<BackendManager>
             JsonData row = rows[i];
             ItemDataTable data = new ItemDataTable();
 
-            data.ItemId = GetInt(row, "ItemId");
-            data.Name = GetString(row, "Name");
-            data.ItemType1 = GetString(row, "ItemType1");
-            data.ItemType2 = GetString(row, "ItemType2");
+            data.itemId = GetInt(row, "ItemId");
+            data.name = GetString(row, "Name");
+            data.itemType1 = GetInt(row, "ItemType1");
+            data.itemType2 = GetInt(row, "ItemType2");
 
             itemDataTables.Add(data);
         }
@@ -420,9 +485,6 @@ public class BackendManager : Singleton<BackendManager>
             data.name = GetString(row, "Name");
             data.standType1 = GetString(row, "StandType1");
             data.standType2 = GetString(row, "StandType2");
-            data.ingredient_1 = GetInt(row, "Ingredient_1", -1);
-            data.ingredient_2 = GetInt(row, "Ingredient_2", -1);
-            data.time = GetFloat(row, "Time");
             data.cost = GetInt(row, "Cost");
 
             standDatas.Add(data);

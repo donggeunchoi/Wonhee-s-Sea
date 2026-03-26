@@ -14,6 +14,7 @@ public class FishData
     public bool isAttack;
 }
 
+
 [Serializable]
 public class StandData
 {
@@ -21,19 +22,17 @@ public class StandData
     public string name;
     public string standType1;
     public string standType2;
-    public int ingredient_1;
-    public int ingredient_2;
-    public float time;
     public int cost;
 }
+
 
 [Serializable]
 public class  ItemDataTable
 {
-    public int ItemId;
-    public string Name;
-    public string ItemType1;
-    public string ItemType2;
+    public int itemId;
+    public string name;
+    public int itemType1;
+    public int itemType2;
 }
 
 [Serializable]
@@ -57,9 +56,9 @@ public class IngredientData
 public class  StandRecipeData
 {
     public int standId;
-    public string recipeId;
-    public float progressTime;
-    public string outputItemId;
+    public int recipeId;
+    public float ProcessTime;
+    public int outputItemId;
     public int outputCount;
 }
 
@@ -67,7 +66,8 @@ public class  StandRecipeData
 [Serializable]
 public class  StandRecipeInputData
 {
-    public string recipeId;
-    public string inputItemId;
+    public int recipeId;
+    public int inputItemId1;
+    public int inputItemId2;
     public int inputCount;
 }
