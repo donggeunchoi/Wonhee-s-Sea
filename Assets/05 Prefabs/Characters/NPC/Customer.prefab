@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7dd6edf5def3b5439b017bc3a1f5957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 5
   arriveDist: 0.1
   colStorage: {fileID: 0}
   colChechOut: {fileID: 0}
@@ -209,7 +209,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355135d1e2c1b5d4e905b4b0a193184d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataBase: {fileID: 11400000, guid: 8ec1281e93ea9fc449e19985bf189767, type: 2}
+  itemDatabase: {fileID: 0}
+  itemAssetManager: {fileID: 0}
   startSlot: 1
   stackRoot: {fileID: 7373640639491573144}
   offsetY: 0.3
@@ -230,7 +231,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
