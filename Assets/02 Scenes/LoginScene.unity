@@ -1179,11 +1179,15 @@ MonoBehaviour:
   standDatas: []
   equipmentDatas: []
   ingredientDatas: []
+  standRecipeDatas: []
+  standRecipeInputDatas: []
   fishChartFileId: 231056
   itemDataTableChartFileId: 231058
-  standChartFileId: 231059
+  standChartFileId: 233140
   equipmentChartFileId: 231054
   ingredientChartFileId: 231057
+  standRecipeChartFileId: 233141
+  standRecipeInputChartFileId: 233142
 --- !u!1 &2056451501
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,7 +1221,7 @@ MonoBehaviour:
   btAuthGoogle: {fileID: 722526734}
   btAuthGuest: {fileID: 680093020}
   txLoading: {fileID: 1753161365}
-  nextSceneName: Dong_TownScene
+  nextSceneName: TownScene
 --- !u!4 &2056451503
 Transform:
   m_ObjectHideFlags: 0

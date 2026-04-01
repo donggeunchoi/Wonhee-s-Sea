@@ -18,6 +18,8 @@ public class JsonManager : Singleton<JsonManager>
     private Dictionary<string, object> jsonCache = new Dictionary<string, object>();
     private Dictionary<string, object> jsonDictionaryCache = new Dictionary<string, object>();
 
+
+    //여기 데이터테이블 이름 동일하게 작성행함.
     private Dictionary<Type, string> fileNameMap = new Dictionary<Type, string>()
     {
         { typeof(FishData), "Fish_Data" },
@@ -25,6 +27,8 @@ public class JsonManager : Singleton<JsonManager>
         { typeof(IngredientData), "Ingredient_Data" },
         { typeof(EquipmentData), "Equipment_Data" },
         { typeof(StandData), "Stand_Data" },
+        { typeof(StandRecipeData), "StandRecipeData" },
+        { typeof(StandRecipeInputData), "StandRecipeInputData"}
     };
 
     protected override void Awake()

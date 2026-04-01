@@ -48,26 +48,26 @@ public class sample2 : MonoBehaviour
         
         Debug.Log($"3번 :{equipmentData.equipmentType}");
 
-        Dictionary<int, ItemDataTable> itemDic = JsonManager.Ins.GetJsonDicInt<ItemDataTable>(info => info.ItemId);
-        string itemName = itemDic[fishID].Name;
+        //Dictionary<int, ItemDataTable> itemDic = JsonManager.Ins.GetJsonDicInt<ItemDataTable>(info => info.ItemId);
+        //string itemName = itemDic[fishID].Name;
 
-        Debug.Log($"5번 : {itemName}");
+        //Debug.Log($"5번 : {itemName}");
 
-        var itemDatas = BackendManager.Ins.itemDataTables;
+        //var itemDatas = BackendManager.Ins.itemDataTables;
 
-        var itemdata = itemDatas.Find(info => info.ItemId == fishID);
+        //var itemdata = itemDatas.Find(info => info.ItemId == fishID);
 
-        Debug.Log($"6번 : {itemdata.Name}");
+        //Debug.Log($"6번 : {itemdata.Name}");
 
 
-        var Tests = JsonManager.Ins.GetJson<ItemDataTable>();
+        //var Tests = JsonManager.Ins.GetJson<ItemDataTable>();
 
-        if (Tests == null)
-            return;
+        //if (Tests == null)
+        //    return;
 
-        var Test = Tests.Find(info => info.ItemId == fishID);
+        //var Test = Tests.Find(info => info.ItemId == fishID);
 
-        Debug.LogWarning($"7번 : {Test.Name}");
+        //Debug.LogWarning($"7번 : {Test.Name}");
     }
 
     private void InitData2()
@@ -80,11 +80,11 @@ public class sample2 : MonoBehaviour
         }
             
 
-        var ItemDataJson = ItemDataJsons.Find(info => info.ItemId == fishID);
+        //var ItemDataJson = ItemDataJsons.Find(info => info.ItemId == fishID);
 
-        if (ItemDataJson == null)
-            return;
+        //if (ItemDataJson == null)
+        //    return;
 
-        Debug.Log($"4번 : {ItemDataJson.Name}");
+        //Debug.Log($"4번 : {ItemDataJson.Name}");
     }
 }

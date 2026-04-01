@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/02 Scenes/LoginScene.unity
     guid: e29dd02e6ca0c8f44ba8fba6fc375a2b
   - enabled: 1
+    path: Assets/02 Scenes/TownScene.unity
+    guid: 4610f29b604aa46028beb7bb44aab8af
+  - enabled: 1
     path: Assets/02 Scenes/Dong_TownScene.unity
     guid: f990c28aeb59feb4886eacc1436e9776
   - enabled: 1
