@@ -7,9 +7,6 @@ public class RecipeStand : MonoBehaviour
     [Header("레시피")]
     [SerializeField] private RecipeSO recipe;
 
-    [Header("아이템 DB (월드 오브젝트 스폰용)")]
-    [SerializeField] private ItemDatabaseSO itemDatabase;
-
     [Header("옵션")]
     [SerializeField] private bool autoPickupIfPossible = false;
 
@@ -30,8 +27,7 @@ public class RecipeStand : MonoBehaviour
     private ItemSO outputItem;
     private int outputStockCount;
     private Inventory lastInventory;
-    private readonly List<GameObject> worldSpawned = new List<GameObject>();
-
+    
     private List<GameObject> pooled = new List<GameObject>();
     private GameObject cachedPrefab;//현재 풀링이 어떤 프리펩 기준인지 확인하기위해
 
@@ -209,7 +205,7 @@ public class RecipeStand : MonoBehaviour
         if (!useWorldStack) 
             return;
 
-        if (worldStackRoot == null || itemDatabase == null || outputItem == null || outputStockCount <= 0)
+        if (worldStackRoot == null || outputItem == null || outputStockCount <= 0)
         {
             SetPoolActiveCount(0);
             return;
