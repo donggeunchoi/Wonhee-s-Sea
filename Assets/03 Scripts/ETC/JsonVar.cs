@@ -12,6 +12,9 @@ public class FishData
     public float moveSpeed;
     public float weight;
     public bool isAttack;
+    public float detectionRange;
+    public float minDepth;
+    public float maxDepth;
 }
 
 

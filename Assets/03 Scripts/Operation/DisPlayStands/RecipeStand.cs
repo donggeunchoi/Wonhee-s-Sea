@@ -287,6 +287,4 @@ public class RecipeStand : MonoBehaviour
         }
         pooled.Clear();
     }
-
-
 }

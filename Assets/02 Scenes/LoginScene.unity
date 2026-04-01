@@ -751,6 +751,7 @@ MonoBehaviour:
     level: 0
     exp: 0
     gold: 0
+    maxCarryCount: 5
   dungeonInfo:
     HP: 0
     Speed: 0
@@ -1158,6 +1159,7 @@ MonoBehaviour:
     level: 0
     exp: 0
     gold: 0
+    maxCarryCount: 5
   dungeonInfo:
     HP: 0
     Speed: 0
@@ -1181,7 +1183,7 @@ MonoBehaviour:
   ingredientDatas: []
   standRecipeDatas: []
   standRecipeInputDatas: []
-  fishChartFileId: 231056
+  fishChartFileId: 234125
   itemDataTableChartFileId: 231058
   standChartFileId: 233140
   equipmentChartFileId: 231054

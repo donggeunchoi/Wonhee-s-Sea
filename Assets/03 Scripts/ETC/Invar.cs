@@ -17,13 +17,16 @@ public class PUserInfo
     public int level = 1;
     public int exp;
     public int gold;
+    public int maxCarryCount = 5;
 
     public bool IsDifferent(PUserInfo other)
     {
         if (other == null) return true;
 
         return level != other.level
-            || gold != other.gold;
+            || gold != other.gold
+            || exp != other.exp
+            || maxCarryCount != other.maxCarryCount;
     }
 
     public Param FormatJsonData()
@@ -32,6 +35,7 @@ public class PUserInfo
         p.Add("level", level);
         p.Add("exp", exp);
         p.Add("gold", gold);
+        p.Add("maxCarryCount", maxCarryCount);
         return p;
     }
 
