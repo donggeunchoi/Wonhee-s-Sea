@@ -49,27 +49,33 @@ public class CTStandContent : MonoBehaviour
        
 
        //데이터값 잘 들어가고 있음.
-        Debug.LogWarning($"스텐드 ID : {standData.standId}, 이름 : {standData.name}");
+       // Debug.LogWarning($"스텐드 ID : {standData.standId}, 이름 : {standData.name}");
     }
 
     void FirstInit()
     {
         //데이터 캐싱해놓기.
         var standDatas = JsonManager.Ins.GetJson<StandData>();
+        if (standDatas == null)
+            return;
+
         standData = standDatas.Find(info => info.standId == standID);
-
-        var recipeDatas = JsonManager.Ins.GetJson<StandRecipeData>();
-        standRecipeData = recipeDatas.Find(info => info.standId == standID);
-
-        var inputDatas = JsonManager.Ins.GetJson<StandRecipeInputData>();
-        if(recipeDatas != null)
-            recipeInputDatas = inputDatas.FindAll(info => info.recipeId == standRecipeData.recipeId);
-
         if (standData == null)
             return;
 
+        var recipeDatas = JsonManager.Ins.GetJson<StandRecipeData>();
         if (recipeDatas == null)
             return;
+
+        standRecipeData = recipeDatas.Find(info => info.standId == standID);
+        if (standRecipeData == null)
+            return;
+
+        var inputDatas = JsonManager.Ins.GetJson<StandRecipeInputData>();
+        if (inputDatas == null)
+            return;
+
+        recipeInputDatas = inputDatas.FindAll(info => info.recipeId == standRecipeData.recipeId);
     }
 
     public void Interact(Inventory inv)
