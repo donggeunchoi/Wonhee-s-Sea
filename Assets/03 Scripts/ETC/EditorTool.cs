@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class EditorTool : EditorWindow
 {
-    [MenuItem("Tools/GrakungTool")]
+    [MenuItem("Tools/DongGeunTool")]
     static void InitWindow()
     {
         EditorTool w = (EditorTool)EditorWindow.GetWindow(typeof(EditorTool));
