@@ -765,7 +765,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3430299013020933380}
   - component: {fileID: 6711745267285232159}
-  - component: {fileID: 2902744951964391045}
+  - component: {fileID: 6425066835211329409}
   m_Layer: 0
   m_Name: RiceCooker
   m_TagString: Untagged
@@ -839,7 +839,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4249647, y: 1.3451719}
   m_EdgeRadius: 0
---- !u!114 &2902744951964391045
+--- !u!114 &6425066835211329409
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -848,12 +848,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8785016180568984096}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ce125b9c6858ff4bb97728340ef6c34, type: 3}
+  m_Script: {fileID: 11500000, guid: dd49615fb8339b146ac994295f30a7ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recipe: {fileID: 11400000, guid: 5e6cfdc12bb5bb44db557dce06fdea69, type: 2}
-  itemDatabase: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
-  autoPickupIfPossible: 0
+  standID: 1028
   useWorldStack: 1
   worldStackRoot: {fileID: 6478369589717823964}
   columnCount: 5
@@ -861,7 +859,9 @@ MonoBehaviour:
   worldStackOffsetY: 0.5
   worldMaxVisible: 10
   maxOutputCapacity: 30
+  autoPickupIfPossible: 0
   autoContinueIfHasInput: 1
+  itemAssetManager: {fileID: 0}
 --- !u!1 &9042625879935554321
 GameObject:
   m_ObjectHideFlags: 0

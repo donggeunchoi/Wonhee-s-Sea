@@ -47,33 +47,90 @@ public class PlayerInteractStand : MonoBehaviour
         // holdFrames(기본 2프레임) 이상 유지되면 1회 실행
         if (sameTargetFrameCount >= holdFrames)
         {
-            if (target is StorageStand storage)
-                storage.Interact(inventory);
-            else if (target is RecipeStand recipe)
-                recipe.Interact(inventory);
+            InteractWithTarget(target);
 
             lastInteractTime = Time.time;
-            sameTargetFrameCount = 0; // 다시 누르려면 다시 hold 필요
+            sameTargetFrameCount = 0;
+        }
+    }
+
+    private void InteractWithTarget(MonoBehaviour target)
+    {
+        if (target == null)
+            return;
+
+        if (target is StorageStand storage)
+        {
+            storage.Interact(inventory);
+            return;
+        }
+
+        if (target is CTStandContent ctStand)
+        {
+            ctStand.Interact(inventory);
+            return;
+        }
+
+        if (target is CBStandContent cbStand)
+        {
+            cbStand.Interact(inventory);
+            return;
         }
     }
 
     private MonoBehaviour FindNearestTargetStand()
     {
-        var hits = Physics2D.OverlapCircleAll(transform.position, range);
-        if (hits == null || hits.Length == 0) return null;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range);
+        if (hits == null || hits.Length == 0)
+            return null;
 
-        // 우선순위: StorageStand → RecipeStand (기존 로직 유지)
+        MonoBehaviour bestStorage = null;
+        float bestStorageDist = float.MaxValue;
+
+        MonoBehaviour bestContentStand = null;
+        float bestContentStandDist = float.MaxValue;
+
+        Vector2 myPos = transform.position;
+
         for (int i = 0; i < hits.Length; i++)
         {
-            var storage = hits[i].GetComponentInParent<StorageStand>();
-            if (storage != null) return storage;
+            if (hits[i] == null)
+                continue;
+
+            Transform targetTransform = hits[i].transform;
+            float dist = Vector2.Distance(myPos, targetTransform.position);
+
+            StorageStand storage = hits[i].GetComponentInParent<StorageStand>();
+            if (storage != null && dist < bestStorageDist)
+            {
+                bestStorage = storage;
+                bestStorageDist = dist;
+                continue;
+            }
+
+            CTStandContent ctStand = hits[i].GetComponentInParent<CTStandContent>();
+            if (ctStand != null && dist < bestContentStandDist)
+            {
+                bestContentStand = ctStand;
+                bestContentStandDist = dist;
+                continue;
+            }
+
+            CBStandContent cbStand = hits[i].GetComponentInParent<CBStandContent>();
+            if (cbStand != null && dist < bestContentStandDist)
+            {
+                bestContentStand = cbStand;
+                bestContentStandDist = dist;
+                continue;
+            }
         }
 
-        for (int i = 0; i < hits.Length; i++)
-        {
-            var recipe = hits[i].GetComponentInParent<RecipeStand>();
-            if (recipe != null) return recipe;
-        }
+        // 우선순위 유지: Storage -> CT/CB -> RecipeStand
+        if (bestStorage != null)
+            return bestStorage;
+
+        if (bestContentStand != null)
+            return bestContentStand;
 
         return null;
     }

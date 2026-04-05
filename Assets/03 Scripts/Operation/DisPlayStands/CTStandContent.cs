@@ -45,11 +45,7 @@ public class CTStandContent : MonoBehaviour
 
     void Awake()
     {
-        FirstInit();
-       
-
-       //데이터값 잘 들어가고 있음.
-       // Debug.LogWarning($"스텐드 ID : {standData.standId}, 이름 : {standData.name}");
+        FirstInit();       
     }
 
     void FirstInit()
@@ -126,21 +122,34 @@ public class CTStandContent : MonoBehaviour
             if (string.IsNullOrEmpty(req.inputItemId1.ToString()) || req.inputCount <= 0)
                 continue;
 
-            int buffered = GetBufferedCount(req.inputItemId1.ToString());
-            int need = req.inputCount - buffered;
-
-            if (need <= 0)
-                continue;
-
-            int have = inv.CountOf(req.inputItemId1.ToString());
-            if (have <= 0)
-                continue;
-
-            int toMove = Mathf.Min(have, need);
-
-            if (inv.TryRemove(req.inputItemId1.ToString(), toMove))
-                AddToBuffer(req.inputItemId1.ToString(), toMove);
+            TryDepositOneInput(inv, req.inputItemId1, req.inputCount);
+            TryDepositOneInput(inv, req.inputItemId2, req.inputCount);
         }
+    }
+
+    private void TryDepositOneInput(Inventory inv, int inputItemId, int needCount)
+    {
+        if (inv == null)
+            return;
+
+        if (inputItemId <= 0 || needCount <= 0)
+            return;
+
+        string itemId = inputItemId.ToString();
+
+        int buffered = GetBufferedCount(itemId);
+
+        if (needCount - buffered <= 0)
+            return;
+
+        int have = inv.CountOf(itemId);
+        if (have <= 0)
+            return;
+
+        int toMove = Mathf.Min(have, needCount - buffered);
+
+        if(inv.TryRemove(itemId, toMove))
+            AddToBuffer(itemId, toMove);
     }
 
     private void AddToBuffer(string itemId, int add)
@@ -182,16 +191,30 @@ public class CTStandContent : MonoBehaviour
         for (int i = 0; i < recipeInputDatas.Count; i++)
         {
             var req = recipeInputDatas[i];
-
-            if (string.IsNullOrEmpty(req.inputItemId1.ToString()) || req.inputCount <= 0)
+            if (req.inputCount <= 0)
                 continue;
 
-            int buffered = GetBufferedCount(req.inputItemId1.ToString());
-            if (buffered < req.inputCount)
+            // inputItemId1 검사
+            if (!HasEnoughBuffered(req.inputItemId1, req.inputCount))
+                return false;
+
+            // inputItemId2 검사
+            if (!HasEnoughBuffered(req.inputItemId2, req.inputCount))
                 return false;
         }
 
         return true;
+    }
+    private bool HasEnoughBuffered(int inputItemId, int needCount)
+    {
+        // ID가 0 이하라면 "없는 슬롯"으로 보고 통과
+        if (inputItemId <= 0)
+            return true;
+
+        string itemId = inputItemId.ToString();
+        int buffered = GetBufferedCount(itemId);
+
+        return buffered >= needCount;
     }
 
     private void ConsumeInputForOneCraft()
