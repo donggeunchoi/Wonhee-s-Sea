@@ -3,58 +3,68 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class ItemAssetEntry
-{
-    public string itemId;
-    public Sprite Icon;
-    public GameObject prefab;
-}
 
 public class ItemAssetManager : MonoBehaviour
 {
-    [Header("리소시스 아트 내부 경로")]
+    [Header("리소시스 아이콘 내부 경로")]
     [SerializeField]
-    string resourcePath = "Art";
+    string iconPath = "Art";
 
     [Header("리소시스 프리펩 내부 경로")]
     [SerializeField]
     string prefabPath = "Prefabs";
 
-    private ItemRuntimeDatabase itemDatabase;
+    [SerializeField]
+    ItemRuntimeDatabase itemDatabase;
 
     private Dictionary<string, GameObject> prefabCache = new Dictionary<string, GameObject>();
+    private readonly Dictionary<string, Sprite> iconCache = new Dictionary<string, Sprite>();
 
-
-    [SerializeField]
-    List<ItemAssetEntry> items = new List<ItemAssetEntry>();
-
-    Dictionary<string, ItemAssetEntry> itemMap = new Dictionary<string, ItemAssetEntry>();
 
     private void Awake()
     {
-        Build();
+        if (itemDatabase == null)
+            itemDatabase = FindObjectOfType<ItemRuntimeDatabase>();
     }
 
-
-    private void Build()
-    {
-        itemMap.Clear();
-        foreach (var entry in items)
-        {
-            if (entry == null || string.IsNullOrEmpty(entry.itemId))
-                continue;
-            itemMap[entry.itemId] = entry;
-        }
-        Debug.Log($"ItemAssetManager: {itemMap.Count}개 아이템 에셋 로드 완료");
-    }
 
     public Sprite GetIcon(string itemId)
     {
         if (string.IsNullOrEmpty(itemId))
+        {
+            Debug.LogWarning("ItemAssetManager: itemId가 null 또는 비어있음");
             return null;
-        itemMap.TryGetValue(itemId, out var entry);
-        return entry?.Icon;
+        }
+
+        if (iconCache.TryGetValue(itemId, out Sprite cachedIcon))
+            return cachedIcon;
+
+        if (itemDatabase == null)
+        {
+            Debug.LogError($"ItemAssetManager: itemDatabase가 null임. itemId={itemId}", this);
+            return null;
+        }
+
+        ItemRuntimeData itemData = itemDatabase.Get(itemId);
+        if (itemData == null)
+        {
+            Debug.LogError($"ItemAssetManager: 아이콘용 itemData를 찾지 못함. itemId={itemId}", this);
+            return null;
+        }
+
+        string path = GetIconPath(itemData.itemType, itemData.ingredientType, itemId);
+        if (string.IsNullOrEmpty(path))
+            return null;
+
+        Sprite icon = Resources.Load<Sprite>(path);
+        if (icon == null)
+        {
+            Debug.LogError($"ItemAssetManager: Resources에서 아이콘을 찾을 수 없음. path={path}", this);
+            return null;
+        }
+
+        iconCache[itemId] = icon;
+        return icon;
     }
 
     public GameObject GetPrefab(string itemId)
@@ -114,6 +124,34 @@ public class ItemAssetManager : MonoBehaviour
 
             default:
                 Debug.LogError($"ItemAssetManager: 잘못된 ItemType. itemId={itemId}, itemType={itemType}");
+                return null;
+        }
+    }
+    private string GetIconPath(EItemType itemType, EIngredientType ingredientType, string itemId)
+    {
+        switch (itemType)
+        {
+            case EItemType.Fish:
+                return $"{iconPath}/Fish/{itemId}";
+
+            case EItemType.Ingredient:
+                switch (ingredientType)
+                {
+                    case EIngredientType.Sashimi:
+                        return $"{iconPath}/Sashimi/{itemId}";
+                    case EIngredientType.Sushi:
+                        return $"{iconPath}/Sushi/{itemId}";
+                    case EIngredientType.Evenrice:
+                        return $"{iconPath}/Evenrice/{itemId}";
+                    case EIngredientType.Rawrice:
+                        return $"{iconPath}/Rawrice/{itemId}";
+                    default:
+                        Debug.LogError($"ItemAssetManager: 잘못된 IngredientType(Icon). itemId={itemId}, ingredientType={ingredientType}", this);
+                        return null;
+                }
+
+            default:
+                Debug.LogError($"ItemAssetManager: 잘못된 ItemType(Icon). itemId={itemId}, itemType={itemType}", this);
                 return null;
         }
     }

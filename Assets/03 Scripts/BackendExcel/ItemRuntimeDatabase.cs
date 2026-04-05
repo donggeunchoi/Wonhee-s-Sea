@@ -70,8 +70,14 @@ public class ItemRuntimeDatabase : MonoBehaviour
         if (string.IsNullOrEmpty(itemId))
             return null;
 
-        itemDataDic.TryGetValue(itemId, out var data);
-        return data;
+        if (itemDataDic == null)
+            return null;
+
+        if (itemDataDic.TryGetValue(itemId, out ItemRuntimeData data))
+            return data;
+
+        Debug.LogWarning($"ItemRuntimeDatabase: itemId를 찾지 못함. itemId={itemId}");
+        return null;
     }
 
     public bool IsStackable(string itemId)
