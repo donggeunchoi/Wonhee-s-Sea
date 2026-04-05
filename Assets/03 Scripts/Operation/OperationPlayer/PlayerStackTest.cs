@@ -7,8 +7,8 @@ public class PlayerStackTest : MonoBehaviour
     [SerializeField] private Inventory inventory;
 
     [Header("테스트 아이템")]
-    [SerializeField] private string itemId1;
-    [SerializeField] private string itemId2;
+    [SerializeField] private int itemId1;
+    [SerializeField] private int itemId2;
 
     [SerializeField] private int addCount = 3;
 
@@ -22,8 +22,8 @@ public class PlayerStackTest : MonoBehaviour
                 return;
             }
 
-            inventory.TryAdd(itemId1, addCount);
-            inventory.TryAdd(itemId2, addCount);
+            inventory.TryAdd(itemId1.ToString(), addCount);
+            inventory.TryAdd(itemId2.ToString(), addCount);
         }
     }
 }

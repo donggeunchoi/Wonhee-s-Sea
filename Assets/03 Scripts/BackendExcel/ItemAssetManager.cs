@@ -75,27 +75,34 @@ public class ItemAssetManager : MonoBehaviour
             return null;
         }
 
-        var itemData = itemDatabase.Get(itemId);
-
-        EItemType itemType = (EItemType)itemData.itemType;
-        EIngredientType ingredientType = (EIngredientType)itemData.ingredientType;
-
-        string path = GetPrefabPath(itemType, ingredientType, itemId);
-        if (string.IsNullOrEmpty(path))
-            return null;
-
         if (prefabCache.TryGetValue(itemId, out GameObject cachedPrefab))
             return cachedPrefab;
 
-        GameObject prefab = Resources.Load<GameObject>(path);
-
-        if (prefab == null)
+        if (itemDatabase == null)
         {
-            Debug.LogError($"ItemAssetManager: Resources에서 프리팹을 찾을 수 없음. path={path}");
+            Debug.LogError($"ItemAssetManager: itemDatabase가 null임. itemId={itemId}", this);
             return null;
         }
 
-        prefabCache[path] = prefab;
+        ItemRuntimeData itemData = itemDatabase.Get(itemId);
+        if (itemData == null)
+        {
+            Debug.LogError($"ItemAssetManager: 프리팹용 itemData를 찾지 못함. itemId={itemId}", this);
+            return null;
+        }
+
+        string path = GetPrefabPath(itemData.itemType, itemData.ingredientType, itemId);
+        if (string.IsNullOrEmpty(path))
+            return null;
+
+        GameObject prefab = Resources.Load<GameObject>(path);
+        if (prefab == null)
+        {
+            Debug.LogError($"ItemAssetManager: Resources에서 프리팹을 찾을 수 없음. path={path}", this);
+            return null;
+        }
+
+        prefabCache[itemId] = prefab;
         return prefab;
     }
 
@@ -104,19 +111,19 @@ public class ItemAssetManager : MonoBehaviour
         switch (itemType)
         {
             case EItemType.Fish:
-                return $"{prefabPath}/Fish/{itemId}";
+                return $"{prefabPath}/Fish/FS{itemId}";
 
             case EItemType.Ingredient:
                 switch (ingredientType)
                 {
                     case EIngredientType.Sashimi:
-                        return $"{prefabPath}/Sashimi/{itemId}";
+                        return $"{prefabPath}/Sashimi/SSM{itemId}";
                     case EIngredientType.Sushi:
-                        return $"{prefabPath}/Sushi/{itemId}";
+                        return $"{prefabPath}/Sushi/SS{itemId}";
                     case EIngredientType.Evenrice:
-                        return $"{prefabPath}/Evenrice/{itemId}";
+                        return $"{prefabPath}/ER{itemId}";
                     case EIngredientType.Rawrice:
-                        return $"{prefabPath}/Rawrice/{itemId}";
+                        return $"{prefabPath}/RR{itemId}";
                     default:
                         Debug.LogError($"ItemAssetManager: 잘못된 IngredientType. itemId={itemId}, ingredientType={ingredientType}");
                         return null;
