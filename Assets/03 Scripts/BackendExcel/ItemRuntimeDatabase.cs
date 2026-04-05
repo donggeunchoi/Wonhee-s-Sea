@@ -38,6 +38,8 @@ public class ItemRuntimeDatabase : MonoBehaviour
             if (runtimeData == null)
                 continue;
 
+
+            
             itemDataDic[runtimeData.itemId] = runtimeData;
         }
 
