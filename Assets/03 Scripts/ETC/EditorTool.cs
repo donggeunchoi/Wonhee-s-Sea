@@ -56,30 +56,30 @@ public class EditorTool : EditorWindow
 
         GUILayout.Space(1f);
 
-        GUILayout.Label("\n팝업 프리팹 제작하는 장소", EditorStyles.boldLabel);
-        using (new EditorGUILayout.HorizontalScope())
-        {
-            GUILayout.Space(3f);
-            if (GUILayout.Button("프리팹제작 (클라)"))
-            {
-                if (EditorSceneManager.GetActiveScene().isDirty)
-                {
-                    EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-                }
-                EditorSceneManager.OpenScene("Assets/Scenes/PopupBoxCreate1.unity");
-            }
-            GUILayout.Space(3f);
+        //GUILayout.Label("\n팝업 프리팹 제작하는 장소", EditorStyles.boldLabel);
+        //using (new EditorGUILayout.HorizontalScope())
+        //{
+        //    GUILayout.Space(3f);
+        //    if (GUILayout.Button("프리팹제작 (클라)"))
+        //    {
+        //        if (EditorSceneManager.GetActiveScene().isDirty)
+        //        {
+        //            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+        //        }
+        //        EditorSceneManager.OpenScene("Assets/02 Scenes/PopupBoxCreate1.unity");
+        //    }
+        //    GUILayout.Space(3f);
 
-            if (GUILayout.Button("프리팹제작 (원화)"))
-            {
-                if (EditorSceneManager.GetActiveScene().isDirty)
-                {
-                    EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-                }
-                EditorSceneManager.OpenScene("Assets/Scenes/PopupBoxCreate2.unity");
-            }
-            GUILayout.Space(3f);
-        }
+        //    if (GUILayout.Button("프리팹제작 (원화)"))
+        //    {
+        //        if (EditorSceneManager.GetActiveScene().isDirty)
+        //        {
+        //            EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
+        //        }
+        //        EditorSceneManager.OpenScene("Assets/02 Scenes/PopupBoxCreate2.unity");
+        //    }
+        //    GUILayout.Space(3f);
+        //}
 
         //    GUILayout.Label("\n데이터 삭제", EditorStyles.boldLabel);
         //    using (new EditorGUILayout.HorizontalScope())
