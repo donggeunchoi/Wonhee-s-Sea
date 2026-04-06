@@ -459,6 +459,9 @@ public class BackendManager : Singleton<BackendManager>
             data.moveSpeed = GetFloat(row, "MoveSpeed");
             data.weight = GetFloat(row, "Weight");
             data.isAttack = GetBool(row, "IsAttack");
+            data.detectionRange = GetFloat(row, "DetectionRange");
+            data.minDepth = GetFloat(row, "MinDepth");
+            data.maxDepth = GetFloat(row, "MaxDepth");
 
             fishDatas.Add(data);
         }

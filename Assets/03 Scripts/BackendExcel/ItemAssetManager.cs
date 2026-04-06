@@ -2,10 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 [Serializable]
-public class ItemAssetEntrt
+public class ItemAssetEntry
 {
     public string itemId;
     public Sprite Icon;
@@ -14,10 +13,23 @@ public class ItemAssetEntrt
 
 public class ItemAssetManager : MonoBehaviour
 {
+    [Header("리소시스 아트 내부 경로")]
     [SerializeField]
-    List<ItemAssetEntrt> items = new List<ItemAssetEntrt>();
+    string resourcePath = "Art";
 
-    Dictionary<string, ItemAssetEntrt> itemMap = new Dictionary<string, ItemAssetEntrt>();
+    [Header("리소시스 프리펩 내부 경로")]
+    [SerializeField]
+    string prefabPath = "Prefabs";
+
+    private ItemRuntimeDatabase itemDatabase;
+
+    private Dictionary<string, GameObject> prefabCache = new Dictionary<string, GameObject>();
+
+
+    [SerializeField]
+    List<ItemAssetEntry> items = new List<ItemAssetEntry>();
+
+    Dictionary<string, ItemAssetEntry> itemMap = new Dictionary<string, ItemAssetEntry>();
 
     private void Awake()
     {
@@ -47,7 +59,67 @@ public class ItemAssetManager : MonoBehaviour
 
     public GameObject GetPrefab(string itemId)
     {
-        if (string.IsNullOrEmpty(itemId)) return null;
-        return itemMap.TryGetValue(itemId, out var data) ? data.prefab : null;
+        if (string.IsNullOrEmpty(itemId))
+        {
+            Debug.LogWarning("ItemAssetManager: itemId가 null 또는 비어있음");
+            return null;
+        }
+
+        var itemData = itemDatabase.Get(itemId);
+
+        EItemType itemType = (EItemType)itemData.itemType;
+        EIngredientType ingredientType = (EIngredientType)itemData.ingredientType;
+
+        string path = GetPrefabPath(itemType, ingredientType, itemId);
+        if (string.IsNullOrEmpty(path))
+            return null;
+
+        if (prefabCache.TryGetValue(itemId, out GameObject cachedPrefab))
+            return cachedPrefab;
+
+        GameObject prefab = Resources.Load<GameObject>(path);
+
+        if (prefab == null)
+        {
+            Debug.LogError($"ItemAssetManager: Resources에서 프리팹을 찾을 수 없음. path={path}");
+            return null;
+        }
+
+        prefabCache[path] = prefab;
+        return prefab;
+    }
+
+    private string GetPrefabPath(EItemType itemType, EIngredientType ingredientType, string itemId)
+    {
+        switch (itemType)
+        {
+            case EItemType.Fish:
+                return $"{prefabPath}/Fish/{itemId}";
+
+            case EItemType.Ingredient:
+                switch (ingredientType)
+                {
+                    case EIngredientType.Sashimi:
+                        return $"{prefabPath}/Sashimi/{itemId}";
+                    case EIngredientType.Sushi:
+                        return $"{prefabPath}/Sushi/{itemId}";
+                    case EIngredientType.Evenrice:
+                        return $"{prefabPath}/Evenrice/{itemId}";
+                    case EIngredientType.Rawrice:
+                        return $"{prefabPath}/Rawrice/{itemId}";
+                    default:
+                        Debug.LogError($"ItemAssetManager: 잘못된 IngredientType. itemId={itemId}, ingredientType={ingredientType}");
+                        return null;
+                }
+
+            default:
+                Debug.LogError($"ItemAssetManager: 잘못된 ItemType. itemId={itemId}, itemType={itemType}");
+                return null;
+        }
+    }
+
+    public void ClearCache()
+    {
+        prefabCache.Clear();
     }
 }

@@ -720,7 +720,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2158873589416332778}
   - component: {fileID: 1596488239462850482}
-  - component: {fileID: 5972867023978031106}
   m_Layer: 0
   m_Name: CB_Godeungfish
   m_TagString: Untagged
@@ -794,29 +793,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.8415222, y: 0.82269835}
   m_EdgeRadius: 0
---- !u!114 &5972867023978031106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4389254666131381547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ce125b9c6858ff4bb97728340ef6c34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  recipe: {fileID: 11400000, guid: a4e35ee07071b4a408d5e707d26d4e7a, type: 2}
-  itemDatabase: {fileID: 11400000, guid: 8e4758daa76080340b3976b5f7be336d, type: 2}
-  autoPickupIfPossible: 0
-  useWorldStack: 1
-  worldStackRoot: {fileID: 7404510622568697295}
-  columnCount: 5
-  worldStackOffsetX: 0.5
-  worldStackOffsetY: 0.5
-  worldMaxVisible: 10
-  maxOutputCapacity: 30
-  autoContinueIfHasInput: 1
 --- !u!1 &6456157188398421883
 GameObject:
   m_ObjectHideFlags: 0

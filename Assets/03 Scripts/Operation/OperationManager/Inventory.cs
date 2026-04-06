@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -25,6 +24,7 @@ public class Inventory : MonoBehaviour
 
     [SerializeField]
     ItemRuntimeDatabase itemDatabase;
+
     [SerializeField]
     ItemAssetManager itemAssetManager;
 
@@ -96,9 +96,6 @@ public class Inventory : MonoBehaviour
 
         bool stackable = itemDatabase.IsStackable(itemId);
         int maxStack = itemDatabase.GetMaxStack(itemId);
-
-
-
 
         int left = amount;
 
