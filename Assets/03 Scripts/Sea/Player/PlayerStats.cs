@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour, IDamageable
 {
-    [SerializeField] private float _maxHp = 5f;
+    [SerializeField] private float _maxHp = 500f;
     [SerializeField] private float _invincibleTime = 0.5f;
 
     public float MaxHp => _maxHp;

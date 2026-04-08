@@ -5,10 +5,6 @@ using UnityEngine;
 
 public class FishStats : MonoBehaviour, IDamageable
 {
-    private float _maxHp;
-    private float _attackDamage;
-
-    private FishData _data;
     private FishRoot _owner;
 
     public float CurrentHp { get; private set; }
@@ -17,15 +13,18 @@ public class FishStats : MonoBehaviour, IDamageable
     public event Action<float, float> OnDamaged;
     public event Action<int> OnDead;
 
-    public void Init(FishRoot owner, FishData data)
+    public void Init(FishRoot owner)
     {
         _owner = owner;
-        _data = data;
 
-        _maxHp = data.hp;
-        _attackDamage = data.attackDamage;
+        if (_owner == null || _owner.Data == null)
+        {
+            Debug.LogError("FishStats Init 실패: owner 또는 data가 null", this);
+            enabled = false;
+            return;
+        }
 
-        CurrentHp = _maxHp;
+        CurrentHp = _owner.Data.hp;
         IsDead = false;
     }
 
@@ -41,7 +40,7 @@ public class FishStats : MonoBehaviour, IDamageable
 
         CurrentHp = Mathf.Max(0f, CurrentHp - amount);
 
-        OnDamaged?.Invoke(CurrentHp, _maxHp);
+        OnDamaged?.Invoke(CurrentHp, _owner.Data.hp);
 
         if (CurrentHp <= 0f)
             Die();
@@ -52,9 +51,9 @@ public class FishStats : MonoBehaviour, IDamageable
         if (IsDead) return;
         IsDead = true;
 
-        OnDead?.Invoke(_owner.fishId);
+        OnDead?.Invoke(_owner.FishId);
 
-        if (_owner?.Controller != null)
+        if (_owner.Controller != null)
             _owner.Controller.enabled = false;
 
         Destroy(gameObject);

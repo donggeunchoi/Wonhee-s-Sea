@@ -16,7 +16,15 @@ public class DepthCalculator : MonoBehaviour
 
     private void CalculateDepth()
     {
+        if (_player == null) return;
+
         float depth = _surfaceY - _player.position.y;
         CurrentDepth = Mathf.Max(0f, depth);
+    }
+
+    public float GetDepthByWorldY(float worldY)
+    {
+        float depth = _surfaceY - worldY;
+        return Mathf.Max(0f, depth);
     }
 }

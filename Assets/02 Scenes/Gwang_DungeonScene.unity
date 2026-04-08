@@ -862,10 +862,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 8330619942998301793}
-  playerInventory: {fileID: 8330619942998301799}
-  _fishA: {fileID: 1125256895149406171, guid: 915521448d5b3d94284586ada6a1c38f, type: 3}
-  _fishB: {fileID: 1125256895149406171, guid: 915521448d5b3d94284586ada6a1c38f, type: 3}
-  _fishC: {fileID: 1125256895149406171, guid: 915521448d5b3d94284586ada6a1c38f, type: 3}
+  _depthCalculator: {fileID: 1724782004}
+  _fishPrefabs:
+  - {fileID: 6617037314581986297, guid: 915521448d5b3d94284586ada6a1c38f, type: 3}
+  _rangeX: 8
+  _rangeUp: 5
+  _rangeDown: 10
+  _targetFishCount: 12
+  _refreshDistance: 1.5
+  _despawnMarginX: 4
+  _despawnMarginY: 4
+  _minSpawnDistance: 1.5
 --- !u!1 &488779501
 GameObject:
   m_ObjectHideFlags: 0
