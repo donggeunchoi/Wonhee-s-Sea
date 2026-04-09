@@ -19,67 +19,6 @@ public class PUserInfo
     public int gold;
     public int maxCarryCount = 5;
 
-    //키값 : 물고기 ID, 값 : 보유 수량 
-    public Dictionary<string, int> fishStorages = new Dictionary<string, int>();
-
-    //물고기 딕셔너리 추가
-    public void AddFish(string fishID, int count)
-    {
-        if (string.IsNullOrEmpty(fishID))
-            return;
-
-        if (count <= 0)
-            return;
-
-        if (fishStorages.ContainsKey(fishID))
-            fishStorages[fishID] += count;
-        else
-            fishStorages[fishID] = count;
-    }
-
-    //물고기 수량 조회
-    public int GetFishCount(string fishID)
-    {
-        if (string.IsNullOrEmpty(fishID))
-            return 0;
-
-        if (fishStorages == null)
-            return 0;
-
-        if (fishStorages.TryGetValue(fishID, out int count))
-            return count;
-
-        return 0;
-    }
-
-    // 물고기 제거
-    public bool RemoveFish(string fishID, int count)
-    {
-        if (string.IsNullOrEmpty(fishID))
-            return false;
-
-        if (count <= 0)
-            return false;
-
-        if (fishStorages == null)
-            return false;
-
-        if (!fishStorages.TryGetValue(fishID, out int currentCount))
-            return false;
-
-        if (currentCount < count)
-            return false;
-
-        currentCount -= count;
-
-        if (currentCount <= 0)
-            fishStorages.Remove(fishID);
-        else
-            fishStorages[fishID] = currentCount;
-
-        return true;
-    }
-
 
     public bool IsDifferent(PUserInfo other)
     {
@@ -89,25 +28,6 @@ public class PUserInfo
         if (gold != other.gold) return true;
         if (exp != other.exp) return true;
         if (maxCarryCount != other.maxCarryCount) return true;
-
-        // fishStorage 비교
-        if (fishStorages == null && other.fishStorages == null)
-            return false;
-
-        if (fishStorages == null || other.fishStorages == null)
-            return true;
-
-        if (fishStorages.Count != other.fishStorages.Count)
-            return true;
-
-        foreach (var pair in fishStorages)
-        {
-            if (!other.fishStorages.TryGetValue(pair.Key, out int otherValue))
-                return true;
-
-            if (pair.Value != otherValue)
-                return true;
-        }
 
         return false;
     }
@@ -120,15 +40,7 @@ public class PUserInfo
         p.Add("gold", gold);
         p.Add("maxCarryCount", maxCarryCount);
 
-        // 딕셔너리 저장
-        p.Add("fishStorage", JsonConvert.SerializeObject(fishStorages));
-
         return p;
-    }
-    public void SyncFromJson()
-    {
-        if (fishStorages == null)
-            fishStorages = new Dictionary<string, int>();
     }
 }
 
