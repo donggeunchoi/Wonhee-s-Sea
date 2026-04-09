@@ -1,10 +1,11 @@
 using BackEnd;
+using BackEnd.BackndNewtonsoft.Json;
 using LitJson;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UniRx;
-using BackEnd.BackndNewtonsoft.Json;
+using UnityEngine;
 
 public class BackendManager : Singleton<BackendManager>
 {
@@ -27,6 +28,7 @@ public class BackendManager : Singleton<BackendManager>
     public Subject<EGameData> OnGetLoadData = new Subject<EGameData>();
     public Subject<bool> OnLoadAllChartData = new Subject<bool>();
     public Subject<bool> OnLoadChartItem = new Subject<bool>();
+    public Subject<bool> test = new Subject<bool>();
 
     private BackendReturnObject backendInit = null;
 
