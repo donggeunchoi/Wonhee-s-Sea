@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UserManager : Singleton<UserManager>
 {
-   public PUserInfo userInfo = new PUserInfo();
+   public PuserInfo userInfo = new PuserInfo();
    public PDungeonInfo dungeonInfo = new PDungeonInfo();
    public PTownInfo townInfo = new PTownInfo();
    public PBuildingSaveData buildingSaveData = new PBuildingSaveData();

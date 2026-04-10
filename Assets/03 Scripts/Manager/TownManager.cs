@@ -8,7 +8,7 @@ public class TownManager : MonoBehaviour
 {
     private void Awake()
     {
-
+        
     }
     public void OnClickDungeonScene()
     {

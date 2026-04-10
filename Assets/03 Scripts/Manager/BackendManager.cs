@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class BackendManager : Singleton<BackendManager>
 {
-    public PUserInfo userInfo = new PUserInfo();
+    public PuserInfo userInfo = new PuserInfo();
     public PDungeonInfo dungeonInfo = new PDungeonInfo();
     public PTownInfo townInfo = new PTownInfo();
     public PBuildingSaveData buildingSaveData = new PBuildingSaveData();
@@ -29,6 +29,9 @@ public class BackendManager : Singleton<BackendManager>
     public Subject<bool> OnLoadAllChartData = new Subject<bool>();
     public Subject<bool> OnLoadChartItem = new Subject<bool>();
     public Subject<bool> test = new Subject<bool>();
+
+    //던전에서 경영 넘어올때 던져주는 데이터
+    public Subject<string> OnTossFish = new Subject<string>();
 
     private BackendReturnObject backendInit = null;
 
@@ -178,7 +181,7 @@ public class BackendManager : Singleton<BackendManager>
         {
             case EGameData.UserInfo:
                 {
-                    var data = JsonConvert.DeserializeObject<PUserInfo>(json);
+                    var data = JsonConvert.DeserializeObject<PuserInfo>(json);
                     UserManager.Ins.userInfo = data;
                     userInfo = data;
                 }

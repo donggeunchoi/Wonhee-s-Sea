@@ -12,14 +12,14 @@ using UnityEngine;
 //FormatJsonData는 뒤끝 서버에 저장할때 JSON형태로 변환하기 위해 만든겁니다.
 
 [Serializable]
-public class PUserInfo
+public class PuserInfo
 {
     public int level = 1;
     public int exp;
     public int gold;
     public int maxCarryCount = 5;
 
-    Dictionary<string,int> fishContainer = new Dictionary<string, int>();
+    public Dictionary<string,int> fishContainer = new Dictionary<string, int>();
 
     public void AddFish(string fishId, int count)
     {
@@ -71,7 +71,7 @@ public class PUserInfo
 
         return true;
     }
-    public bool IsDifferent(PUserInfo other)
+    public bool IsDifferent(PuserInfo other)
     {
         if (other == null) return true;
 
