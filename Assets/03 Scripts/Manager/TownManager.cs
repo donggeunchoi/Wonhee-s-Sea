@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TownManager : MonoBehaviour
 {
-    //[Header(" 스텐드 ")]
-    //[SerializeField]
-    
-
-
-
+    private void Awake()
+    {
+        
+    }
     public void OnClickDungeonScene()
     {
         SceneManager.LoadScene("Gwang_DungeonScene");

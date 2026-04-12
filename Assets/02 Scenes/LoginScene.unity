@@ -1188,8 +1188,8 @@ MonoBehaviour:
   standChartFileId: 233140
   equipmentChartFileId: 231054
   ingredientChartFileId: 231057
-  standRecipeChartFileId: 233141
-  standRecipeInputChartFileId: 233142
+  standRecipeChartFileId: 234530
+  standRecipeInputChartFileId: 234531
 --- !u!1 &2056451501
 GameObject:
   m_ObjectHideFlags: 0
