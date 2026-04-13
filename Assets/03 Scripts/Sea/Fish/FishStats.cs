@@ -51,7 +51,10 @@ public class FishStats : MonoBehaviour, IDamageable
         if (IsDead) return;
         IsDead = true;
 
-        OnDead?.Invoke(_owner.FishId);
+        int fishId = _owner.FishId;
+
+        OnDead?.Invoke(fishId);
+        UserManager.Ins.OnFishID.OnNext(fishId);
 
         if (_owner.Controller != null)
             _owner.Controller.enabled = false;

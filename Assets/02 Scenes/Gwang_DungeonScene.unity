@@ -865,14 +865,6 @@ MonoBehaviour:
   _depthCalculator: {fileID: 1724782004}
   _fishPrefabs:
   - {fileID: 6617037314581986297, guid: 915521448d5b3d94284586ada6a1c38f, type: 3}
-  _rangeX: 8
-  _rangeUp: 5
-  _rangeDown: 10
-  _targetFishCount: 12
-  _refreshDistance: 1.5
-  _despawnMarginX: 4
-  _despawnMarginY: 4
-  _minSpawnDistance: 1.5
 --- !u!1 &488779501
 GameObject:
   m_ObjectHideFlags: 0
@@ -1721,6 +1713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9da508b27cf920d48a4b303c1933bfbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerInventory: {fileID: 8330619942998301799}
 --- !u!1 &1149049474
 GameObject:
   m_ObjectHideFlags: 0

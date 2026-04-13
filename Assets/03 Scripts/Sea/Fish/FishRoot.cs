@@ -15,7 +15,6 @@ public class FishRoot : MonoBehaviour
     public FishHpUI HpUI { get; private set; }
 
     public Transform PlayerTr { get; private set; }
-    private PlayerInventory _playerInventory;
 
     private void Awake()
     {
@@ -50,29 +49,11 @@ public class FishRoot : MonoBehaviour
         Controller.Init(this);
         Stats.Init(this);
         HpUI?.Init(Stats);
-
-        Stats.OnDead += HandleDead;
     }
 
     public void Init(Transform playerTr)
     {
         PlayerTr = playerTr;
         Controller.BindTarget(PlayerTr);
-
-        if (PlayerTr != null)
-            _playerInventory = PlayerTr.GetComponent<PlayerInventory>();
-    }
-
-    private void HandleDead(int fishId)
-    {
-        if (_playerInventory == null) return;
-
-        _playerInventory.AddFish(fishId);
-    }
-
-    private void OnDestroy()
-    {
-        if (Stats != null)
-            Stats.OnDead -= HandleDead;
     }
 }

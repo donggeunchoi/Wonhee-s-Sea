@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
@@ -15,6 +16,18 @@ public class PlayerInventory : MonoBehaviour
     public float CurrentWeight { get; private set; }
 
     public event Action<float, float> OnWeightChanged;
+
+    private void Awake()
+    {
+        UserManager.Ins.OnFishID
+            .Subscribe(AddFish)
+            .AddTo(this);
+    }
+
+    private void Start()
+    {
+        OnWeightChanged?.Invoke(CurrentWeight, _maxWeight);
+    }
 
     public void AddFish(int fishID)
     {
