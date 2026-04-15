@@ -34,13 +34,13 @@ public class EditorTool : EditorWindow
                 EditorSceneManager.OpenScene("Assets/02 Scenes/LoginScene.unity");
             }
             GUILayout.Space(3f);
-            if (GUILayout.Button("경영씬"))
+            if (GUILayout.Button("경영 스테이지1"))
             {
                 if (EditorSceneManager.GetActiveScene().isDirty)
                 {
                     EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
                 }
-                EditorSceneManager.OpenScene("Assets/02 Scenes/TownScene.unity");
+                EditorSceneManager.OpenScene("Assets/02 Scenes/TownScene_Stage1.unity");
             }
             GUILayout.Space(3f);
             if (GUILayout.Button("바다씬"))
