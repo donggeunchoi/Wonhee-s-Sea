@@ -1223,7 +1223,7 @@ MonoBehaviour:
   btAuthGoogle: {fileID: 722526734}
   btAuthGuest: {fileID: 680093020}
   txLoading: {fileID: 1753161365}
-  nextSceneName: TownScene
+  nextSceneName: TownScene_Stage1
 --- !u!4 &2056451503
 Transform:
   m_ObjectHideFlags: 0
