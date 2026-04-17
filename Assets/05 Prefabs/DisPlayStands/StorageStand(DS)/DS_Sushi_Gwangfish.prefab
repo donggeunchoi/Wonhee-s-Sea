@@ -506,7 +506,7 @@ SpriteRenderer:
   m_SortingLayerID: -190295959
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2dc42d0aa6fd7044a8db1b8d42f97767, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4f6b5278815dc8f42a88095e08a23036, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -560,7 +560,7 @@ GameObject:
   - component: {fileID: 3526926622122747905}
   - component: {fileID: 3263220169945209298}
   m_Layer: 0
-  m_Name: DS_Sushi_Doksa
+  m_Name: DS_Sushi_Gwangfish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
