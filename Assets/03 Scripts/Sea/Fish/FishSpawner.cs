@@ -151,7 +151,6 @@ public class FishSpawner : MonoBehaviour
 
                 FishRoot prefab = candidates[Random.Range(0, candidates.Count)];
                 FishRoot newFish = Instantiate(prefab, spawnPos, Quaternion.identity);
-                newFish.Init(_player);
 
                 _activeFish.Add(newFish);
                 needCount--;
