@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Oxygen : MonoBehaviour
+public class PlayerOxygen : MonoBehaviour
 {
     [SerializeField] private float _maxOxygen = 60f;
     [SerializeField] private float _drainInterval = 2.0f;

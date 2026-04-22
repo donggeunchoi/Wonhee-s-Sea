@@ -77,13 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 259d4e543358d7442be0b72cefd75980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 0.5
-  _chaseSpeed: 0.7
   _moveRangeX: 5
-  _detectionRange: 3
-  _attackRange: 0.5
-  _attackCooldown: 2
-  _attackDamage: 1
   _visual: {fileID: 820215638845426144}
 --- !u!114 &5109885742910424823
 MonoBehaviour:
@@ -97,7 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86bcddd467f15d043ada651fc7eae092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHp: 5
 --- !u!114 &6617037314581986297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,6 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8707bc01bde629f41baa332a0309e486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fishId: 10002
 --- !u!1 &3727190697470120754
 GameObject:
   m_ObjectHideFlags: 0

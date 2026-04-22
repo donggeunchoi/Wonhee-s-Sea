@@ -29,8 +29,8 @@ public class PlayerAttackController : MonoBehaviour
     [SerializeField] private GameObject _attackButtonObj;
     [SerializeField] private GameObject _aimJoystickObj;
 
-    private float _originY_Right = -0.74f;
-    private float _originY_Left = 0.1f;
+    private float _originY_Right = -0.4f;
+    private float _originY_Left = 0.4f;
 
     private PlayerRoot _owner;
 
