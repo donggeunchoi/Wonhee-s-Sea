@@ -13,8 +13,7 @@ public class FishRoot : MonoBehaviour
     public FishController Controller { get; private set; }
     public FishStats Stats { get; private set; }
     public FishHpUI HpUI { get; private set; }
-
-    public Transform PlayerTr { get; private set; }
+    public FishSensor Sensor { get; private set; }
 
     private void Awake()
     {
@@ -22,6 +21,7 @@ public class FishRoot : MonoBehaviour
         Controller = GetComponent<FishController>();
         Stats = GetComponent<FishStats>();
         HpUI = GetComponentInChildren<FishHpUI>();
+        Sensor = GetComponentInChildren<FishSensor>();
 
         Data = JsonManager.Ins.GetDataByKey<FishData>(_fishId, x => x.fishId);
 
@@ -46,14 +46,16 @@ public class FishRoot : MonoBehaviour
             return;
         }
 
-        Controller.Init(this);
-        Stats.Init(this);
-        HpUI?.Init(Stats);
-    }
+        if (Sensor == null)
+        {
+            Debug.LogError("FishSensor 없음", this);
+            enabled = false;
+            return;
+        }
 
-    public void Init(Transform playerTr)
-    {
-        PlayerTr = playerTr;
-        Controller.BindTarget(PlayerTr);
+        Sensor.Init(this);
+        Stats.Init(this);
+        Controller.Init(this);
+        HpUI?.Init(Stats);
     }
 }
