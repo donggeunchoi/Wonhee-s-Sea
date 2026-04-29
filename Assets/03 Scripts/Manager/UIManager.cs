@@ -29,8 +29,8 @@ public class UIManager : Singleton<UIManager>
         txRating.text = string.Format("평판:{0}", UserManager.Ins.userInfo.exp);
 
         //UserInfo 다이아,강화석 추가 필요
-        //txDia.text = string.Format("{0}", UserManager.Ins.userInfo.dia);
-        //txEnchant.text = string.Format("{0}", UserManager.Ins.userInfo.enchant);
+        txDia.text = string.Format("dia:{0}", UserManager.Ins.userInfo.dia);
+        txEnchant.text = string.Format("enchant:{0}", UserManager.Ins.userInfo.enchant);
     }
 
     public void OnClickStore()
