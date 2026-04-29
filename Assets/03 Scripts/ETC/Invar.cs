@@ -17,6 +17,8 @@ public class PuserInfo
     public int level = 1;
     public int exp;
     public int gold;
+    public int dia;
+    public int enchant;
     public int maxCarryCount = 5;
 
     public Dictionary<string,int> fishContainer = new Dictionary<string, int>();
@@ -77,7 +79,9 @@ public class PuserInfo
 
         if (level != other.level) return true;
         if (gold != other.gold) return true;
+        if (dia != other.dia) return true;
         if (exp != other.exp) return true;
+        if (enchant != other.enchant) return true;
         if (maxCarryCount != other.maxCarryCount) return true;
 
         if (fishContainer == null && other.fishContainer != null) return true;
@@ -107,6 +111,8 @@ public class PuserInfo
         p.Add("level", level);
         p.Add("exp", exp);
         p.Add("gold", gold);
+        p.Add("enchant", enchant);
+        p.Add("dia", dia);
         p.Add("maxCarryCount", maxCarryCount);
         p.Add("fishContainer", fishContainer);//딕셔너리
 
