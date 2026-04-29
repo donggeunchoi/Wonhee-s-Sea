@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CheckoutStand : MonoBehaviour
 {
-    public int money;
+    int money;
+
+    public int Money => money;
 
     public void Pay(string itemId, int amount)
     {

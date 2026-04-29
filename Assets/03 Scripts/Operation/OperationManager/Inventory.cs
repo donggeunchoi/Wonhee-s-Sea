@@ -29,13 +29,13 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Transform stackRoot;
 
     [Header("스택 간격(프리팹 1개당 올라갈 높이)")]
-    [SerializeField] private float offsetY = 0.2f;
+    [SerializeField] private float offsetY;
 
     [Header("머리위에 표시할지 여부")]
-    [SerializeField] private bool useHeadStackVisual = true;
+    [SerializeField] private bool useHeadStackVisual;
 
     [Header("기본 최대 스택 수")]
-    [SerializeField] private int defaultMaxStack = 999;
+    [SerializeField] private int defaultMaxStack;
 
     public event Action OnChange;
 

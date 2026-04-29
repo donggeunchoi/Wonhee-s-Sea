@@ -195,5 +195,7 @@ public class Container : MonoBehaviour
             if (pooled[i] != null)
                 Destroy(pooled[i]);
         }
+
+        pooled.Clear();
     }
 } 
