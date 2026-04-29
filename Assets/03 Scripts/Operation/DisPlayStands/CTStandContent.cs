@@ -8,71 +8,104 @@ public class CTStandContent : MonoBehaviour
     [SerializeField]
     int standID;
 
+    [Header("출력 표시 - 월드 오브젝트 쌓기")]
+    [SerializeField] private bool useWorldStack = true;
+    [SerializeField] private Transform worldStackRoot;
+    [SerializeField] private int columnCount;
+    [SerializeField] private float worldStackOffsetX;
+    [SerializeField] private float worldStackOffsetY;
+    [SerializeField] private int worldMaxVisible;
+
+    [Header("출력 보관")]
+    [SerializeField] private int maxOutputCapacity;
+    [SerializeField] private bool autoPickupIfPossible = false;
+    [SerializeField] private bool autoContinueIfHasInput = true;
+
+    [Header("아이템 프리팹 조회용")]
+    [SerializeField] private ItemAssetManager itemAssetManager;
+
     StandData standData = null;
     StandRecipeData standRecipeData = null;
     List<StandRecipeInputData> recipeInputDatas = new List<StandRecipeInputData>();
-
+    
     private bool isProcessing = false;
-    private Dictionary<int, int> inputBuffer = new Dictionary<int, int>();
+
+    // 입력 버퍼 : itemId -> count
+    private Dictionary<string, int> inputBuffer = new Dictionary<string, int>();
+
+    // 출력 적재 정보
+    private string outputItemId;
     private int outputStockCount = 0;
-    private Inventory lastInventory = null;
+
+    private Inventory lastInventory;
+
+    // 월드 스택용 풀
+    private readonly List<GameObject> pooled = new List<GameObject>();
+    private GameObject cachedPrefab;
 
     void Awake()
     {
-        FirstInit();
-       if(standData == null)
-        {
-            var standDatas = JsonManager.Ins.GetJson<StandData>();
-
-            standData = standDatas.Find(info => info.standId == standID);
-        }
-
-       //데이터값 잘 들어가고 있음.
-        Debug.LogWarning($"스텐드 ID : {standData.standId}, 이름 : {standData.name}");
+        FirstInit();       
     }
 
     void FirstInit()
     {
         //데이터 캐싱해놓기.
         var standDatas = JsonManager.Ins.GetJson<StandData>();
+        if (standDatas == null)
+            return;
+
         standData = standDatas.Find(info => info.standId == standID);
-
-        var recipeDatas = JsonManager.Ins.GetJson<StandRecipeData>();
-        standRecipeData = recipeDatas.Find(info => info.standId == standID);
-
-        var inputDatas = JsonManager.Ins.GetJson<StandRecipeInputData>();
-        if(recipeDatas != null)
-            recipeInputDatas = inputDatas.FindAll(info => info.recipeId == standRecipeData.recipeId);
-
         if (standData == null)
             return;
 
+        var recipeDatas = JsonManager.Ins.GetJson<StandRecipeData>();
         if (recipeDatas == null)
             return;
+
+        standRecipeData = recipeDatas.Find(info => info.standId == standID);
+        if (standRecipeData == null)
+            return;
+
+        var inputDatas = JsonManager.Ins.GetJson<StandRecipeInputData>();
+        if (inputDatas == null)
+            return;
+
+        recipeInputDatas = inputDatas.FindAll(info => info.recipeId == standRecipeData.recipeId);
     }
 
     public void Interact(Inventory inv)
     {
-        if (standData == null || standRecipeData == null || inv == null)
+        if (inv == null)
             return;
 
-        lastInventory = inv;
-
-        if (outputStockCount > 0)
+        if (standData == null || standRecipeData == null)
         {
-            //TryPickupOutput(inv);
+            Debug.LogWarning($"[CTStandContent] 초기화가 완료되지 않아 Interact 불가. standID={standID}", this);
             return;
         }
 
+        lastInventory = inv;
+
+        // 1. 완성품이 쌓여있으면 우선 회수
+        if (!string.IsNullOrEmpty(outputItemId) && outputStockCount > 0)
+        {
+            TryPickupOutput(inv);
+            return;
+        }
+
+        // 2. 인벤토리에서 재료를 버퍼로 이동
         DepositInputFromInventory(inv);
 
+        // 3. 현재 생산 중이면 여기까지
         if (isProcessing)
             return;
 
+        // 4. 1회 제작 가능하면 생산 시작
         if (CanConsumeInputForOneCraft())
         {
             ConsumeInputForOneCraft();
-            //StartCoroutine(CoProcess());
+            StartCoroutine(CoProcess());
         }
     }
 
@@ -81,31 +114,47 @@ public class CTStandContent : MonoBehaviour
         if (recipeInputDatas == null || recipeInputDatas.Count == 0)
             return;
 
+        // 한 번 상호작용당 "1회 제작분"만 채우기
         for (int i = 0; i < recipeInputDatas.Count; i++)
         {
             var req = recipeInputDatas[i];
-            if (req.inputCount <= 0)
+
+            if (string.IsNullOrEmpty(req.inputItemId1.ToString()) || req.inputCount <= 0)
                 continue;
 
-            //int buffered = GetBufferedCount(req.inputItemId1);
-            //int need = req.inputCount - buffered;
-            //if (need <= 0)
-            //    continue;
-
-            //int have = inv.CountOf(req.inputItemId.ToString());
-            //if (have <= 0)
-            //    continue;
-
-            //int toMove = Mathf.Min(have, need);
-
-            //if (inv.TryRemove(req.inputItemId.ToString(), toMove))
-            //    AddToBuffer(req.inputItemId, toMove);
+            TryDepositOneInput(inv, req.inputItemId1, req.inputCount);
+            TryDepositOneInput(inv, req.inputItemId2, req.inputCount);
         }
     }
 
-    private void AddToBuffer(int itemId, int add)
+    private void TryDepositOneInput(Inventory inv, int inputItemId, int needCount)
     {
-        if (add <= 0)
+        if (inv == null)
+            return;
+
+        if (inputItemId <= 0 || needCount <= 0)
+            return;
+
+        string itemId = inputItemId.ToString();
+
+        int buffered = GetBufferedCount(itemId);
+
+        if (needCount - buffered <= 0)
+            return;
+
+        int have = inv.CountOf(itemId);
+        if (have <= 0)
+            return;
+
+        int toMove = Mathf.Min(have, needCount - buffered);
+
+        if(inv.TryRemove(itemId, toMove))
+            AddToBuffer(itemId, toMove);
+    }
+
+    private void AddToBuffer(string itemId, int add)
+    {
+        if (string.IsNullOrEmpty(itemId) || add <= 0)
             return;
 
         if (inputBuffer.ContainsKey(itemId))
@@ -114,8 +163,11 @@ public class CTStandContent : MonoBehaviour
             inputBuffer[itemId] = add;
     }
 
-    private int GetBufferedCount(int itemId)
+    private int GetBufferedCount(string itemId)
     {
+        if (string.IsNullOrEmpty(itemId))
+            return 0;
+
         if (inputBuffer.TryGetValue(itemId, out int value))
             return value;
 
@@ -124,74 +176,231 @@ public class CTStandContent : MonoBehaviour
 
     private bool CanConsumeInputForOneCraft()
     {
-        //if (recipeData == null)
-        //    return false;
+        if (standRecipeData == null)
+            return false;
 
-        //if (outputStockCount >= maxOutputCapacity)
-        //    return false;
+        if (recipeInputDatas == null || recipeInputDatas.Count == 0)
+            return false;
 
-        //for (int i = 0; i < recipeInputDatas.Count; i++)
-        //{
-        //    var req = recipeInputDatas[i];
-        //    int buffered = GetBufferedCount(req.inputItemId);
+        if (string.IsNullOrEmpty(standRecipeData.outputItemId.ToString()))
+            return false;
 
-        //    if (buffered < req.inputCount)
-        //        return false;
-        //}
+        if (outputStockCount >= maxOutputCapacity)
+            return false;
+
+        for (int i = 0; i < recipeInputDatas.Count; i++)
+        {
+            var req = recipeInputDatas[i];
+            if (req.inputCount <= 0)
+                continue;
+
+            // inputItemId1 검사
+            if (!HasEnoughBuffered(req.inputItemId1, req.inputCount))
+                return false;
+
+            // inputItemId2 검사
+            if (!HasEnoughBuffered(req.inputItemId2, req.inputCount))
+                return false;
+        }
 
         return true;
+    }
+    private bool HasEnoughBuffered(int inputItemId, int needCount)
+    {
+        // ID가 0 이하라면 "없는 슬롯"으로 보고 통과
+        if (inputItemId <= 0)
+            return true;
+
+        string itemId = inputItemId.ToString();
+        int buffered = GetBufferedCount(itemId);
+
+        return buffered >= needCount;
     }
 
     private void ConsumeInputForOneCraft()
     {
-        //for (int i = 0; i < recipeInputDatas.Count; i++)
-        //{
-        //    var req = recipeInputDatas[i];
+        if (recipeInputDatas == null || recipeInputDatas.Count == 0)
+            return;
 
-        //    inputBuffer[req.inputItemId] -= req.inputCount;
+        for (int i = 0; i < recipeInputDatas.Count; i++)
+        {
+            var req = recipeInputDatas[i];
 
-        //    if (inputBuffer[req.inputItemId] <= 0)
-        //        inputBuffer.Remove(req.inputItemId);
-        //}
+            if (string.IsNullOrEmpty(req.inputItemId1.ToString()) || req.inputCount <= 0)
+                continue;
+
+            inputBuffer[req.inputItemId1.ToString()] -= req.inputCount;
+
+            if (inputBuffer[req.inputItemId1.ToString()] <= 0)
+                inputBuffer.Remove(req.inputItemId1.ToString());
+        }
     }
 
-    //private IEnumerator CoProcess()
-    //{
-    //    isProcessing = true;
+    private IEnumerator CoProcess()
+    {
+        isProcessing = true;
 
-    //    yield return new WaitForSeconds(recipeData.processTime);
+        float processTime = Mathf.Max(0f, standRecipeData.ProcessTime);
+        yield return new WaitForSeconds(processTime);
 
-    //    int canStore = Mathf.Max(0, maxOutputCapacity - outputStockCount);
-    //    int add = Mathf.Min(canStore, recipeData.outputCount);
-    //    outputStockCount += add;
+        outputItemId = standRecipeData.outputItemId.ToString();
 
-    //    isProcessing = false;
+        if (!string.IsNullOrEmpty(outputItemId) && standRecipeData.outputCount > 0)
+        {
+            int canStore = Mathf.Max(0, maxOutputCapacity - outputStockCount);
+            int add = Mathf.Min(canStore, standRecipeData.outputCount);
+            outputStockCount += add;
+        }
 
-    //    if (autoPickupIfPossible && lastInventory != null && outputStockCount > 0)
-    //        TryPickupOutput(lastInventory);
+        isProcessing = false;
 
-    //    if (autoContinueIfHasInput && !isProcessing && CanConsumeInputForOneCraft())
-    //    {
-    //        ConsumeInputForOneCraft();
-    //        StartCoroutine(CoProcess());
-    //    }
-    //}
+        if (autoPickupIfPossible && lastInventory != null && !string.IsNullOrEmpty(outputItemId) && outputStockCount > 0)
+            TryPickupOutput(lastInventory);
 
-    //private void TryPickupOutput(Inventory inv)
-    //{
-    //    if (inv == null || recipeData == null || outputStockCount <= 0)
-    //        return;
+        RefreshOutputVisual();
 
-    //    while (outputStockCount > 0)
-    //    {
-    //        bool ok = inv.TryAdd(recipeData.outputItemId.ToString(), 1);
-    //        if (!ok)
-    //            break;
+        if (autoContinueIfHasInput && !isProcessing && CanConsumeInputForOneCraft())
+        {
+            ConsumeInputForOneCraft();
+            StartCoroutine(CoProcess());
+        }
+    }
 
-    //        outputStockCount--;
-    //    }
+    private void TryPickupOutput(Inventory inv)
+    {
+        if (inv == null)
+            return;
 
-    //    if (outputStockCount < 0)
-    //        outputStockCount = 0;
-    //}
+        if (string.IsNullOrEmpty(outputItemId) || outputStockCount <= 0)
+            return;
+
+        while (outputStockCount > 0)
+        {
+            bool ok = inv.TryAdd(outputItemId, 1);
+            if (!ok)
+                break;
+
+            outputStockCount--;
+        }
+
+        if (outputStockCount < 0)
+            outputStockCount = 0;
+
+        RefreshOutputVisual();
+    }
+
+    private void RefreshOutputVisual()
+    {
+        if (!useWorldStack)
+            return;
+
+        if (worldStackRoot == null)
+        {
+            SetPoolActiveCount(0);
+            return;
+        }
+
+        if (string.IsNullOrEmpty(outputItemId) || outputStockCount <= 0)
+        {
+            SetPoolActiveCount(0);
+            return;
+        }
+
+        if (itemAssetManager == null)
+        {
+            Debug.LogWarning("[CTStandContent] itemAssetManager가 연결되지 않음", this);
+            SetPoolActiveCount(0);
+            return;
+        }
+
+        var prefab = itemAssetManager.GetPrefab(outputItemId);
+        if (prefab == null)
+        {
+            Debug.LogWarning($"[CTStandContent] output prefab 없음. itemId={outputItemId}", this);
+            SetPoolActiveCount(0);
+            return;
+        }
+
+        if (cachedPrefab != prefab)
+        {
+            ClearPool();
+            cachedPrefab = prefab;
+        }
+
+        int visible = Mathf.Clamp(outputStockCount, 0, worldMaxVisible);
+
+        EnsurePool(prefab, visible);
+        SetPoolActiveCount(visible);
+        LayoutPoolGrid(visible);
+    }
+
+    private void EnsurePool(GameObject prefab, int needCount)
+    {
+        if (pooled.Count >= needCount)
+            return;
+
+        int toCreate = needCount - pooled.Count;
+
+        for (int i = 0; i < toCreate; i++)
+        {
+            var go = Instantiate(prefab, worldStackRoot);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            go.SetActive(false);
+            pooled.Add(go);
+        }
+    }
+
+    private void SetPoolActiveCount(int activeCount)
+    {
+        for (int i = 0; i < pooled.Count; i++)
+        {
+            bool active = i < activeCount;
+
+            if (pooled[i] != null && pooled[i].activeSelf != active)
+                pooled[i].SetActive(active);
+        }
+    }
+
+    private void LayoutPoolGrid(int visibleCount)
+    {
+        if (columnCount <= 0)
+            columnCount = 5;
+
+        for (int i = 0; i < visibleCount; i++)
+        {
+            var go = pooled[i];
+            if (go == null)
+                continue;
+
+            int col = i % columnCount;
+            int row = i / columnCount;
+
+            go.transform.localPosition = new Vector3(
+                col * worldStackOffsetX,
+                row * worldStackOffsetY,
+                0f
+            );
+
+            go.transform.localRotation = Quaternion.identity;
+        }
+    }
+
+    private void ClearPool()
+    {
+        for (int i = 0; i < pooled.Count; i++)
+        {
+            if (pooled[i] != null)
+                Destroy(pooled[i]);
+        }
+
+        pooled.Clear();
+    }
+
+    // 디버그 / 외부 조회용
+    public bool IsProcessing => isProcessing;
+    public int OutputStockCount => outputStockCount;
+    public string OutputItemId => outputItemId;
+    public int StandID => standID;
 }
+

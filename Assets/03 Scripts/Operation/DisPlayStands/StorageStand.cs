@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class StorageStand : MonoBehaviour
 {
-    [Header("초밥 아이템 ID (Inventory와 동일)")]
+    [Header("진열 아이템 ID (Inventory와 동일)")]
     [SerializeField] private string sushiItemId;
 
     [Header("보관 용량")]
@@ -18,21 +18,28 @@ public class StorageStand : MonoBehaviour
     [SerializeField] private float worldStackOffsetX;
     [SerializeField] private int worldMaxVisible; // 실제로 쌓아두는 오브젝트는 제한(성능)
 
+    [Header("아이템 프리팹 조회용")]
+    [SerializeField] private ItemAssetManager itemAssetManager;
+
     [Header("스택 프리팹(표시용)")]
     [SerializeField] private GameObject worldStackPrefab;
 
-    private const int COLUMN = 5;
-
-    private readonly List<GameObject> pooled = new List<GameObject>();
-
     [SerializeField] private int current;
     [SerializeField] private TextMeshProUGUI countText;
+
+    private int COLUMN = 5;
+    private GameObject cachedPrefab;
+
+    private readonly List<GameObject> pooled = new List<GameObject>();
 
     public string SellItemId => sushiItemId;
     public int Current => current;
 
     public int FreeSpace => Mathf.Max(0, maxCapacity - current);
-
+    private void Start()
+    {
+        RefreshAll();
+    }
     public bool HasStock(int amount = 1)
     {
         if (amount <= 0) return true;
@@ -67,6 +74,11 @@ public class StorageStand : MonoBehaviour
     public void Interact(Inventory inv)
     {
         if (inv == null) return;
+        if (string.IsNullOrEmpty(sushiItemId))
+        {
+            Debug.LogWarning("[StorageStand] sushiItemId가 비어있음", this);
+            return;
+        }
 
         int space = FreeSpace;
         if (space <= 0) return;
@@ -81,7 +93,6 @@ public class StorageStand : MonoBehaviour
 
         current += toDeposit;
         RefreshAll();
-        
     }
 
     private void RefreshAll()
@@ -100,50 +111,113 @@ public class StorageStand : MonoBehaviour
     {
         if (!useWorldStack)
             return;
+
         if (worldStackRoot == null)
+        {
+            SetPoolActiveCount(0);
             return;
-        if (worldStackPrefab == null)
+        }
+
+        if (current <= 0)
+        {
+            SetPoolActiveCount(0);
             return;
+        }
+
+        if (itemAssetManager == null)
+        {
+            Debug.LogWarning("[StorageStand] itemAssetManager가 연결되지 않음", this);
+            SetPoolActiveCount(0);
+            return;
+        }
+
+        if (string.IsNullOrEmpty(sushiItemId))
+        {
+            Debug.LogWarning("[StorageStand] sushiItemId가 비어있음", this);
+            SetPoolActiveCount(0);
+            return;
+        }
+
+        var prefab = itemAssetManager.GetPrefab(sushiItemId);
+        if (prefab == null)
+        {
+            Debug.LogWarning($"[StorageStand] prefab 없음. itemId={sushiItemId}", this);
+            SetPoolActiveCount(0);
+            return;
+        }
+
+        if (cachedPrefab != prefab)
+        {
+            ClearPool();
+            cachedPrefab = prefab;
+        }
 
         int visible = Mathf.Clamp(current, 0, worldMaxVisible);
 
-        EnsurePool(visible);
-        
-        for(int i = 0; i < pooled.Count; i++ )
-        {
-            bool active = i < visible;
-            if (pooled[i].activeSelf != active)
-                pooled[i].SetActive(active);
-
-            if (!active) continue;
-
-            // i번째 아이템의 col/row 계산
-            int col = i % COLUMN;     // 0~4
-            int row = i / COLUMN;     // 0,1,2...
-
-            // Root 기준으로 회전까지 고려한 배치
-            Vector3 pos =
-                worldStackRoot.position
-                + worldStackRoot.right * (col * worldStackOffsetX)
-                + worldStackRoot.up * (row * worldStackOffsetY);
-
-            pooled[i].transform.position = pos;
-            pooled[i].transform.rotation = worldStackRoot.rotation;
-        }
+        EnsurePool(prefab, visible);
+        SetPoolActiveCount(visible);
+        LayoutPoolGrid(visible);
     }
 
-    private void EnsurePool(int needCount)
+
+    private void EnsurePool(GameObject prefab, int needCount)
     {
         if (pooled.Count >= needCount)
             return;
 
         int toCreate = needCount - pooled.Count;
-        for(int i = 0; i < toCreate; i++)
+        for (int i = 0; i < toCreate; i++)
         {
-            GameObject go = Instantiate(worldStackPrefab, worldStackRoot);
+            GameObject go = Instantiate(prefab, worldStackRoot);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
             go.SetActive(false);
             pooled.Add(go);
         }
     }
 
+    private void SetPoolActiveCount(int activeCount)
+    {
+        for (int i = 0; i < pooled.Count; i++)
+        {
+            bool active = i < activeCount;
+            if (pooled[i] != null && pooled[i].activeSelf != active)
+                pooled[i].SetActive(active);
+        }
+    }
+
+    private void LayoutPoolGrid(int visibleCount)
+    {
+        if (COLUMN <= 0)
+            COLUMN = 5;
+
+        for (int i = 0; i < visibleCount; i++)
+        {
+            var go = pooled[i];
+            if (go == null)
+                continue;
+
+            int col = i % COLUMN;
+            int row = i / COLUMN;
+
+            go.transform.localPosition = new Vector3(
+                col * worldStackOffsetX,
+                row * worldStackOffsetY,
+                0f
+            );
+
+            go.transform.localRotation = Quaternion.identity;
+        }
+    }
+
+    private void ClearPool()
+    {
+        for (int i = 0; i < pooled.Count; i++)
+        {
+            if (pooled[i] != null)
+                Destroy(pooled[i]);
+        }
+
+        pooled.Clear();
+    }
 }

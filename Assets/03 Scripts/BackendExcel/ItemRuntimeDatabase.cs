@@ -1,68 +1,85 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+public class ItemRuntimeData
+{
+    public string itemId;
+    public string name;
+    public EItemType itemType;
+    public EIngredientType ingredientType;
+
+    public bool stackable;
+    public int maxStack;
+}
+
 public class ItemRuntimeDatabase : MonoBehaviour
 {
-    private Dictionary<string, ChartItemData> itemMap = new Dictionary<string, ChartItemData>();
+    private Dictionary<string, ItemRuntimeData> itemDataDic = new Dictionary<string, ItemRuntimeData>();
 
-    public bool IsLoaded => itemMap != null && itemMap.Count > 0;
+    public bool IsLoaded => itemDataDic != null && itemDataDic.Count > 0;
 
-    private void Start()
+
+    public void SetItems(List<ItemDataTable> items)
     {
-        List<ChartItemData> testItems = new List<ChartItemData>
-    {
-        new ChartItemData
-        {
-            itemId = "fish_salmon",
-            displayName = "연어",
-            category = 0,
-            stackable = true,
-            maxStack = 30,
-            iconKey = "fish_salmon",
-            prefabKey = "fish_salmon"
-        },
-        new ChartItemData
-        {
-            itemId = "sushi_salmon",
-            displayName = "연어초밥",
-            category = 1,
-            stackable = true,
-            maxStack = 30,
-            iconKey = "sushi_salmon",
-            prefabKey = "sushi_salmon"
-        }
-    };
-
-        SetItems(testItems);
-    }
-
-    public void SetItems(List<ChartItemData> items)
-    {
-        itemMap.Clear();
+        itemDataDic.Clear();
 
         if (items == null)
             return;
 
-        foreach (var item in items)
+        foreach (var table in items)
         {
-            if (item == null || !item.IsValid())
+            if (table == null)
                 continue;
 
-            itemMap[item.itemId] = item;
+            ItemRuntimeData runtimeData = ConvertToRuntimeData(table);
+            if (runtimeData == null)
+                continue;
+
+
+            
+            itemDataDic[runtimeData.itemId] = runtimeData;
         }
 
-        Debug.Log($"ItemRuntimeDatabase: {itemMap.Count}개 로드 완료");
+        Debug.Log($"ItemRuntimeDatabase: {itemDataDic.Count}개 로드 완료");
     }
 
-    public ChartItemData Get(string itemId)
+    private ItemRuntimeData ConvertToRuntimeData(ItemDataTable table)
+    {
+        if (table == null)
+            return null;
+
+        ItemRuntimeData data = new ItemRuntimeData();
+        data.itemId = table.itemId.ToString();
+        data.name = table.name;
+        data.itemType = (EItemType)table.itemType1;
+
+        if (data.itemType == EItemType.Ingredient)
+            data.ingredientType = (EIngredientType)table.itemType2;
+        else
+            data.ingredientType = 0;
+
+        data.stackable = true;
+        data.maxStack = UserManager.Ins.userInfo.maxCarryCount;
+
+        return data;
+    }
+
+    public ItemRuntimeData Get(string itemId)
     {
         if (string.IsNullOrEmpty(itemId))
             return null;
 
-        itemMap.TryGetValue(itemId, out var data);
+        if (itemDataDic == null)
+            return null;
 
-        return data;
+        if (itemDataDic.TryGetValue(itemId, out ItemRuntimeData data))
+            return data;
+
+        Debug.LogWarning($"ItemRuntimeDatabase: itemId를 찾지 못함. itemId={itemId}");
+        return null;
     }
 
     public bool IsStackable(string itemId)
@@ -72,11 +89,6 @@ public class ItemRuntimeDatabase : MonoBehaviour
 
     public int GetMaxStack(string itemId)
     {
-        return Get(itemId)?.maxStack ?? 99;
-    }
-
-    public string GetDisplayName(string itemId)
-    {
-        return Get(itemId)?.displayName ?? itemId;
+        return Get(itemId)?.maxStack ?? 1;
     }
 }

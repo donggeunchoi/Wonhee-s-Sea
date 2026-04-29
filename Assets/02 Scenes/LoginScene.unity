@@ -751,6 +751,7 @@ MonoBehaviour:
     level: 0
     exp: 0
     gold: 0
+    maxCarryCount: 5
   dungeonInfo:
     HP: 0
     Speed: 0
@@ -1158,6 +1159,7 @@ MonoBehaviour:
     level: 0
     exp: 0
     gold: 0
+    maxCarryCount: 5
   dungeonInfo:
     HP: 0
     Speed: 0
@@ -1181,13 +1183,13 @@ MonoBehaviour:
   ingredientDatas: []
   standRecipeDatas: []
   standRecipeInputDatas: []
-  fishChartFileId: 231056
-  itemDataTableChartFileId: 231058
-  standChartFileId: 233140
+  fishChartFileId: 236403
+  itemDataTableChartFileId: 236399
+  standChartFileId: 236398
   equipmentChartFileId: 231054
-  ingredientChartFileId: 231057
-  standRecipeChartFileId: 233141
-  standRecipeInputChartFileId: 233142
+  ingredientChartFileId: 236401
+  standRecipeChartFileId: 236405
+  standRecipeInputChartFileId: 236396
 --- !u!1 &2056451501
 GameObject:
   m_ObjectHideFlags: 0
@@ -1221,7 +1223,7 @@ MonoBehaviour:
   btAuthGoogle: {fileID: 722526734}
   btAuthGuest: {fileID: 680093020}
   txLoading: {fileID: 1753161365}
-  nextSceneName: TownScene
+  nextSceneName: TownScene_Stage1
 --- !u!4 &2056451503
 Transform:
   m_ObjectHideFlags: 0

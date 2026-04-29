@@ -10,6 +10,7 @@ public class PlayerRoot : MonoBehaviour
     public PlayerInputHandler Input { get; private set; }
     public PlayerController Controller { get; private set; }
     public PlayerAttackController Attack { get; private set; }
+    public PlayerInventory Inventory { get; private set; }
 
     private void Awake()
     {
@@ -19,6 +20,7 @@ public class PlayerRoot : MonoBehaviour
         Input = GetComponent<PlayerInputHandler>();
         Controller = GetComponent<PlayerController>();
         Attack = GetComponent<PlayerAttackController>();
+        Inventory = GetComponent<PlayerInventory>();
 
         Input?.Init(this);
         Controller?.Init(this);

@@ -12,18 +12,93 @@ using UnityEngine;
 //FormatJsonData는 뒤끝 서버에 저장할때 JSON형태로 변환하기 위해 만든겁니다.
 
 [Serializable]
-public class PUserInfo
+public class PuserInfo
 {
     public int level = 1;
     public int exp;
     public int gold;
+    public int maxCarryCount = 5;
 
-    public bool IsDifferent(PUserInfo other)
+    public Dictionary<string,int> fishContainer = new Dictionary<string, int>();
+
+    public void AddFish(string fishId, int count)
+    {
+        string madeKey = "D" + fishId;
+        if (string.IsNullOrEmpty(madeKey)) return;
+        if (count <= 0) return;
+
+        if (fishContainer.ContainsKey(madeKey))
+            fishContainer[madeKey] = (int)fishContainer[madeKey] + count;
+        else
+            fishContainer[madeKey] = count;
+    }
+
+    public int GetFishCount(string fishId)
+    {
+        string madeKey = "D" + fishId;
+        if (string.IsNullOrEmpty(madeKey)) return 0;
+
+        if (fishContainer.TryGetValue(madeKey, out int value))
+            return System.Convert.ToInt32(value);
+
+        return 0;
+    }
+
+    public bool RemoveFish(string fishId, int count)
+    {
+        string madeKey = "D" + fishId;
+        if (string.IsNullOrEmpty(madeKey))
+            return false;
+
+        if (count <= 0)
+            return false;
+
+        if (fishContainer == null)
+            return false;
+
+        if (!fishContainer.TryGetValue(madeKey, out int currentCount))
+            return false;
+
+        if (currentCount < count)
+            return false;
+
+        currentCount -= count;
+
+        if (currentCount <= 0)
+            fishContainer.Remove(madeKey);
+        else
+            fishContainer[madeKey] = currentCount;
+
+        return true;
+    }
+    public bool IsDifferent(PuserInfo other)
     {
         if (other == null) return true;
 
-        return level != other.level
-            || gold != other.gold;
+        if (level != other.level) return true;
+        if (gold != other.gold) return true;
+        if (exp != other.exp) return true;
+        if (maxCarryCount != other.maxCarryCount) return true;
+
+        if (fishContainer == null && other.fishContainer != null) return true;
+        if (fishContainer != null && other.fishContainer == null) return true;
+
+        if (fishContainer != null && other.fishContainer != null)
+        {
+            if (fishContainer.Count != other.fishContainer.Count)
+                return true;
+
+            foreach (var pair in fishContainer)
+            {
+                if (!other.fishContainer.TryGetValue(pair.Key, out int otherValue))
+                    return true;
+
+                if (pair.Value != otherValue)
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     public Param FormatJsonData()
@@ -32,10 +107,13 @@ public class PUserInfo
         p.Add("level", level);
         p.Add("exp", exp);
         p.Add("gold", gold);
+        p.Add("maxCarryCount", maxCarryCount);
+        p.Add("fishContainer", fishContainer);//딕셔너리
+
         return p;
     }
-
 }
+
 
 [Serializable]
 public class PDungeonInfo
@@ -152,6 +230,7 @@ public class  PBuildingSaveData
         return p;
     }
 }
+
 
 public static class CloneUtil
 {

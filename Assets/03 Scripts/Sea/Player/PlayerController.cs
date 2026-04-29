@@ -15,12 +15,11 @@ public class PlayerController : MonoBehaviour
 
     [Header("이동")]
     [SerializeField] private float _maxSpeed = 3f;
-    [SerializeField] private float _acceleration = 10f;
-    [SerializeField] private float _deadZone = 0.15f;
-
     [SerializeField] private Transform _pivot;
-    [SerializeField] private float _pivotAngleOffset = 0f;
 
+    private float _acceleration = 10f;
+    private float _deadZone = 0.15f;
+    private float _pivotAngleOffset = 0f;
     private float _maxTurnSpeed = 360f;
     private float _pivotY_Right = 0f;
     private float _pivotY_Left = -0.6f;
@@ -173,9 +172,19 @@ public class PlayerController : MonoBehaviour
 
         if (_sr == null) return;
 
-        bool nextFlip = IsFlipY;
-        if (dir.x < -0.01f) nextFlip = true;
-        else if (dir.x > 0.01f) nextFlip = false;
+        float normalizedAngle = Mathf.DeltaAngle(0f, targetAngle);
+
+        bool nextFlip = (normalizedAngle > 90f || normalizedAngle < -90f);
+
+        if (nextFlip != IsFlipY)
+        {
+            IsFlipY = nextFlip;
+            _sr.flipY = IsFlipY;
+
+            Vector3 p = _pivot.localPosition;
+            p.y = IsFlipY ? _pivotY_Left : _pivotY_Right;
+            _pivot.localPosition = p;
+        }
 
         if (nextFlip != IsFlipY)
         {
