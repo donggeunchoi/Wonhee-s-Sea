@@ -23,6 +23,39 @@ public class PuserInfo
 
     public Dictionary<string,int> fishContainer = new Dictionary<string, int>();
 
+    public void AddGold(int amount)
+    {
+        if (amount <= 0)
+            return;
+
+        gold += amount;
+    }
+
+    public void AddExp(int amount)
+    {
+        if (amount <= 0)
+            return;
+
+        exp += amount;
+
+        CheckLevelUp();
+    }
+
+    private void CheckLevelUp()
+    {
+        //이 코드도 나중에 변경이 필요한 부분일듯.
+        int needExp = level * 100;
+
+        while (exp >= needExp)
+        {
+            exp -= needExp;
+            level++;
+
+            needExp = level * 100;
+        }
+    }
+
+
     public void AddFish(string fishId, int count)
     {
         string madeKey = "D" + fishId;
