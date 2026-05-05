@@ -21,6 +21,13 @@ public class Container : MonoBehaviour
     [Header("프리팹 조회")]
     [SerializeField] private ItemAssetManager itemAssetManager;
 
+    [Header("UI프리펩")]
+    [SerializeField]
+    FishSlotUI fishSlotUI;
+    [Header("UI생성위치")]
+    [SerializeField]
+    Transform content;
+
     private string currentFishId;
     private int currentFishCount;
     private readonly List<GameObject> pooled = new List<GameObject>();
@@ -58,6 +65,10 @@ public class Container : MonoBehaviour
 
         currentFishId = _fishID;
 
+        for(int i = 0; i < UserManager.Ins.userInfo.fishContainer.Count; i++)
+        {
+
+        }
         currentFishCount = BackendManager.Ins.userInfo.GetFishCount(_fishID);
 
         currentFishCount = Mathf.Clamp(currentFishCount, 0, maxCapacity);
