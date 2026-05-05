@@ -64,8 +64,7 @@ public class OperationManager : Singleton<OperationManager>
         isOperating = false;
 
         OnOperationEnd?.Invoke();
+        //BackendManager.Ins.SaveData();
 
-        int money = checkoutStand != null ? checkoutStand.Money : 0;
-        Debug.Log($"[OperationManager] 영업 종료. 총 매출: {money}");
     }
 }
