@@ -53,7 +53,7 @@ public class StorageStand : MonoBehaviour
         if (current < amount) return false;
 
         current -= amount;
-        RefreshUI();
+        RefreshAll();
         return true;
     }
 
@@ -67,7 +67,7 @@ public class StorageStand : MonoBehaviour
 
         int add = Mathf.Min(space, amount);
         current += add;
-        RefreshUI();
+        RefreshAll();
         return add == amount;
     }
 
