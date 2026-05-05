@@ -57,6 +57,7 @@ public class Inventory : MonoBehaviour
     private void Awake()
     {
         Slots = new List<ItemStack>(startSlot);
+        defaultMaxStack = UserManager.Ins.userInfo.maxCarryCount;
 
         for (int i = 0; i < startSlot; i++)
             Slots.Add(new ItemStack());
