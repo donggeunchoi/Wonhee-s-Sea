@@ -65,9 +65,25 @@ public class CustomerSpawner : MonoBehaviour
 
     private void SpawnCustomer()
     {
+        string requestedItemId = "Sushi_A"; // 임시
+
+        targetStand = StandManager.Ins.GetStandByItemId(requestedItemId);
+        StorageStand matchedStand = targetStand;
+
+        if (targetStand == null)
+        {
+            Debug.Log("target stand가 존재하지 않습니다");
+        }
+
         Transform parent = customersContainer != null ? customersContainer : null;
         var npc = Instantiate(customerPrefab, exitPoint.position, Quaternion.identity, parent);
         npc.Init(targetStand, checkoutStand, exitPoint, colStand,colCheckOut, pathFinding);
+
+        Inventory npcInventory = npc.GetComponent<Inventory>();
+        if (npcInventory != null)
+        {
+            npcInventory.InitializeInventoryWithItem(matchedStand.SellItemId, 1);
+        }
 
         // 손님이 사라질 때 aliveCount 줄이기
         //npc.OnDespawn += HandleDespawn;

@@ -67,6 +67,19 @@ public class StandManager : MonoBehaviour
         return best;
     }
 
+    public StorageStand GetStandByItemId(string itemId)
+    {
+        foreach (var stand in _stands)
+        {
+            if (stand is StorageStand storageStand && storageStand.SellItemId == itemId)
+            {
+                return storageStand;
+            }
+        }
+        Debug.LogWarning($"[StandManager] 해당 아이템을 파는 매대를 찾을 수 없습니다: {itemId}");
+        return null;
+    }
+
     public class StandContext
     {
         

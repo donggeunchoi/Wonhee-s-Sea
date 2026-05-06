@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class StorageStand : MonoBehaviour
+public class StorageStand : MonoBehaviour, StandManager.IStand
 {
     [Header("진열 아이템 ID (Inventory와 동일)")]
     [SerializeField] private string sushiItemId;
@@ -36,6 +36,12 @@ public class StorageStand : MonoBehaviour
     public int Current => current;
 
     public int FreeSpace => Mathf.Max(0, maxCapacity - current);
+
+    public StandManager.StandType Type => StandManager.StandType.Sell;
+    public bool IsBusy { get; private set; }
+    public float progress => 0f;
+
+
     private void Start()
     {
         RefreshAll();
@@ -93,6 +99,11 @@ public class StorageStand : MonoBehaviour
 
         current += toDeposit;
         RefreshAll();
+    }
+
+    public void Interact(StandManager.StandContext context)
+    {
+        // 손님, 플레이어 상호작용 로직
     }
 
     private void RefreshAll()
