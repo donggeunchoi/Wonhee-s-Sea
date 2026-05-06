@@ -43,20 +43,22 @@ public class PlayerStackTest : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
+            Debug.Log("[PlayerStackTest] T 입력 감지");
+
             if (inventory == null)
             {
                 Debug.LogWarning("Inventory 연결 안됨");
                 return;
             }
 
-            int before1 = itemId1 % 10000;
-            int before2 = itemId2 % 10000;
+            string itemIdString1 = itemId1.ToString();
+            string itemIdString2 = itemId2.ToString();
 
-            string after1 = string.Format("{0:00}", itemId1);
-            string after2 = string.Format("{0:00}", itemId2);
+            bool result1 = inventory.TryAdd(itemIdString1, addCount);
+            bool result2 = inventory.TryAdd(itemIdString2, addCount);
 
-            inventory.TryAdd(after1, addCount);
-            inventory.TryAdd(after2, addCount);
+            Debug.Log($"[PlayerStackTest] Add 결과 / itemId1={itemIdString1}, count={addCount}, result={result1}, 현재개수={inventory.CountOf(itemIdString1)}");
+            Debug.Log($"[PlayerStackTest] Add 결과 / itemId2={itemIdString2}, count={addCount}, result={result2}, 현재개수={inventory.CountOf(itemIdString2)}");
         }
     }
 }

@@ -12,6 +12,7 @@ public class FishStats : MonoBehaviour, IDamageable
 
     public event Action<float, float> OnDamaged;
     public event Action<int> OnDead;
+    public event Action<DamageInfo> OnHit;
 
     public void Init(FishRoot owner)
     {
@@ -30,7 +31,16 @@ public class FishStats : MonoBehaviour, IDamageable
 
     public void TakeDamage(DamageInfo info)
     {
-        TakeDamage(info.Damage);
+        if (IsDead) return;
+        if (info.Damage <= 0f) return;
+
+        CurrentHp = Mathf.Max(0f, CurrentHp - info.Damage);
+
+        OnHit?.Invoke(info);
+        OnDamaged?.Invoke(CurrentHp, _owner.Data.hp);
+
+        if (CurrentHp <= 0f)
+            Die();
     }
 
     public void TakeDamage(float amount)
