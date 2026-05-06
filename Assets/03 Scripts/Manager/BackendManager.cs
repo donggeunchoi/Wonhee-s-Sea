@@ -571,6 +571,7 @@ public class BackendManager : Singleton<BackendManager>
             data.standId = GetInt(row, "StandId");
             data.grade = GetInt(row, "Grade");
             data.stackCount = GetInt(row, "StackCount");
+            data.sellingitem = GetInt(row, "SellingItem");
             displayStandDatas.Add(data);
         }
         JsonManager.Ins.SetJson<DisplayStandData>(displayStandDatas);
