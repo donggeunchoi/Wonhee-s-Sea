@@ -74,3 +74,13 @@ public class  StandRecipeInputData
     public int inputItemId2;
     public int inputCount;
 }
+
+[Serializable]
+public class DisplayStandData
+{
+    public int dpStandId;
+    public int standId;
+    public int grade;
+    public int stackCount;
+    public int sellingitem;
+}
