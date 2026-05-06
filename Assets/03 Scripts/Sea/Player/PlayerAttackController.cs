@@ -19,7 +19,7 @@ public class PlayerAttackController : MonoBehaviour
     [SerializeField] private float _attackCooldown = 0.5f;
 
     [Header("원거리")]
-    [SerializeField] private SpearProjectile _projectilePrefab;
+    [SerializeField] private Projectile _projectilePrefab;
     [SerializeField] private Transform _firePoint;
     [SerializeField] private float _projectileSpeed = 12f;
     [SerializeField] private int _projectileDamage = 1;

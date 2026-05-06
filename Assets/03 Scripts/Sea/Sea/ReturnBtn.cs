@@ -17,6 +17,6 @@ public class ReturnBtn : MonoBehaviour
             BackendManager.Ins.OnTossFish.OnNext(data);
         }
 
-        SceneManager.LoadScene("TownScene");
+        SceneManager.LoadScene("TownScene_Stage1");
     }
 }

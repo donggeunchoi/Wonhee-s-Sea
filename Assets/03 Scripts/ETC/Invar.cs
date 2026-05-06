@@ -17,9 +17,44 @@ public class PuserInfo
     public int level = 1;
     public int exp;
     public int gold;
+    public int dia;
+    public int enchant;
     public int maxCarryCount = 5;
 
     public Dictionary<string,int> fishContainer = new Dictionary<string, int>();
+
+    public void AddGold(int amount)
+    {
+        if (amount <= 0)
+            return;
+
+        gold += amount;
+    }
+
+    public void AddExp(int amount)
+    {
+        if (amount <= 0)
+            return;
+
+        exp += amount;
+
+        CheckLevelUp();
+    }
+
+    private void CheckLevelUp()
+    {
+        //이 코드도 나중에 변경이 필요한 부분일듯.
+        int needExp = level * 100;
+
+        while (exp >= needExp)
+        {
+            exp -= needExp;
+            level++;
+
+            needExp = level * 100;
+        }
+    }
+
 
     public void AddFish(string fishId, int count)
     {
@@ -77,7 +112,9 @@ public class PuserInfo
 
         if (level != other.level) return true;
         if (gold != other.gold) return true;
+        if (dia != other.dia) return true;
         if (exp != other.exp) return true;
+        if (enchant != other.enchant) return true;
         if (maxCarryCount != other.maxCarryCount) return true;
 
         if (fishContainer == null && other.fishContainer != null) return true;
@@ -107,6 +144,8 @@ public class PuserInfo
         p.Add("level", level);
         p.Add("exp", exp);
         p.Add("gold", gold);
+        p.Add("enchant", enchant);
+        p.Add("dia", dia);
         p.Add("maxCarryCount", maxCarryCount);
         p.Add("fishContainer", fishContainer);//딕셔너리
 

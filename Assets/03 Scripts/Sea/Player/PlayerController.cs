@@ -90,7 +90,12 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        Vector2 targetVelocity = input * _maxSpeed;
+        float finalSpeed = _maxSpeed;
+
+        if (_owner != null && _owner.Equipment != null)
+            finalSpeed += _owner.Equipment.BonusMoveSpeed;
+
+        Vector2 targetVelocity = input * finalSpeed;
 
         _rb.velocity = Vector2.Lerp(
             _rb.velocity,
@@ -173,18 +178,7 @@ public class PlayerController : MonoBehaviour
         if (_sr == null) return;
 
         float normalizedAngle = Mathf.DeltaAngle(0f, targetAngle);
-
         bool nextFlip = (normalizedAngle > 90f || normalizedAngle < -90f);
-
-        if (nextFlip != IsFlipY)
-        {
-            IsFlipY = nextFlip;
-            _sr.flipY = IsFlipY;
-
-            Vector3 p = _pivot.localPosition;
-            p.y = IsFlipY ? _pivotY_Left : _pivotY_Right;
-            _pivot.localPosition = p;
-        }
 
         if (nextFlip != IsFlipY)
         {
