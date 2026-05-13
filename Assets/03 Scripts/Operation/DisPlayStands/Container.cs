@@ -29,7 +29,7 @@ public class Container : MonoBehaviour
     Transform content;
 
     private string currentFishId;
-    private int currentFishCount;
+    private int currentFishCount = 0;
     private readonly List<GameObject> pooled = new List<GameObject>();
     private GameObject cachedPrefab;
 
@@ -61,15 +61,11 @@ public class Container : MonoBehaviour
     public void InitData(string _fishID)
     {
         //던전에서 넘겨주는 데이터로 초기화하기.
-        int count = BackendManager.Ins.userInfo.GetFishCount(_fishID);
-
-        currentFishId = _fishID;
-
         for(int i = 0; i < UserManager.Ins.userInfo.fishContainer.Count; i++)
         {
 
         }
-        currentFishCount = BackendManager.Ins.userInfo.GetFishCount(_fishID);
+        currentFishCount = UserManager.Ins.userInfo.GetFishCount(_fishID);
 
         currentFishCount = Mathf.Clamp(currentFishCount, 0, maxCapacity);
 
@@ -141,7 +137,7 @@ public class Container : MonoBehaviour
             currentFishCount--;
 
             // userInfo에서도 같이 차감
-            BackendManager.Ins.userInfo.RemoveFish(currentFishId, 1);
+            UserManager.Ins.userInfo.RemoveFish(currentFishId, 1);
         }
 
         RefreshVisual();

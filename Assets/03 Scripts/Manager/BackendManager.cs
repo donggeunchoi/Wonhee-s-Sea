@@ -9,10 +9,10 @@ using UnityEngine;
 
 public class BackendManager : Singleton<BackendManager>
 {
-    public PuserInfo userInfo = new PuserInfo();
-    public PDungeonInfo dungeonInfo = new PDungeonInfo();
-    public PTownInfo townInfo = new PTownInfo();
-    public PBuildingSaveData buildingSaveData = new PBuildingSaveData();
+    PuserInfo userInfo = new PuserInfo();
+    PDungeonInfo dungeonInfo = new PDungeonInfo();
+    PTownInfo townInfo = new PTownInfo();
+    PBuildingSaveData buildingSaveData = new PBuildingSaveData();
 
     [Header("뒤끝 차트 고정 데이터")]
     public List<FishData> fishDatas = new List<FishData>();
