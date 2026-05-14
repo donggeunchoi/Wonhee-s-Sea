@@ -7,6 +7,7 @@ public class ReturnBtn : MonoBehaviour
 {
     // 임시
     [SerializeField] private PlayerInventory _playerInventory;
+    [SerializeField] private ResultUI _resultUI;
 
     public void OnClickExit()
     {
@@ -16,7 +17,6 @@ public class ReturnBtn : MonoBehaviour
 
             BackendManager.Ins.OnTossFish.OnNext(data);
         }
-
-        SceneManager.LoadScene("TownScene");
+        _resultUI.Open();
     }
 }

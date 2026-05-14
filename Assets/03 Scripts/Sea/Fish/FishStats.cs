@@ -6,6 +6,7 @@ using UnityEngine;
 public class FishStats : MonoBehaviour, IDamageable
 {
     private FishRoot _owner;
+    private PlayerInventory _playerInventory;
 
     public float CurrentHp { get; private set; }
     public bool IsDead { get; private set; }
@@ -20,7 +21,6 @@ public class FishStats : MonoBehaviour, IDamageable
 
         if (_owner == null || _owner.Data == null)
         {
-            Debug.LogError("FishStats Init 실패: owner 또는 data가 null", this);
             enabled = false;
             return;
         }
@@ -64,7 +64,9 @@ public class FishStats : MonoBehaviour, IDamageable
         int fishId = _owner.FishId;
 
         OnDead?.Invoke(fishId);
-        UserManager.Ins.OnFishID.OnNext(fishId);
+
+        _playerInventory = FindObjectOfType<PlayerInventory>();
+        _playerInventory.AddFish(fishId);
 
         if (_owner.Controller != null)
             _owner.Controller.enabled = false;
