@@ -56,6 +56,7 @@ public enum ETargetType
     Scene = 1,
     Fish = 2,
     Employee = 3,
+    Item = 4,
 }
 
 //[Serializable]
