@@ -226,14 +226,30 @@ public class CTStandContent : MonoBehaviour
         {
             var req = recipeInputDatas[i];
 
-            if (string.IsNullOrEmpty(req.inputItemId1.ToString()) || req.inputCount <= 0)
+            if (req.inputCount <= 0)
                 continue;
 
-            inputBuffer[req.inputItemId1.ToString()] -= req.inputCount;
-
-            if (inputBuffer[req.inputItemId1.ToString()] <= 0)
-                inputBuffer.Remove(req.inputItemId1.ToString());
+            ConsumeOneInput(req.inputItemId1, req.inputCount);
+            ConsumeOneInput(req.inputItemId2, req.inputCount);
         }
+    }
+    private void ConsumeOneInput(int inputItemId, int count)
+    {
+        if (inputItemId <= 0)
+            return;
+
+        if (count <= 0)
+            return;
+
+        string itemId = inputItemId.ToString();
+
+        if (!inputBuffer.ContainsKey(itemId))
+            return;
+
+        inputBuffer[itemId] -= count;
+
+        if (inputBuffer[itemId] <= 0)
+            inputBuffer.Remove(itemId);
     }
 
     private IEnumerator CoProcess()

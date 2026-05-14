@@ -9,13 +9,13 @@ public class PlayerInteractStand : MonoBehaviour
     [SerializeField] private float range = 1.5f;
 
     [Header("자동 상호작용 옵션")]
-    [SerializeField] private float interactCooldown = 0.2f;
-    [SerializeField] private int holdFrames = 2;
+    [SerializeField] private float interactCooldown ;
+    [SerializeField] private int holdFrames;
 
-    private float lastInteractTime = -999f;
+    private float lastInteractTime;
 
     private MonoBehaviour lastTarget;
-    private int sameTargetFrameCount = 0;
+    private int sameTargetFrameCount;
 
     void Update()
     {
