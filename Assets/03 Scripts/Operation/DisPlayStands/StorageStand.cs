@@ -22,8 +22,6 @@ public class StorageStand : MonoBehaviour
     [SerializeField] private ItemAssetManager itemAssetManager;
 
     [Header("스택 프리팹(표시용)")]
-    [SerializeField] private GameObject worldStackPrefab;
-
     [SerializeField] private int current;
     [SerializeField] private TextMeshProUGUI countText;
 
@@ -73,24 +71,28 @@ public class StorageStand : MonoBehaviour
 
     public void Interact(Inventory inv)
     {
-        if (inv == null) return;
+        if (inv == null)
+          return;
+
+
         if (string.IsNullOrEmpty(sushiItemId))
-        {
-            Debug.LogWarning("[StorageStand] sushiItemId가 비어있음", this);
             return;
-        }
 
         int space = FreeSpace;
-        if (space <= 0) return;
+
+        if (space <= 0)
+            return;
 
         int have = inv.CountOf(sushiItemId);
-        if (have <= 0) return;
+
+        if (have <= 0)
+            return;
 
         int toDeposit = Mathf.Min(have, space);
 
         if (!inv.TryRemove(sushiItemId, toDeposit))
             return;
-
+        
         current += toDeposit;
         RefreshAll();
     }
