@@ -14,13 +14,18 @@ using UnityEngine;
 [Serializable]
 public class PuserInfo
 {
+    //경영 플레이어 정보
     public int level = 1;
-    public int exp;
-    public int gold;
-    public int dia;
-    public int enchant;
+    public int exp = 0;
+    public int gold = 0;
+    public int dia = 0;
+    public int enchant = 0;
     public int maxCarryCount = 5;
 
+    //던전 플레이어 정보
+
+
+    //던전과 경영에서 공통으로 사용하는 정보
     public Dictionary<string,int> fishContainer = new Dictionary<string, int>();
 
     public void AddGold(int amount)
@@ -164,6 +169,22 @@ public class PDungeonInfo
     public int HPRegen = 0;
     public int Oxygen = 0;
 
+    public void Damaged(int amount)
+    {
+        if (amount <= 0)
+            return;
+
+        Oxygen -= amount;
+    }
+
+    public void Heal(int amount)
+    {
+        if (amount <= 0)
+            return;
+
+        HP += amount;
+    }
+    
     public bool IsDifferent(PDungeonInfo other)
     {
         if (other == null) return true;
@@ -221,6 +242,12 @@ public class PBuildingState
     public bool isUnlocked;
     public bool isOperating;
     public int staffId;        // 배치 직원
+}
+
+[Serializable]
+public class PCollectionVelue
+{
+    
 }
 
 [Serializable]

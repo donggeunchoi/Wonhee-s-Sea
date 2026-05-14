@@ -61,10 +61,6 @@ public class Container : MonoBehaviour
     public void InitData(string _fishID)
     {
         //던전에서 넘겨주는 데이터로 초기화하기.
-        for(int i = 0; i < UserManager.Ins.userInfo.fishContainer.Count; i++)
-        {
-
-        }
         currentFishCount = UserManager.Ins.userInfo.GetFishCount(_fishID);
 
         currentFishCount = Mathf.Clamp(currentFishCount, 0, maxCapacity);
