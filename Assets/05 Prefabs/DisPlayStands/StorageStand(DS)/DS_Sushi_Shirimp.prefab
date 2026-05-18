@@ -416,8 +416,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -190295959
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!114 &4373600782568622904
 MonoBehaviour:
@@ -519,7 +519,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -946,13 +946,12 @@ MonoBehaviour:
   sushiItemId: 30001
   maxCapacity: 20
   useWorldStack: 0
-  worldStackRoot: {fileID: 8231818339678425135}
-  worldStackOffsetY: 0.5
-  worldStackOffsetX: 0.5
   worldMaxVisible: 20
   itemAssetManager: {fileID: 0}
   current: 0
   countText: {fileID: 0}
+  imgItem: {fileID: 4051572109462818382}
+  worldStackRoot: {fileID: 8807230696084107346}
 --- !u!1 &5606552923151284942
 GameObject:
   m_ObjectHideFlags: 0
@@ -1345,7 +1344,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2582589290644799272
 RectTransform:
   m_ObjectHideFlags: 0

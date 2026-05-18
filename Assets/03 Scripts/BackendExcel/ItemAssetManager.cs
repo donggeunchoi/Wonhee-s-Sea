@@ -145,13 +145,13 @@ public class ItemAssetManager : MonoBehaviour
                 switch (ingredientType)
                 {
                     case EIngredientType.Sashimi:
-                        return $"{iconPath}/Sashimi/{itemId}";
+                        return $"{iconPath}/Sashimi/SSM{itemId}";
                     case EIngredientType.Sushi:
-                        return $"{iconPath}/Sushi/{itemId}";
+                        return $"{iconPath}/Sushi/SS{itemId}";
                     case EIngredientType.Evenrice:
-                        return $"{iconPath}/Evenrice/{itemId}";
+                        return $"{iconPath}/Evenrice/ER{itemId}";
                     case EIngredientType.Rawrice:
-                        return $"{iconPath}/Rawrice/{itemId}";
+                        return $"{iconPath}/Rawrice/RR{itemId}";
                     default:
                         Debug.LogError($"ItemAssetManager: 잘못된 IngredientType(Icon). itemId={itemId}, ingredientType={ingredientType}", this);
                         return null;

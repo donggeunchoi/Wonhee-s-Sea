@@ -285,7 +285,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &781180018496819208
 RectTransform:
   m_ObjectHideFlags: 0
@@ -888,13 +888,12 @@ MonoBehaviour:
   sushiItemId: 30006
   maxCapacity: 20
   useWorldStack: 0
-  worldStackRoot: {fileID: 8231818339678425135}
-  worldStackOffsetY: 0.5
-  worldStackOffsetX: 0.5
   worldMaxVisible: 20
   itemAssetManager: {fileID: 0}
   current: 0
   countText: {fileID: 0}
+  imgItem: {fileID: 8614947592033160537}
+  worldStackRoot: {fileID: 506183063438242838}
 --- !u!1 &4493290346147253211
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,7 +954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1240,8 +1239,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -190295959
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!114 &1741151478707718339
 MonoBehaviour:
