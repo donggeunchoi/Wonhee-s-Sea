@@ -14,14 +14,17 @@ using UnityEngine;
 [Serializable]
 public class PuserInfo
 {
+    //경영 플레이어 정보
     public int level = 1;
-    public int exp;
-    public int gold;
-    public int dia;
-    public int enchant;
+    public int exp = 0;
+    public int gold = 0;
+    public int dia = 0;
+    public int enchant = 0;
     public int maxCarryCount = 5;
 
+    //던전과 경영에서 공통으로 사용하는 정보
     public Dictionary<string,int> fishContainer = new Dictionary<string, int>();
+    public List<PCollectionValue> collectionVelues = new List<PCollectionValue>();
 
     public void AddGold(int amount)
     {
@@ -106,6 +109,62 @@ public class PuserInfo
 
         return true;
     }
+
+    public void SetCollectionValue(ETargetType targetType, EQuestType questType, int targetId, int value)
+    {
+        if (targetType == ETargetType.None)
+            return;
+
+        if (questType == EQuestType.None)
+            return;
+
+        if (targetId <= 0)
+            return;
+
+        if (value <= 0)
+            return;
+
+        if (collectionVelues == null)
+            collectionVelues = new List<PCollectionValue>();
+
+        PCollectionValue data = collectionVelues.Find(x =>
+        x.targetType == targetType &&
+        x.questType == questType &&
+        x.targetId == targetId
+    );
+
+        if (data != null)
+        {
+            data.value += value;
+        }
+        else
+        {
+            collectionVelues.Add(new PCollectionValue
+            {
+                targetType = targetType,
+                questType = questType,
+                targetId = targetId,
+                value = value
+            });
+        }
+    }
+
+    public int GetCollectionValue(ETargetType targetType, EQuestType questType, int id)
+    {
+        if(collectionVelues == null)
+            return 0;
+
+        PCollectionValue data = collectionVelues.Find(x =>
+        x.targetType == targetType &&
+        x.questType == questType &&
+        x.targetId == id);
+
+        if (data == null)
+            return 0;
+
+        return data.value; 
+    }
+
     public bool IsDifferent(PuserInfo other)
     {
         if (other == null) return true;
@@ -135,6 +194,26 @@ public class PuserInfo
             }
         }
 
+        if (collectionVelues == null && other.collectionVelues != null) return true;
+        if (collectionVelues != null && other.collectionVelues == null) return true;
+
+        if (collectionVelues != null && other.collectionVelues != null)
+        {
+            if (collectionVelues.Count != other.collectionVelues.Count)
+                return true;
+
+            for (int i = 0; i < collectionVelues.Count; i++)
+            {
+                var a = collectionVelues[i];
+                var b = other.collectionVelues[i];
+
+                if (a.targetType != b.targetType) return true;
+                if (a.questType != b.questType) return true;
+                if (a.targetId != b.targetId) return true;
+                if (a.value != b.value) return true;
+            }
+        }
+
         return false;
     }
 
@@ -148,11 +227,11 @@ public class PuserInfo
         p.Add("dia", dia);
         p.Add("maxCarryCount", maxCarryCount);
         p.Add("fishContainer", fishContainer);//딕셔너리
+        p.Add("collectionVelues", collectionVelues);//리스트
 
         return p;
     }
 }
-
 
 [Serializable]
 public class PDungeonInfo
@@ -164,6 +243,22 @@ public class PDungeonInfo
     public int HPRegen = 0;
     public int Oxygen = 0;
 
+    public void Damaged(int amount)
+    {
+        if (amount <= 0)
+            return;
+
+        Oxygen -= amount;
+    }
+
+    public void Heal(int amount)
+    {
+        if (amount <= 0)
+            return;
+
+        HP += amount;
+    }
+    
     public bool IsDifferent(PDungeonInfo other)
     {
         if (other == null) return true;
@@ -186,90 +281,13 @@ public class PDungeonInfo
 }
 
 [Serializable]
-public class PTownInfo
+public class PCollectionValue
 {
-    public int townLevel; // 타운 레벨 (해금 기준)
-    public int rating; // 평점
-    public int reputation;
-    public int totalEarnedGold; // 지금까지 벌어들인 골드 총합
-    public long todayEarnedGold; // 오늘 벌어들인 골드
-    public int customerCount; // 지금까지 방문한 손님 수
-
-    public bool IsDifferent(PTownInfo other)
-    {
-        if (other == null) return true;
-
-        return townLevel != other.townLevel
-            || rating != other.rating;
-    }
-
-    public Param FormatJsonData()
-    {
-        Param p = new Param();
-        p.Add("townLevel", townLevel);
-        p.Add("rating", rating);
-        p.Add("reputation", reputation);
-        return p;
-    }
+    public ETargetType targetType;
+    public EQuestType questType;
+    public int targetId;
+    public int value;
 }
-
-[Serializable]
-public class PBuildingState
-{
-    public int buildingId;
-    public int level;
-    public bool isUnlocked;
-    public bool isOperating;
-    public int staffId;        // 배치 직원
-}
-
-[Serializable]
-public class  PBuildingSaveData
-{
-    public List<PBuildingState> buildings = new List<PBuildingState>();
-
-    public string buildingsJson = "[]";
-
-    public void SyncToJson()
-    {
-        buildingsJson = JsonConvert.SerializeObject(buildings);
-    }
-
-    public void SyncFromJson()
-    {
-        if (string.IsNullOrEmpty(buildingsJson))
-            buildingsJson = "[]";
-
-        try
-        {
-            buildings = JsonConvert.DeserializeObject<List<PBuildingState>>(buildingsJson);
-            if (buildings == null) buildings = new List<PBuildingState>();
-        }
-        catch
-        {
-            buildings = new List<PBuildingState>();
-            buildingsJson = "[]";
-        }
-    }
-
-    public bool IsDifferent(PBuildingSaveData other)
-    {
-        if (other == null) return true;
-        if (buildingsJson != other.buildingsJson) return true; //문자열 비교가 제일 깔끔/빠름
-        return false;
-    }
-
-    public Param FormatJsonData()
-    {
-        // 저장 직전에 JSON 동기화
-        SyncToJson();
-
-        Param p = new Param();
-        p.Add("buildingsJson", buildingsJson);
-        return p;
-    }
-}
-
 
 public static class CloneUtil
 {

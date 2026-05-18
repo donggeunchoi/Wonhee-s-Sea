@@ -82,4 +82,5 @@ public class DisplayStandData
     public int standId;
     public int grade;
     public int stackCount;
+    public int sellingitem;
 }
