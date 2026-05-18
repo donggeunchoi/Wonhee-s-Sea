@@ -9,11 +9,9 @@ using UnityEngine;
 
 public class BackendManager : Singleton<BackendManager>
 {
-    public PuserInfo userInfo = new PuserInfo();
-    public PDungeonInfo dungeonInfo = new PDungeonInfo();
-    public PTownInfo townInfo = new PTownInfo();
-    public PBuildingSaveData buildingSaveData = new PBuildingSaveData();
-
+    PuserInfo userInfo = new PuserInfo();
+    PDungeonInfo dungeonInfo = new PDungeonInfo();
+   
     [Header("뒤끝 차트 고정 데이터")]
     public List<FishData> fishDatas = new List<FishData>();
     public List<ItemDataTable> itemDataTables = new List<ItemDataTable>();
@@ -183,40 +181,21 @@ public class BackendManager : Singleton<BackendManager>
         switch (eGameData)
         {
             case EGameData.UserInfo:
-                {
-                    var data = JsonConvert.DeserializeObject<PuserInfo>(json);
-                    UserManager.Ins.userInfo = data;
-                    userInfo = data;
-                }
-                break;
+            {
+                var data = JsonConvert.DeserializeObject<PuserInfo>(json);
+                UserManager.Ins.userInfo = data;
+                userInfo = data;
+            }
+            break;
 
             case EGameData.DungeonInfo:
-                {
-                    var data = JsonConvert.DeserializeObject<PDungeonInfo>(json);
-                    UserManager.Ins.dungeonInfo = data;
-                    dungeonInfo = data;
-                }
-                break;
+            {
+                var data = JsonConvert.DeserializeObject<PDungeonInfo>(json);
+                UserManager.Ins.dungeonInfo = data;
+                dungeonInfo = data;
+            }
+            break;
 
-            case EGameData.TownInfo:
-                {
-                    var data = JsonConvert.DeserializeObject<PTownInfo>(json);
-                    UserManager.Ins.townInfo = data;
-                    townInfo = data;
-                }
-                break;
-
-            case EGameData.BuildingInfo:
-                {
-                    var data = JsonConvert.DeserializeObject<PBuildingSaveData>(json);
-                    if (data == null) data = new PBuildingSaveData();
-
-                    data.SyncFromJson();
-
-                    UserManager.Ins.buildingSaveData = data;
-                    buildingSaveData = data;
-                }
-                break;
         }
     }
 
@@ -286,14 +265,7 @@ public class BackendManager : Singleton<BackendManager>
 
             case EGameData.DungeonInfo:
                 return UserManager.Ins.dungeonInfo.IsDifferent(dungeonInfo);
-
-            case EGameData.TownInfo:
-                return UserManager.Ins.townInfo.IsDifferent(townInfo);
-
-            case EGameData.BuildingInfo:
-                return UserManager.Ins.buildingSaveData.IsDifferent(buildingSaveData);
         }
-
         return false;
     }
 
@@ -308,14 +280,6 @@ public class BackendManager : Singleton<BackendManager>
             case EGameData.DungeonInfo:
                 dungeonInfo = CloneUtil.DeepClone(UserManager.Ins.dungeonInfo);
                 break;
-
-            case EGameData.TownInfo:
-                townInfo = CloneUtil.DeepClone(UserManager.Ins.townInfo);
-                break;
-
-            case EGameData.BuildingInfo:
-                buildingSaveData = CloneUtil.DeepClone(UserManager.Ins.buildingSaveData);
-                break;
         }
     }
 
@@ -328,12 +292,6 @@ public class BackendManager : Singleton<BackendManager>
 
             case EGameData.DungeonInfo:
                 return UserManager.Ins.dungeonInfo.FormatJsonData();
-
-            case EGameData.TownInfo:
-                return UserManager.Ins.townInfo.FormatJsonData();
-
-            case EGameData.BuildingInfo:
-                return UserManager.Ins.buildingSaveData.FormatJsonData();
         }
 
         Debug.LogError($"[Backend] GetParamGameData Error: {eGameData}");
