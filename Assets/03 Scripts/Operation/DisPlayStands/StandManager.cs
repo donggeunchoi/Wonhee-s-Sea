@@ -26,7 +26,7 @@ public class StandManager : MonoBehaviour
     }
     public static StandManager Ins { get; private set; }
    
-    private readonly List<IStand> _stands = new List<IStand>();
+    [SerializeField] private List<IStand> _stands = new List<IStand>();
 
     private void Awake()
     {

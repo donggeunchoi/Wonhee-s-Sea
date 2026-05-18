@@ -46,6 +46,16 @@ public class StorageStand : MonoBehaviour, StandManager.IStand
     {
         RefreshAll();
     }
+
+    private void OnEnable()
+    {
+        // 씬에 StandManager가 존재한다면 자신을 등록
+        if (StandManager.Ins != null)
+        {
+            StandManager.Ins.Register(this);
+        }
+    }
+
     public bool HasStock(int amount = 1)
     {
         if (amount <= 0) return true;

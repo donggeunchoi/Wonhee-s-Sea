@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 4312872201297507058}
   - component: {fileID: 7848948218128961452}
   - component: {fileID: 1189499549109784400}
+  - component: {fileID: 2536524550040462924}
   m_Layer: 11
   m_Name: Customer
   m_TagString: Untagged
@@ -209,12 +210,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 355135d1e2c1b5d4e905b4b0a193184d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemDatabase: {fileID: 0}
   itemAssetManager: {fileID: 0}
   startSlot: 1
   stackRoot: {fileID: 7373640639491573144}
   offsetY: 0.3
   useHeadStackVisual: 1
+  defaultMaxStack: 1
   visualStack: []
 --- !u!61 &7848948218128961452
 BoxCollider2D:
@@ -231,7 +232,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 4294967295
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -288,6 +289,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &2536524550040462924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7368402984735651611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b37e338c17d1143febd766a40d328452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 10
+  pathFinding: {fileID: 0}
 --- !u!1 &7785437067332193418
 GameObject:
   m_ObjectHideFlags: 0
