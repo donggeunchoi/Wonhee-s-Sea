@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CTStandContent : MonoBehaviour
 {
@@ -10,10 +11,6 @@ public class CTStandContent : MonoBehaviour
 
     [Header("출력 표시 - 월드 오브젝트 쌓기")]
     [SerializeField] private bool useWorldStack = true;
-    [SerializeField] private Transform worldStackRoot;
-    [SerializeField] private int columnCount;
-    [SerializeField] private float worldStackOffsetX;
-    [SerializeField] private float worldStackOffsetY;
     [SerializeField] private int worldMaxVisible;
 
     [Header("출력 보관")]
@@ -23,6 +20,12 @@ public class CTStandContent : MonoBehaviour
 
     [Header("아이템 프리팹 조회용")]
     [SerializeField] private ItemAssetManager itemAssetManager;
+
+    [Header("재료 이미지")]
+    [SerializeField]
+    Image imgItem;
+    [SerializeField]
+    Transform worldStackRoot;
 
     StandData standData = null;
     StandRecipeData standRecipeData = null;
@@ -40,8 +43,8 @@ public class CTStandContent : MonoBehaviour
     private Inventory lastInventory;
 
     // 월드 스택용 풀
-    private readonly List<GameObject> pooled = new List<GameObject>();
-    private GameObject cachedPrefab;
+    private readonly List<Image> pooled = new List<Image>();
+    private Sprite cachedPrefab;
 
     void Awake()
     {
@@ -329,28 +332,27 @@ public class CTStandContent : MonoBehaviour
             return;
         }
 
-        var prefab = itemAssetManager.GetPrefab(outputItemId);
-        if (prefab == null)
+        var prefabsprite = itemAssetManager.GetIcon(outputItemId);
+        if (prefabsprite == null)
         {
             Debug.LogWarning($"[CTStandContent] output prefab 없음. itemId={outputItemId}", this);
             SetPoolActiveCount(0);
             return;
         }
 
-        if (cachedPrefab != prefab)
+        if (cachedPrefab != prefabsprite)
         {
             ClearPool();
-            cachedPrefab = prefab;
+            cachedPrefab = prefabsprite;
         }
 
         int visible = Mathf.Clamp(outputStockCount, 0, worldMaxVisible);
 
-        EnsurePool(prefab, visible);
+        EnsurePool(prefabsprite, visible);
         SetPoolActiveCount(visible);
-        LayoutPoolGrid(visible);
     }
 
-    private void EnsurePool(GameObject prefab, int needCount)
+    private void EnsurePool(Sprite sprite, int needCount)
     {
         if (pooled.Count >= needCount)
             return;
@@ -359,11 +361,10 @@ public class CTStandContent : MonoBehaviour
 
         for (int i = 0; i < toCreate; i++)
         {
-            var go = Instantiate(prefab, worldStackRoot);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-            go.SetActive(false);
-            pooled.Add(go);
+            Image image = Instantiate(imgItem, worldStackRoot);
+            image.sprite = sprite;
+            image.gameObject.SetActive(false);
+            pooled.Add(image);
         }
     }
 
@@ -371,34 +372,11 @@ public class CTStandContent : MonoBehaviour
     {
         for (int i = 0; i < pooled.Count; i++)
         {
-            bool active = i < activeCount;
-
-            if (pooled[i] != null && pooled[i].activeSelf != active)
-                pooled[i].SetActive(active);
-        }
-    }
-
-    private void LayoutPoolGrid(int visibleCount)
-    {
-        if (columnCount <= 0)
-            columnCount = 5;
-
-        for (int i = 0; i < visibleCount; i++)
-        {
-            var go = pooled[i];
-            if (go == null)
+            if (pooled[i] == null)
                 continue;
 
-            int col = i % columnCount;
-            int row = i / columnCount;
-
-            go.transform.localPosition = new Vector3(
-                col * worldStackOffsetX,
-                row * worldStackOffsetY,
-                0f
-            );
-
-            go.transform.localRotation = Quaternion.identity;
+            bool active = i < activeCount;
+            pooled[i].gameObject.SetActive(active);
         }
     }
 

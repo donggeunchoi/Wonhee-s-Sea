@@ -145,7 +145,6 @@ public class StorageStand : MonoBehaviour
             return;
         }
 
-        var prefab = itemAssetManager.GetPrefab(sushiItemId);
         var prefabsprite = itemAssetManager.GetIcon(sushiItemId);
         if (prefabsprite == null)
         {
