@@ -7,7 +7,7 @@ public class ReturnBtn : MonoBehaviour
 {
     // 임시
     [SerializeField] private PlayerInventory _playerInventory;
-    [SerializeField] private ResultUI _resultUI;
+    [SerializeField] private DungeonResultUI _resultUI;
 
     public void OnClickExit()
     {
