@@ -751,6 +751,8 @@ MonoBehaviour:
     level: 0
     exp: 0
     gold: 0
+    dia: 0
+    enchant: 0
     maxCarryCount: 5
   dungeonInfo:
     HP: 0
@@ -1155,27 +1157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a6bbb6e4db14e245a585575ad7df519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userInfo:
-    level: 0
-    exp: 0
-    gold: 0
-    maxCarryCount: 5
-  dungeonInfo:
-    HP: 0
-    Speed: 0
-    Attack: 0
-    HPRegen: 0
-    Oxygen: 0
-  townInfo:
-    townLevel: 0
-    rating: 0
-    reputation: 0
-    totalEarnedGold: 0
-    todayEarnedGold: 0
-    customerCount: 0
-  buildingSaveData:
-    buildings: []
-    buildingsJson: '[]'
   fishDatas: []
   itemDataTables: []
   standDatas: []
@@ -1183,6 +1164,7 @@ MonoBehaviour:
   ingredientDatas: []
   standRecipeDatas: []
   standRecipeInputDatas: []
+  displayStandDatas: []
   fishChartFileId: 236403
   itemDataTableChartFileId: 236399
   standChartFileId: 236398
@@ -1190,6 +1172,7 @@ MonoBehaviour:
   ingredientChartFileId: 236401
   standRecipeChartFileId: 236405
   standRecipeInputChartFileId: 236396
+  displayStandChartFileId: 239335
 --- !u!1 &2056451501
 GameObject:
   m_ObjectHideFlags: 0
