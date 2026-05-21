@@ -5,9 +5,11 @@ using UnityEngine.UI;
 
 public class CTStandContent : MonoBehaviour
 {
-    [Header("스텐드ID")]
-    [SerializeField]
-    int standID;
+    //[Header("스텐드ID")]
+    //[SerializeField]
+    //int standID;
+
+    public int standID;
 
     [Header("출력 표시 - 월드 오브젝트 쌓기")]
     [SerializeField] private bool useWorldStack = true;
@@ -394,7 +396,6 @@ public class CTStandContent : MonoBehaviour
     // 디버그 / 외부 조회용
     public bool IsProcessing => isProcessing;
     public int OutputStockCount => outputStockCount;
-    public string OutputItemId => outputItemId;
-    public int StandID => standID;
+    public string OutputItemId => outputItemId;    
 }
 

@@ -10,6 +10,8 @@ public class StorageStand : MonoBehaviour
     [Header("진열 아이템 ID (Inventory와 동일)")]
     [SerializeField] private string sushiItemId;
 
+    public int standID;
+
     [Header("보관 용량")]
     [SerializeField] private int maxCapacity = 20;
 

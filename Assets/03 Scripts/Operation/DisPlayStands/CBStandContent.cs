@@ -5,9 +5,10 @@ using UnityEngine.UI;
 
 public class CBStandContent : MonoBehaviour
 {
-    [Header("스텐드ID")]
-    [SerializeField]
-    int standID;
+    //[Header("스텐드ID")]
+    //[SerializeField]
+    //int standID;
+    public int standID;
 
     [Header("출력 표시 - 월드 오브젝트 쌓기")]
     [SerializeField] private bool useWorldStack = true;

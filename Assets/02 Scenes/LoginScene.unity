@@ -754,22 +754,14 @@ MonoBehaviour:
     dia: 0
     enchant: 0
     maxCarryCount: 5
+    currentStage: 1
+    collectionVelues: []
   dungeonInfo:
     HP: 0
     Speed: 0
     Attack: 0
     HPRegen: 0
     Oxygen: 0
-  townInfo:
-    townLevel: 0
-    rating: 0
-    reputation: 0
-    totalEarnedGold: 0
-    todayEarnedGold: 0
-    customerCount: 0
-  buildingSaveData:
-    buildings: []
-    buildingsJson: '[]'
   userNickName: 
   userIndate: 
   userGamerID: 
@@ -1167,7 +1159,7 @@ MonoBehaviour:
   displayStandDatas: []
   fishChartFileId: 236403
   itemDataTableChartFileId: 236399
-  standChartFileId: 236398
+  standChartFileId: 241769
   equipmentChartFileId: 231054
   ingredientChartFileId: 236401
   standRecipeChartFileId: 236405

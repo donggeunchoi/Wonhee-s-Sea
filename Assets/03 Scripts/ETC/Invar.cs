@@ -21,6 +21,7 @@ public class PuserInfo
     public int dia = 0;
     public int enchant = 0;
     public int maxCarryCount = 5;
+    public int currentStage = 1;
 
     //던전과 경영에서 공통으로 사용하는 정보
     public Dictionary<string,int> fishContainer = new Dictionary<string, int>();
@@ -175,6 +176,7 @@ public class PuserInfo
         if (exp != other.exp) return true;
         if (enchant != other.enchant) return true;
         if (maxCarryCount != other.maxCarryCount) return true;
+        if(currentStage != other.currentStage) return true;
 
         if (fishContainer == null && other.fishContainer != null) return true;
         if (fishContainer != null && other.fishContainer == null) return true;
@@ -226,6 +228,7 @@ public class PuserInfo
         p.Add("enchant", enchant);
         p.Add("dia", dia);
         p.Add("maxCarryCount", maxCarryCount);
+        p.Add("currentStage", currentStage);
         p.Add("fishContainer", fishContainer);//딕셔너리
         p.Add("collectionVelues", collectionVelues);//리스트
 

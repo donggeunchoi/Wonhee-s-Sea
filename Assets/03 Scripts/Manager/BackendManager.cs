@@ -456,6 +456,7 @@ public class BackendManager : Singleton<BackendManager>
             data.standType1 = GetString(row, "StandType1");
             data.standType2 = GetString(row, "StandType2");
             data.cost = GetInt(row, "Cost");
+            data.stage = GetInt(row, "Stage");
 
             standDatas.Add(data);
         }

@@ -26,6 +26,7 @@ public class StandData
     public string standType1;
     public string standType2;
     public int cost;
+    public int stage;
 }
 
 
