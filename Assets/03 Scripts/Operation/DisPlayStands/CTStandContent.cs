@@ -5,11 +5,10 @@ using UnityEngine.UI;
 
 public class CTStandContent : MonoBehaviour
 {
-    //[Header("스텐드ID")]
-    //[SerializeField]
-    //int standID;
+    [Header("스텐드ID")]
+    [SerializeField]
+    int standID;
 
-    public int standID;
 
     [Header("출력 표시 - 월드 오브젝트 쌓기")]
     [SerializeField] private bool useWorldStack = true;
@@ -62,7 +61,10 @@ public class CTStandContent : MonoBehaviour
 
         standData = standDatas.Find(info => info.standId == standID);
         if (standData == null)
+        {
+            Debug.LogWarning($"[CTStandContent] Stand_Data에 standID 없음: {standID}", this);
             return;
+        }
 
         var recipeDatas = JsonManager.Ins.GetJson<StandRecipeData>();
         if (recipeDatas == null)
@@ -70,7 +72,10 @@ public class CTStandContent : MonoBehaviour
 
         standRecipeData = recipeDatas.Find(info => info.standId == standID);
         if (standRecipeData == null)
+        {
+            Debug.LogWarning($"[CTStandContent] StandRecipeData에 standID 없음: {standID}", this);
             return;
+        }
 
         var inputDatas = JsonManager.Ins.GetJson<StandRecipeInputData>();
         if (inputDatas == null)
@@ -84,7 +89,7 @@ public class CTStandContent : MonoBehaviour
         if (inv == null)
             return;
 
-        if (standData == null || standRecipeData == null)
+        if (standRecipeData == null)
         {
             Debug.LogWarning($"[CTStandContent] 초기화가 완료되지 않아 Interact 불가. standID={standID}", this);
             return;

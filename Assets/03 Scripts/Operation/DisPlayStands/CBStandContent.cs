@@ -8,8 +8,7 @@ public class CBStandContent : MonoBehaviour
     [Header("스텐드ID")]
     [SerializeField]
     int standID;
-    //public int standID;
-
+    
     [Header("출력 표시 - 월드 오브젝트 쌓기")]
     [SerializeField] private bool useWorldStack = true;
     [SerializeField] private int worldMaxVisible;
@@ -65,13 +64,21 @@ public class CBStandContent : MonoBehaviour
 
         standRecipeData = recipeDatas.Find(info => info.standId == standID);
         if (standRecipeData == null)
+        {
+            Debug.LogWarning($"[CBStandContent] StandRecipeData에 standID 없음: {standID}", this);
             return;
+        }
 
         var inputDatas = JsonManager.Ins.GetJson<StandRecipeInputData>();
         if (inputDatas == null)
             return;
 
         recipeInputDatas = inputDatas.FindAll(info => info.recipeId == standRecipeData.recipeId);
+        if(recipeInputDatas == null)
+        {
+            Debug.LogWarning($"[CBStandContent] StandRecipeData에 standID 없음: {standID}", this);
+            return;
+        }
     }
 
     public void Interact(Inventory inv)
@@ -79,9 +86,9 @@ public class CBStandContent : MonoBehaviour
         if (inv == null)
             return;
 
-        if (standData == null || standRecipeData == null)
+        if ( standRecipeData == null)
         {
-            Debug.LogWarning($"[CTStandContent] 초기화가 완료되지 않아 Interact 불가. standID={standID}", this);
+            Debug.LogWarning($"[CBStandContent] 초기화가 완료되지 않아 Interact 불가. standID={standID}", this);
             return;
         }
 
