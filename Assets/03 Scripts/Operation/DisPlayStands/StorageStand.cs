@@ -87,7 +87,7 @@ public class StorageStand : MonoBehaviour
           return;
 
 
-        if (string.IsNullOrEmpty(displayStandData.standId.ToString()))
+        if (string.IsNullOrEmpty(displayStandData.sellingitem.ToString()))
             return;
 
         int space = FreeSpace;
@@ -95,14 +95,14 @@ public class StorageStand : MonoBehaviour
         if (space <= 0)
             return;
 
-        int have = inv.CountOf(displayStandData.standId.ToString());
+        int have = inv.CountOf(displayStandData.sellingitem.ToString());
 
         if (have <= 0)
             return;
 
         int toDeposit = Mathf.Min(have, space);
 
-        if (!inv.TryRemove(displayStandData.standId.ToString(), toDeposit))
+        if (!inv.TryRemove(displayStandData.sellingitem.ToString(), toDeposit))
             return;
         
         current += toDeposit;
@@ -145,14 +145,14 @@ public class StorageStand : MonoBehaviour
             return;
         }
 
-        if (string.IsNullOrEmpty(displayStandData.standId.ToString()))
+        if (string.IsNullOrEmpty(displayStandData.sellingitem.ToString()))
         {
             Debug.LogWarning("[StorageStand] sushiItemId가 비어있음", this);
             SetPoolActiveCount(0);
             return;
         }
 
-        var prefabsprite = itemAssetManager.GetIcon(displayStandData.standId.ToString());
+        var prefabsprite = itemAssetManager.GetIcon(displayStandData.sellingitem.ToString());
         if (prefabsprite == null)
         {
             Debug.LogWarning($"[StorageStand] prefab 없음. itemId={displayStandData.standId.ToString()}", this);
