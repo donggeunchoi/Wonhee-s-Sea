@@ -28,6 +28,15 @@ public class Container : MonoBehaviour
     [SerializeField]
     Transform content;
 
+    [Header("캔버스 오브젝트")]
+    [SerializeField]
+    GameObject visualRoot;
+
+    [Header("생성 슬롯 UI")]
+    [SerializeField]
+    List<FishSlotUI> fishSlotUIs = new List<FishSlotUI>();
+
+
     private string currentFishId;
     private int currentFishCount = 0;
     private readonly List<GameObject> pooled = new List<GameObject>();
@@ -61,11 +70,32 @@ public class Container : MonoBehaviour
     public void InitData(string _fishID)
     {
         //던전에서 넘겨주는 데이터로 초기화하기.
-        currentFishCount = UserManager.Ins.userInfo.GetFishCount(_fishID);
+        currentFishId = _fishID;
+        currentFishCount = UserManager.Ins.userInfo.GetFishCount(currentFishId);
 
         currentFishCount = Mathf.Clamp(currentFishCount, 0, maxCapacity);
 
+        Sprite fishSprite = itemAssetManager.GetIcon(currentFishId);
+
+        for (int i = 0; i < fishSlotUIs.Count; i++)
+        {
+            fishSlotUIs[i].FirstInit(fishSprite, currentFishCount);
+        }
+
         RefreshVisual();
+    }
+
+    public void Interact()
+    {
+        SetVisualActive(true);
+    }
+
+    public void SetVisualActive(bool active)
+    {
+        if (visualRoot == null)
+            return;
+
+        visualRoot.SetActive(active);
     }
 
     private void RefreshVisual()

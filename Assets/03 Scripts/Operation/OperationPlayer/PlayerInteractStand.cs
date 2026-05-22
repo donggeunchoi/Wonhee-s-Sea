@@ -16,6 +16,7 @@ public class PlayerInteractStand : MonoBehaviour
 
     private MonoBehaviour lastTarget;
     private int sameTargetFrameCount;
+    private Container activeContainer;
 
     void Update()
     {
@@ -30,6 +31,11 @@ public class PlayerInteractStand : MonoBehaviour
 
         if (target == null)
         {
+            if (activeContainer != null)
+            {
+                activeContainer.SetVisualActive(false);
+                activeContainer = null;
+            }
             lastTarget = null;
             sameTargetFrameCount = 0;
             return;
@@ -74,6 +80,16 @@ public class PlayerInteractStand : MonoBehaviour
         if (target is CBStandContent cbStand)
         {
             cbStand.Interact(inventory);
+            return;
+        }
+
+        if (target is Container container)
+        {
+            if (activeContainer != null && activeContainer != container)
+                activeContainer.SetVisualActive(false);
+
+            activeContainer = container;
+            container.Interact();
             return;
         }
     }
@@ -121,6 +137,14 @@ public class PlayerInteractStand : MonoBehaviour
             if (cbStand != null && dist < bestContentStandDist)
             {
                 bestContentStand = cbStand;
+                bestContentStandDist = dist;
+                continue;
+            }
+
+            Container container = hits[i].GetComponentInParent<Container>();
+            if (container != null && dist < bestContentStandDist)
+            {
+                bestContentStand = container;
                 bestContentStandDist = dist;
                 continue;
             }
