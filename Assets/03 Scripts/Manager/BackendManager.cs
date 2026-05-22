@@ -453,8 +453,8 @@ public class BackendManager : Singleton<BackendManager>
 
             data.standId = GetInt(row, "StandId");
             data.name = GetString(row, "Name");
-            data.standType1 = GetString(row, "StandType1");
-            data.standType2 = GetString(row, "StandType2");
+            data.standType1 = GetInt(row, "StandType1");
+            data.standType2 = GetInt(row, "StandType2");
             data.cost = GetInt(row, "Cost");
             data.stage = GetInt(row, "Stage");
 

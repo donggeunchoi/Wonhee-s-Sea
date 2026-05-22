@@ -7,10 +7,9 @@ using UnityEngine.UI;
 
 public class StorageStand : MonoBehaviour
 {
-    [Header("진열 아이템 ID (Inventory와 동일)")]
-    [SerializeField] private string sushiItemId;
-
-    public int standID;
+    [Header("스텐드 ID")]
+    [SerializeField]
+    int standID;
 
     [Header("보관 용량")]
     [SerializeField] private int maxCapacity = 20;
@@ -37,13 +36,19 @@ public class StorageStand : MonoBehaviour
 
     private readonly List<Image> pooled = new List<Image>();
 
-    public string SellItemId => sushiItemId;
-    public int Current => current;
+    public string SellItemId => standID.ToString();
 
     public int FreeSpace => Mathf.Max(0, maxCapacity - current);
+
+   List<DisplayStandData> displayStandDatas = new List<DisplayStandData>();
+    DisplayStandData displayStandData = null;
     private void Start()
     {
         RefreshAll();
+
+        displayStandDatas = JsonManager.Ins.GetJson<DisplayStandData>();
+        displayStandData = displayStandDatas.Find(x => x.standId == standID);
+
     }
     public bool HasStock(int amount = 1)
     {
@@ -82,7 +87,7 @@ public class StorageStand : MonoBehaviour
           return;
 
 
-        if (string.IsNullOrEmpty(sushiItemId))
+        if (string.IsNullOrEmpty(displayStandData.standId.ToString()))
             return;
 
         int space = FreeSpace;
@@ -90,14 +95,14 @@ public class StorageStand : MonoBehaviour
         if (space <= 0)
             return;
 
-        int have = inv.CountOf(sushiItemId);
+        int have = inv.CountOf(displayStandData.standId.ToString());
 
         if (have <= 0)
             return;
 
         int toDeposit = Mathf.Min(have, space);
 
-        if (!inv.TryRemove(sushiItemId, toDeposit))
+        if (!inv.TryRemove(displayStandData.standId.ToString(), toDeposit))
             return;
         
         current += toDeposit;
@@ -140,17 +145,17 @@ public class StorageStand : MonoBehaviour
             return;
         }
 
-        if (string.IsNullOrEmpty(sushiItemId))
+        if (string.IsNullOrEmpty(displayStandData.standId.ToString()))
         {
             Debug.LogWarning("[StorageStand] sushiItemId가 비어있음", this);
             SetPoolActiveCount(0);
             return;
         }
 
-        var prefabsprite = itemAssetManager.GetIcon(sushiItemId);
+        var prefabsprite = itemAssetManager.GetIcon(displayStandData.standId.ToString());
         if (prefabsprite == null)
         {
-            Debug.LogWarning($"[StorageStand] prefab 없음. itemId={sushiItemId}", this);
+            Debug.LogWarning($"[StorageStand] prefab 없음. itemId={displayStandData.standId.ToString()}", this);
             SetPoolActiveCount(0);
             return;
         }

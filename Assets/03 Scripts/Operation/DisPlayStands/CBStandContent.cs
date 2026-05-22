@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class CBStandContent : MonoBehaviour
 {
-    //[Header("스텐드ID")]
-    //[SerializeField]
-    //int standID;
-    public int standID;
+    [Header("스텐드ID")]
+    [SerializeField]
+    int standID;
+    //public int standID;
 
     [Header("출력 표시 - 월드 오브젝트 쌓기")]
     [SerializeField] private bool useWorldStack = true;
@@ -59,14 +59,6 @@ public class CBStandContent : MonoBehaviour
     void FirstInit()
     {
         //데이터 캐싱해놓기.
-        var standDatas = JsonManager.Ins.GetJson<StandData>();
-        if (standDatas == null)
-            return;
-
-        standData = standDatas.Find(info => info.standId == standID);
-        if (standData == null)
-            return;
-
         var recipeDatas = JsonManager.Ins.GetJson<StandRecipeData>();
         if (recipeDatas == null)
             return;
