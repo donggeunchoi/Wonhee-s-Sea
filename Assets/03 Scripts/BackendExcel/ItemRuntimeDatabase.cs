@@ -17,6 +17,7 @@ public class ItemRuntimeData
 
 public class ItemRuntimeDatabase : MonoBehaviour
 {
+    //아이템 데이터 조회 역할 스크립트
     private Dictionary<string, ItemRuntimeData> itemDataDic = new Dictionary<string, ItemRuntimeData>();
 
     public bool IsLoaded => itemDataDic != null && itemDataDic.Count > 0;

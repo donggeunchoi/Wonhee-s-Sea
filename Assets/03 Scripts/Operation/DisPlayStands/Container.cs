@@ -6,20 +6,16 @@ using UnityEngine;
 public class Container : MonoBehaviour
 {
     [Header("표시 루트")]
-    [SerializeField] private Transform worldStackRoot;
-
-    [Header("월드 표시 옵션")]
-    [SerializeField] private bool useWorldStack;
-    [SerializeField] private int columnCount;
-    [SerializeField] private float worldStackOffsetX;
-    [SerializeField] private float worldStackOffsetY;
-    [SerializeField] private int worldMaxVisible;
+    [SerializeField] 
+    Transform worldStackRoot;
 
     [Header("보관 옵션")]
-    [SerializeField] private int maxCapacity;
+    [SerializeField] 
+    int maxCapacity;
 
-    [Header("프리팹 조회")]
-    [SerializeField] private ItemAssetManager itemAssetManager;
+    [Header("아이콘 조회")]
+    [SerializeField] 
+    ItemAssetManager itemAssetManager;
 
     [Header("UI프리펩")]
     [SerializeField]
@@ -37,10 +33,10 @@ public class Container : MonoBehaviour
     List<FishSlotUI> fishSlotUIs = new List<FishSlotUI>();
 
 
-    private string currentFishId;
-    private int currentFishCount = 0;
-    private readonly List<GameObject> pooled = new List<GameObject>();
-    private GameObject cachedPrefab;
+    string currentFishId;
+    int currentFishCount = 0;
+    readonly List<GameObject> pooled = new List<GameObject>();
+    GameObject cachedPrefab;
 
 
     // Start is called before the first frame update
@@ -59,12 +55,6 @@ public class Container : MonoBehaviour
 
         }).AddTo(this);
 
-        FirstData();
-    }
-
-    public void FirstData()
-    {
-        RefreshVisual();
     }
 
     public void InitData(string _fishID)
@@ -79,10 +69,8 @@ public class Container : MonoBehaviour
 
         for (int i = 0; i < fishSlotUIs.Count; i++)
         {
-            fishSlotUIs[i].FirstInit(fishSprite, currentFishCount);
+            fishSlotUIs[i].FirstInit(fishSprite, currentFishId, currentFishCount, ReceiveFish);
         }
-
-        RefreshVisual();
     }
 
     public void Interact()
@@ -98,137 +86,15 @@ public class Container : MonoBehaviour
         visualRoot.SetActive(active);
     }
 
-    private void RefreshVisual()
+    void ReceiveFish(string _id) 
     {
-        if (!useWorldStack)
-            return;
-
-        if (worldStackRoot == null)
+        if (string.IsNullOrEmpty(_id))
         {
-            SetPoolActiveCount(0);
+            Debug.LogWarning("없다");
             return;
         }
 
-        if (string.IsNullOrEmpty(currentFishId) || currentFishCount <= 0)
-        {
-            SetPoolActiveCount(0);
-            return;
-        }
+        Debug.LogWarning("버튼눌림"+_id);
 
-        if (itemAssetManager == null)
-        {
-            Debug.LogWarning("[Container] itemAssetManager가 연결되지 않았습니다.", this);
-            SetPoolActiveCount(0);
-            return;
-        }
-
-        GameObject prefab = itemAssetManager.GetPrefab(currentFishId);
-        if (prefab == null)
-        {
-            Debug.LogWarning($"[Container] prefab 없음. fishID={currentFishId}", this);
-            SetPoolActiveCount(0);
-            return;
-        }
-
-        if (cachedPrefab != prefab)
-        {
-            ClearPool();
-            cachedPrefab = prefab;
-        }
-
-        int visibleCount = Mathf.Clamp(currentFishCount, 0, worldMaxVisible);
-
-        EnsurePool(prefab, visibleCount);
-        SetPoolActiveCount(visibleCount);
-        LayoutPoolGrid(visibleCount);
-    }
-
-    public void Interact(Inventory inv)
-    {
-        if (inv == null)
-            return;
-
-        if (string.IsNullOrEmpty(currentFishId))
-            return;
-
-        if (currentFishCount <= 0)
-            return;
-
-        while (currentFishCount > 0)
-        {
-            bool ok = inv.TryAdd(currentFishId, 1);
-            if (!ok)
-                break;
-
-            currentFishCount--;
-
-            // userInfo에서도 같이 차감
-            UserManager.Ins.userInfo.RemoveFish(currentFishId, 1);
-        }
-
-        RefreshVisual();
-    }
-
-    private void EnsurePool(GameObject prefab, int needCount)
-    {
-        if (pooled.Count >= needCount)
-            return;
-
-        int createCount = needCount - pooled.Count;
-
-        for (int i = 0; i < createCount; i++)
-        {
-            GameObject go = Instantiate(prefab, worldStackRoot);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-            go.SetActive(false);
-            pooled.Add(go);
-        }
-    }
-
-    private void SetPoolActiveCount(int activeCount)
-    {
-        for (int i = 0; i < pooled.Count; i++)
-        {
-            bool active = i < activeCount;
-
-            if (pooled[i] != null && pooled[i].activeSelf != active)
-                pooled[i].SetActive(active);
-        }
-    }
-
-    private void LayoutPoolGrid(int visibleCount)
-    {
-        if (columnCount <= 0)
-            columnCount = 5;
-
-        for (int i = 0; i < visibleCount; i++)
-        {
-            GameObject go = pooled[i];
-            if (go == null)
-                continue;
-
-            int col = i % columnCount;
-            int row = i / columnCount;
-
-            go.transform.localPosition = new Vector3(
-                col * worldStackOffsetX,
-                row * worldStackOffsetY,
-                0f
-            );
-
-            go.transform.localRotation = Quaternion.identity;
-        }
-    }
-
-    private void ClearPool()
-    {
-        for (int i = 0; i < pooled.Count; i++)
-        {
-            if (pooled[i] != null)
-                Destroy(pooled[i]);
-        }
-
-        pooled.Clear();
     }
 } 
