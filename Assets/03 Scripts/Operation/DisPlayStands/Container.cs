@@ -95,6 +95,5 @@ public class Container : MonoBehaviour
         }
 
         Debug.LogWarning("버튼눌림"+_id);
-
     }
 } 

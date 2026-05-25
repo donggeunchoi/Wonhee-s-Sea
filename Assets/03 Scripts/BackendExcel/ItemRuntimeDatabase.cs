@@ -28,7 +28,7 @@ public class ItemRuntimeDatabase : MonoBehaviour
         itemDataDic.Clear();
 
         if (items == null)
-            return;
+            return; 
 
         foreach (var table in items)
         {

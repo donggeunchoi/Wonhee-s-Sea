@@ -29,6 +29,14 @@ public class FishSlotUI : MonoBehaviour
 
     public void OnClickRecive()
     {
-        actID?.Invoke(id);
+        if (string.IsNullOrEmpty(id) == false)
+        {
+            Debug.LogWarning("없음");
+        }
+        else
+        {
+            Debug.LogWarning("없음2");
+        }
+            actID?.Invoke(id);
     }
 }
