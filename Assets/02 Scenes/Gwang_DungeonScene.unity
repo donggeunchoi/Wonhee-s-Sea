@@ -2222,8 +2222,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2d43c865fce714b8a33188a94ca427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _depthCalculator: {fileID: 1724782004}
-  _depthText: {fileID: 1432395910}
+  depthCalculator: {fileID: 1724782004}
+  depthText: {fileID: 1432395910}
 --- !u!4 &1149049476
 Transform:
   m_ObjectHideFlags: 0
@@ -4100,7 +4100,6 @@ MonoBehaviour:
   _inventory: {fileID: 8330619942998301799}
   _totalCountText: {fileID: 96662513}
   _totalWeightText: {fileID: 1417043799}
-  _townSceneName: TownScene
 --- !u!1 &2143687631
 GameObject:
   m_ObjectHideFlags: 0
