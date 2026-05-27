@@ -368,6 +368,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2153763069847258090}
+  - component: {fileID: 8963903663936707854}
   m_Layer: 0
   m_Name: DungeonUI
   m_TagString: Untagged
@@ -392,6 +393,27 @@ Transform:
   - {fileID: 4193616498665619302}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8963903663936707854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 654768853408652828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd75b8609144fb645b88fa395ac3f921, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  depthCalculator: {fileID: 0}
+  depthText: {fileID: 24489986227982390}
+  player_Inventory: {fileID: 0}
+  weight_text: {fileID: 0}
+  maxweight_text: {fileID: 0}
+  player_Oxygen: {fileID: 0}
+  Oxygen_fill: {fileID: 0}
+  Oxygen_warnObj: {fileID: 0}
+  Oxygen_text: {fileID: 0}
 --- !u!1 &747432665366813655
 GameObject:
   m_ObjectHideFlags: 0
@@ -710,8 +732,8 @@ RectTransform:
   m_GameObject: {fileID: 2234572539933193200}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.0274024, y: 1.0274024, z: 1.0274024}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.66, y: 1.66, z: 1.66}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2234272393169231523}
   m_Father: {fileID: 8591339956105462612}
@@ -1005,13 +1027,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   depthCalculator: {fileID: 0}
-  depthText: {fileID: 0}
-  inventory: {fileID: 0}
-  Weight_text: {fileID: 0}
-  oxygen: {fileID: 0}
-  Oxygen_fill: {fileID: 0}
-  Oxygen_warnObj: {fileID: 0}
-  Oxygen_text: {fileID: 0}
+  depthText: {fileID: 24489986227982390}
+  player_Inventory: {fileID: 0}
+  weight_text: {fileID: 5085503631283256347}
+  maxweight_text: {fileID: 5844421017832770791}
+  player_Oxygen: {fileID: 0}
+  Oxygen_fill: {fileID: 7492730852318261258}
+  Oxygen_warnObj: {fileID: 4866651747642315720}
+  Oxygen_text: {fileID: 220259857566650511}
 --- !u!1 &2444961049692721408
 GameObject:
   m_ObjectHideFlags: 0
@@ -2644,7 +2667,7 @@ GameObject:
   - component: {fileID: 5821597884693579955}
   - component: {fileID: 5844421017832770791}
   m_Layer: 0
-  m_Name: Txt (1)
+  m_Name: MaxTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2666,7 +2689,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 227, y: 703}
+  m_AnchoredPosition: {x: 249.99994, y: 703}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5821597884693579955
