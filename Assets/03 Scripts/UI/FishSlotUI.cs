@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class FishSlotUI : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class FishSlotUI : MonoBehaviour
     TextMeshProUGUI countText;
     Action<string> actID = null;
     string id = "";
+
+    public string ItemId => id;
 
     public void FirstInit(Sprite _sprite,string _id, int _count, Action<string> _actID)
     {

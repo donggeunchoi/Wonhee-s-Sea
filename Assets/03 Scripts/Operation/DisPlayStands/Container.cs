@@ -29,6 +29,10 @@ public class Container : MonoBehaviour
     [SerializeField]
     GameObject visualRoot;
 
+    [Header("플레이어 인벤토리")]
+    [SerializeField] 
+    Inventory playerInventory;
+
     [SerializeField] private ItemRuntimeDatabase itemRuntimeDatabase;
 
     List<FishSlotUI> fishSlotUIs = new List<FishSlotUI>();
@@ -74,7 +78,6 @@ public class Container : MonoBehaviour
     {
         List<string> testIds = new List<string>() { "10000", "10002", "10003" };
 
-        
         for (int i = 0; i < fishSlotUIs.Count; i++)
         {
             if (fishSlotUIs[i] != null)
@@ -83,8 +86,10 @@ public class Container : MonoBehaviour
 
         for (int i = 0; i < testIds.Count; i++)
         {
+            int fishCount = 5;
+            UserManager.Ins.userInfo.AddFish(testIds[i], fishCount);
+
             string fishId = testIds[i];
-            int fishCount = 1;
 
             Sprite fishSprite = itemAssetManager.GetIcon(fishId);
             if (fishSprite == null)
@@ -133,10 +138,56 @@ public class Container : MonoBehaviour
     {
         if (string.IsNullOrEmpty(_id))
         {
-            Debug.LogWarning("없다");
+            Debug.LogWarning("물고기 ID가 비어있음");
             return;
         }
 
-        Debug.LogWarning("버튼눌림"+_id);
+        if (playerInventory == null)
+        {
+            Debug.LogWarning("Player Inventory가 연결되지 않음");
+            return;
+        }
+
+        int fishCount = UserManager.Ins.userInfo.GetFishCount(_id);
+
+        if (fishCount <= 0)
+        {
+            Debug.LogWarning($"받을 물고기가 없음 id={_id}");
+            return;
+        }
+
+        bool success = playerInventory.TryAdd(_id, 1);
+
+        if (!success)
+        {
+            Debug.LogWarning($"인벤토리에 추가 실패 id={_id}");
+            return;
+        }
+
+        UserManager.Ins.userInfo.RemoveFish(_id, 1);
+
+        RefreshSlot(_id);
+
+        Debug.LogWarning($"물고기 받기 완료 id={_id}");
+    }
+
+    void RefreshSlot(string fishId)
+    {
+        int fishCount = UserManager.Ins.userInfo.GetFishCount(fishId);
+        fishCount = Mathf.Clamp(fishCount, 0, maxCapacity);
+
+        Sprite fishSprite = itemAssetManager.GetIcon(fishId);
+
+        for (int i = 0; i < fishSlotUIs.Count; i++)
+        {
+            if (fishSlotUIs[i] == null)
+                continue;
+
+            if (fishSlotUIs[i].ItemId == fishId)
+            {
+                fishSlotUIs[i].FirstInit(fishSprite, fishId, fishCount, ReceiveFish);
+                break;
+            }
+        }
     }
 } 
