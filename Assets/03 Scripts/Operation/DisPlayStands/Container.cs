@@ -76,7 +76,7 @@ public class Container : MonoBehaviour
 
     void TestInit()
     {
-        List<string> testIds = new List<string>() { "10000", "10002", "10003" };
+        List<string> testIds = new List<string>() { "10000", "10001", "10007" };
 
         for (int i = 0; i < fishSlotUIs.Count; i++)
         {
