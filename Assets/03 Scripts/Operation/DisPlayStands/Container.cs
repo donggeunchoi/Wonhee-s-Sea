@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class Container : MonoBehaviour
 {
@@ -28,11 +29,9 @@ public class Container : MonoBehaviour
     [SerializeField]
     GameObject visualRoot;
 
-    [Header("생성 슬롯 UI")]
-    [SerializeField]
+    [SerializeField] private ItemRuntimeDatabase itemRuntimeDatabase;
+
     List<FishSlotUI> fishSlotUIs = new List<FishSlotUI>();
-
-
     string currentFishId;
     int currentFishCount = 0;
     readonly List<GameObject> pooled = new List<GameObject>();
@@ -54,6 +53,50 @@ public class Container : MonoBehaviour
             InitData(_toss);
 
         }).AddTo(this);
+
+    }
+    private void Start()
+    {
+        var items = JsonManager.Ins.GetJson<ItemDataTable>();
+
+        if (items == null || items.Count == 0)
+        {
+            Debug.LogError("ItemDataTable 데이터 없음");
+            return;
+        }
+
+        itemRuntimeDatabase.SetItems(items);
+
+        TestInit();
+    }
+
+    void TestInit()
+    {
+        List<string> testIds = new List<string>() { "10000", "10002", "10003" };
+
+        
+        for (int i = 0; i < fishSlotUIs.Count; i++)
+        {
+            if (fishSlotUIs[i] != null)
+                Destroy(fishSlotUIs[i].gameObject);
+        }
+
+        for (int i = 0; i < testIds.Count; i++)
+        {
+            string fishId = testIds[i];
+            int fishCount = 1;
+
+            Sprite fishSprite = itemAssetManager.GetIcon(fishId);
+            if (fishSprite == null)
+            {
+                Debug.LogError($"아이콘 로드 실패 fishId={fishId}");
+            }
+            FishSlotUI slot = Instantiate(fishSlotUI, content);
+            slot.FirstInit(fishSprite, fishId, fishCount, ReceiveFish);
+            slot.gameObject.SetActive(true);
+
+            fishSlotUIs.Add(slot);
+        }
 
     }
 

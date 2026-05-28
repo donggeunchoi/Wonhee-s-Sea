@@ -17,7 +17,8 @@ public class FishSlotUI : MonoBehaviour
 
     public void FirstInit(Sprite _sprite,string _id, int _count, Action<string> _actID)
     {
-        if(fishicon != null)
+        gameObject.SetActive(true);
+        if (fishicon != null)
             fishicon.sprite = _sprite;
 
         if(countText != null)
@@ -25,6 +26,9 @@ public class FishSlotUI : MonoBehaviour
 
         actID = _actID;
         id = _id;
+
+        fishicon.gameObject.SetActive(true);
+        countText.gameObject.SetActive(true);
     }
 
     public void OnClickRecive()

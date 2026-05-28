@@ -140,7 +140,7 @@ public class ItemAssetManager : MonoBehaviour
         switch (itemType)
         {
             case EItemType.Fish:
-                return $"{iconPath}/Fish/{itemId}";
+                return $"{iconPath}/Fish/FS{itemId}";
 
             case EItemType.Ingredient:
                 switch (ingredientType)
