@@ -6,13 +6,14 @@ public class PlayerEquipment : MonoBehaviour
 {
     public enum WeaponKind
     {
-        Melee,
-        Ranged
+        Dagger,
+        Harpoon,
+        SMG
     }
 
     private PlayerRoot _owner;
 
-    public WeaponKind CurrentWeapon { get; private set; } = WeaponKind.Melee;
+    public WeaponKind CurrentWeapon { get; private set; } = WeaponKind.Dagger;
 
     public bool HasHat { get; private set; }
     public bool HasArmor { get; private set; }
@@ -25,23 +26,29 @@ public class PlayerEquipment : MonoBehaviour
     public void Init(PlayerRoot owner)
     {
         _owner = owner;
-
-        EquipMeleeWeapon();
+        EquipDagger();
         RecalculateStats();
     }
 
-    public void EquipMeleeWeapon()
+    public void EquipDagger()
     {
-        CurrentWeapon = WeaponKind.Melee;
-        _owner?.Attack?.SetWeaponType(WeaponType.Melee);
-        Debug.Log("무기 장착: 근접");
+        CurrentWeapon = WeaponKind.Dagger;
+        _owner?.Attack?.SetWeaponType(WeaponType.Dagger);
+        Debug.Log("무기 장착: 짱 쎈 검");
     }
 
-    public void EquipRangedWeapon()
+    public void EquipHarpoon()
     {
-        CurrentWeapon = WeaponKind.Ranged;
-        _owner?.Attack?.SetWeaponType(WeaponType.Ranged);
-        Debug.Log("무기 장착: 원거리");
+        CurrentWeapon = WeaponKind.Harpoon;
+        _owner?.Attack?.SetWeaponType(WeaponType.Harpoon);
+        Debug.Log("무기 장착: 작살총");
+    }
+
+    public void EquipSMG()
+    {
+        CurrentWeapon = WeaponKind.SMG;
+        _owner?.Attack?.SetWeaponType(WeaponType.SMG);
+        Debug.Log("무기 장착: 따발총");
     }
 
     public void EquipHat()

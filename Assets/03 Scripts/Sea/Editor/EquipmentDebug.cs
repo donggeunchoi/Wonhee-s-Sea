@@ -56,15 +56,21 @@ public class EquipmentDebug : EditorWindow
             EditorGUILayout.LabelField("무기", EditorStyles.boldLabel);
 
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("근접 장착", GUILayout.Height(30)))
+            if (GUILayout.Button("단검 장착", GUILayout.Height(30)))
             {
-                equip.EquipMeleeWeapon();
+                equip.EquipDagger();
                 RefreshEditor();
             }
 
-            if (GUILayout.Button("원거리 장착", GUILayout.Height(30)))
+            if (GUILayout.Button("작살총 장착", GUILayout.Height(30)))
             {
-                equip.EquipRangedWeapon();
+                equip.EquipHarpoon();
+                RefreshEditor();
+            }
+
+            if (GUILayout.Button("따발총 장착", GUILayout.Height(30)))
+            {
+                equip.EquipSMG();
                 RefreshEditor();
             }
             EditorGUILayout.EndHorizontal();
