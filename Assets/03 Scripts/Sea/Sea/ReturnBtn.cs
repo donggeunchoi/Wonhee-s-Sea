@@ -15,7 +15,11 @@ public class ReturnBtn : MonoBehaviour
         {
             string data = string.Join(",", _playerInventory.FishList);
 
+            //이거 넣어주셔야 사용이 가능합니다.
+            //USerManager.Ins.userinfo.AddFish(id - 생선 id,count - 해당id별 잡은 개수);
+
             BackendManager.Ins.OnTossFish.OnNext(data);
+            BackendManager.Ins.SaveData();
         }
         _resultUI.Open();
     }

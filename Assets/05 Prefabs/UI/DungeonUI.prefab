@@ -368,7 +368,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2153763069847258090}
-  - component: {fileID: 439346250529473756}
+  - component: {fileID: 8963903663936707854}
   m_Layer: 0
   m_Name: DungeonUI
   m_TagString: Untagged
@@ -393,7 +393,7 @@ Transform:
   - {fileID: 4193616498665619302}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &439346250529473756
+--- !u!114 &8963903663936707854
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -408,12 +408,12 @@ MonoBehaviour:
   depthCalculator: {fileID: 0}
   depthText: {fileID: 24489986227982390}
   player_Inventory: {fileID: 0}
-  weight_text: {fileID: 5085503631283256347}
-  maxweight_text: {fileID: 5844421017832770791}
+  weight_text: {fileID: 0}
+  maxweight_text: {fileID: 0}
   player_Oxygen: {fileID: 0}
-  Oxygen_fill: {fileID: 7492730852318261258}
-  Oxygen_warnObj: {fileID: 4866651747642315720}
-  Oxygen_text: {fileID: 220259857566650511}
+  Oxygen_fill: {fileID: 0}
+  Oxygen_warnObj: {fileID: 0}
+  Oxygen_text: {fileID: 0}
 --- !u!1 &747432665366813655
 GameObject:
   m_ObjectHideFlags: 0
@@ -3208,14 +3208,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f7374bb1a15e47842a29f995279814db, type: 3}
+  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

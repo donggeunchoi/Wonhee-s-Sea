@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class ItemAssetManager : MonoBehaviour
 {
+    // 아이템 아이디로 아이콘과 프리펩을 조회하는 역할
     [Header("리소시스 아이콘 내부 경로")]
     [SerializeField]
     string iconPath = "Art";
@@ -139,7 +140,7 @@ public class ItemAssetManager : MonoBehaviour
         switch (itemType)
         {
             case EItemType.Fish:
-                return $"{iconPath}/Fish/{itemId}";
+                return $"{iconPath}/Fish/FS{itemId}";
 
             case EItemType.Ingredient:
                 switch (ingredientType)

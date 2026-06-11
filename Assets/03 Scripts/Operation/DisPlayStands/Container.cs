@@ -2,24 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class Container : MonoBehaviour
 {
     [Header("표시 루트")]
-    [SerializeField] private Transform worldStackRoot;
-
-    [Header("월드 표시 옵션")]
-    [SerializeField] private bool useWorldStack;
-    [SerializeField] private int columnCount;
-    [SerializeField] private float worldStackOffsetX;
-    [SerializeField] private float worldStackOffsetY;
-    [SerializeField] private int worldMaxVisible;
+    [SerializeField] 
+    Transform worldStackRoot;
 
     [Header("보관 옵션")]
-    [SerializeField] private int maxCapacity;
+    [SerializeField] 
+    int maxCapacity;
 
-    [Header("프리팹 조회")]
-    [SerializeField] private ItemAssetManager itemAssetManager;
+    [Header("아이콘 조회")]
+    [SerializeField] 
+    ItemAssetManager itemAssetManager;
 
     [Header("UI프리펩")]
     [SerializeField]
@@ -32,15 +29,17 @@ public class Container : MonoBehaviour
     [SerializeField]
     GameObject visualRoot;
 
-    [Header("생성 슬롯 UI")]
-    [SerializeField]
+    [Header("플레이어 인벤토리")]
+    [SerializeField] 
+    Inventory playerInventory;
+
+    [SerializeField] private ItemRuntimeDatabase itemRuntimeDatabase;
+
     List<FishSlotUI> fishSlotUIs = new List<FishSlotUI>();
-
-
-    private string currentFishId;
-    private int currentFishCount = 0;
-    private readonly List<GameObject> pooled = new List<GameObject>();
-    private GameObject cachedPrefab;
+    string currentFishId;
+    int currentFishCount = 0;
+    readonly List<GameObject> pooled = new List<GameObject>();
+    GameObject cachedPrefab;
 
 
     // Start is called before the first frame update
@@ -59,12 +58,51 @@ public class Container : MonoBehaviour
 
         }).AddTo(this);
 
-        FirstData();
+    }
+    private void Start()
+    {
+        var items = JsonManager.Ins.GetJson<ItemDataTable>();
+
+        if (items == null || items.Count == 0)
+        {
+            Debug.LogError("ItemDataTable 데이터 없음");
+            return;
+        }
+
+        itemRuntimeDatabase.SetItems(items);
+
+        TestInit();
     }
 
-    public void FirstData()
+    void TestInit()
     {
-        RefreshVisual();
+        List<string> testIds = new List<string>() { "10000", "10001", "10007" };
+
+        for (int i = 0; i < fishSlotUIs.Count; i++)
+        {
+            if (fishSlotUIs[i] != null)
+                Destroy(fishSlotUIs[i].gameObject);
+        }
+
+        for (int i = 0; i < testIds.Count; i++)
+        {
+            int fishCount = 5;
+            UserManager.Ins.userInfo.AddFish(testIds[i], fishCount);
+
+            string fishId = testIds[i];
+
+            Sprite fishSprite = itemAssetManager.GetIcon(fishId);
+            if (fishSprite == null)
+            {
+                Debug.LogError($"아이콘 로드 실패 fishId={fishId}");
+            }
+            FishSlotUI slot = Instantiate(fishSlotUI, content);
+            slot.FirstInit(fishSprite, fishId, fishCount, ReceiveFish);
+            slot.gameObject.SetActive(true);
+
+            fishSlotUIs.Add(slot);
+        }
+
     }
 
     public void InitData(string _fishID)
@@ -79,10 +117,8 @@ public class Container : MonoBehaviour
 
         for (int i = 0; i < fishSlotUIs.Count; i++)
         {
-            fishSlotUIs[i].FirstInit(fishSprite, currentFishCount);
+            fishSlotUIs[i].FirstInit(fishSprite, currentFishId, currentFishCount, ReceiveFish);
         }
-
-        RefreshVisual();
     }
 
     public void Interact()
@@ -98,137 +134,60 @@ public class Container : MonoBehaviour
         visualRoot.SetActive(active);
     }
 
-    private void RefreshVisual()
+    void ReceiveFish(string _id) 
     {
-        if (!useWorldStack)
-            return;
-
-        if (worldStackRoot == null)
+        if (string.IsNullOrEmpty(_id))
         {
-            SetPoolActiveCount(0);
+            Debug.LogWarning("물고기 ID가 비어있음");
             return;
         }
 
-        if (string.IsNullOrEmpty(currentFishId) || currentFishCount <= 0)
+        if (playerInventory == null)
         {
-            SetPoolActiveCount(0);
+            Debug.LogWarning("Player Inventory가 연결되지 않음");
             return;
         }
 
-        if (itemAssetManager == null)
+        int fishCount = UserManager.Ins.userInfo.GetFishCount(_id);
+
+        if (fishCount <= 0)
         {
-            Debug.LogWarning("[Container] itemAssetManager가 연결되지 않았습니다.", this);
-            SetPoolActiveCount(0);
+            Debug.LogWarning($"받을 물고기가 없음 id={_id}");
             return;
         }
 
-        GameObject prefab = itemAssetManager.GetPrefab(currentFishId);
-        if (prefab == null)
+        bool success = playerInventory.TryAdd(_id, 1);
+
+        if (!success)
         {
-            Debug.LogWarning($"[Container] prefab 없음. fishID={currentFishId}", this);
-            SetPoolActiveCount(0);
+            Debug.LogWarning($"인벤토리에 추가 실패 id={_id}");
             return;
         }
 
-        if (cachedPrefab != prefab)
-        {
-            ClearPool();
-            cachedPrefab = prefab;
-        }
+        UserManager.Ins.userInfo.RemoveFish(_id, 1);
 
-        int visibleCount = Mathf.Clamp(currentFishCount, 0, worldMaxVisible);
+        RefreshSlot(_id);
 
-        EnsurePool(prefab, visibleCount);
-        SetPoolActiveCount(visibleCount);
-        LayoutPoolGrid(visibleCount);
+        Debug.LogWarning($"물고기 받기 완료 id={_id}");
     }
 
-    public void Interact(Inventory inv)
+    void RefreshSlot(string fishId)
     {
-        if (inv == null)
-            return;
+        int fishCount = UserManager.Ins.userInfo.GetFishCount(fishId);
+        fishCount = Mathf.Clamp(fishCount, 0, maxCapacity);
 
-        if (string.IsNullOrEmpty(currentFishId))
-            return;
+        Sprite fishSprite = itemAssetManager.GetIcon(fishId);
 
-        if (currentFishCount <= 0)
-            return;
-
-        while (currentFishCount > 0)
+        for (int i = 0; i < fishSlotUIs.Count; i++)
         {
-            bool ok = inv.TryAdd(currentFishId, 1);
-            if (!ok)
-                break;
-
-            currentFishCount--;
-
-            // userInfo에서도 같이 차감
-            UserManager.Ins.userInfo.RemoveFish(currentFishId, 1);
-        }
-
-        RefreshVisual();
-    }
-
-    private void EnsurePool(GameObject prefab, int needCount)
-    {
-        if (pooled.Count >= needCount)
-            return;
-
-        int createCount = needCount - pooled.Count;
-
-        for (int i = 0; i < createCount; i++)
-        {
-            GameObject go = Instantiate(prefab, worldStackRoot);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-            go.SetActive(false);
-            pooled.Add(go);
-        }
-    }
-
-    private void SetPoolActiveCount(int activeCount)
-    {
-        for (int i = 0; i < pooled.Count; i++)
-        {
-            bool active = i < activeCount;
-
-            if (pooled[i] != null && pooled[i].activeSelf != active)
-                pooled[i].SetActive(active);
-        }
-    }
-
-    private void LayoutPoolGrid(int visibleCount)
-    {
-        if (columnCount <= 0)
-            columnCount = 5;
-
-        for (int i = 0; i < visibleCount; i++)
-        {
-            GameObject go = pooled[i];
-            if (go == null)
+            if (fishSlotUIs[i] == null)
                 continue;
 
-            int col = i % columnCount;
-            int row = i / columnCount;
-
-            go.transform.localPosition = new Vector3(
-                col * worldStackOffsetX,
-                row * worldStackOffsetY,
-                0f
-            );
-
-            go.transform.localRotation = Quaternion.identity;
+            if (fishSlotUIs[i].ItemId == fishId)
+            {
+                fishSlotUIs[i].FirstInit(fishSprite, fishId, fishCount, ReceiveFish);
+                break;
+            }
         }
-    }
-
-    private void ClearPool()
-    {
-        for (int i = 0; i < pooled.Count; i++)
-        {
-            if (pooled[i] != null)
-                Destroy(pooled[i]);
-        }
-
-        pooled.Clear();
     }
 } 

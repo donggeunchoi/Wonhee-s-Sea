@@ -29,6 +29,7 @@ public class DungeonResultUI : MonoBehaviour
 
     private void Refresh()
     {
+        //각 생선별로 개수를 UI로 표시를 수정해주십쇼!
         int totalCount = _inventory.FishList.Count;
         float totalWeight = _inventory.CurrentWeight;
 
