@@ -3481,18 +3481,6 @@ PrefabInstance:
       propertyPath: player_Inventory
       value: 
       objectReference: {fileID: 8330619942998301799}
-    - target: {fileID: 439346250529473756, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
-      propertyPath: player_Oxygen
-      value: 
-      objectReference: {fileID: 1140038403}
-    - target: {fileID: 439346250529473756, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
-      propertyPath: depthCalculator
-      value: 
-      objectReference: {fileID: 1724782004}
-    - target: {fileID: 439346250529473756, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
-      propertyPath: player_Inventory
-      value: 
-      objectReference: {fileID: 8330619942998301799}
     - target: {fileID: 654768853408652828, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
       propertyPath: m_Name
       value: DungeonUI
@@ -3543,6 +3531,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3041974590994454095, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
       propertyPath: _playerInventory
+      value: 
+      objectReference: {fileID: 8330619942998301799}
+    - target: {fileID: 8963903663936707854, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
+      propertyPath: player_Oxygen
+      value: 
+      objectReference: {fileID: 1140038403}
+    - target: {fileID: 8963903663936707854, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
+      propertyPath: depthCalculator
+      value: 
+      objectReference: {fileID: 1724782004}
+    - target: {fileID: 8963903663936707854, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
+      propertyPath: player_Inventory
       value: 
       objectReference: {fileID: 8330619942998301799}
     m_RemovedComponents: []
