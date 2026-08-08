@@ -1335,9 +1335,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0239901fabadbc64a8b4e2ffbcb357b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inventory: {fileID: 8330619942998301799}
-  _fillImage: {fileID: 2064011880}
-  _text: {fileID: 1959612293}
 --- !u!1 &531916328
 GameObject:
   m_ObjectHideFlags: 0
@@ -2222,8 +2219,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c2d43c865fce714b8a33188a94ca427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  depthCalculator: {fileID: 1724782004}
-  depthText: {fileID: 1432395910}
 --- !u!4 &1149049476
 Transform:
   m_ObjectHideFlags: 0
@@ -2595,10 +2590,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3399803face2dc84b89ff6d2565458a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _oxygen: {fileID: 8330619942998301794}
-  _fillImage: {fileID: 488779503}
-  _warnObj: {fileID: 207472328}
-  _text: {fileID: 238739492}
 --- !u!1 &1364460362
 GameObject:
   m_ObjectHideFlags: 0
@@ -3811,6 +3802,7 @@ GameObject:
   - component: {fileID: 2000495873}
   - component: {fileID: 2000495875}
   - component: {fileID: 2000495874}
+  - component: {fileID: 2000495876}
   m_Layer: 5
   m_Name: Return
   m_TagString: Untagged
@@ -3875,6 +3867,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2000495872}
   m_CullTransparentMesh: 1
+--- !u!114 &2000495876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000495872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 2000495874}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2092267793}
+        m_TargetAssemblyTypeName: DungeonResultUI, Assembly-CSharp
+        m_MethodName: OnClickReturnTown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2050811486
 GameObject:
   m_ObjectHideFlags: 3
@@ -4425,17 +4473,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7371114770619277345, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
   m_PrefabInstance: {fileID: 1573791908899552320}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8330619942998301794 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 762198680287444055, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
-  m_PrefabInstance: {fileID: 1573791908899552320}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51dfc0dfdb33cba43ab6b6ba4530ead6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8330619942998301795 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1862927204958883090, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}

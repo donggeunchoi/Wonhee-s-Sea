@@ -2,7 +2,6 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class FishSlotUI : MonoBehaviour
 {
@@ -20,18 +19,22 @@ public class FishSlotUI : MonoBehaviour
 
     public void FirstInit(Sprite _sprite,string _id, int _count, Action<string> _actID)
     {
-        gameObject.SetActive(true);
-        if (fishicon != null)
-            fishicon.sprite = _sprite;
-
-        if(countText != null)
-            countText.text = _count.ToString();
-
         actID = _actID;
         id = _id;
 
-        fishicon.gameObject.SetActive(true);
-        countText.gameObject.SetActive(true);
+        gameObject.SetActive(true);
+
+        if (fishicon != null)
+        {
+            fishicon.sprite = _sprite;
+            fishicon.gameObject.SetActive(true);
+        }
+
+        if(countText != null)
+        {
+            countText.text = _count.ToString();
+            countText.gameObject.SetActive(true);
+        }
     }
 
     public void OnClickRecive()

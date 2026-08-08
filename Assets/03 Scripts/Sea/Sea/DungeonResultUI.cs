@@ -39,6 +39,6 @@ public class DungeonResultUI : MonoBehaviour
 
     public void OnClickReturnTown()
     {
-        SceneManager.LoadScene("TownScene");
+        SceneManager.LoadScene("TownScene_Stage1");
     }
 }
