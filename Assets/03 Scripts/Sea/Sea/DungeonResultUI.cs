@@ -39,6 +39,19 @@ public class DungeonResultUI : MonoBehaviour
 
     public void OnClickReturnTown()
     {
+        if (_inventory != null)
+        {
+            for (int i = 0; i < _inventory.FishList.Count; i++)
+            {
+                int id = _inventory.FishList[i];
+
+                UserManager.Ins.userInfo.AddFish(id.ToString(), 1);
+                BackendManager.Ins.OnTossFish.OnNext(id.ToString());
+            }
+
+            BackendManager.Ins.SaveData();
+        }
+
         SceneManager.LoadScene("TownScene_Stage1");
     }
 }
