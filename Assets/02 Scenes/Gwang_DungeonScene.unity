@@ -3533,6 +3533,10 @@ PrefabInstance:
       propertyPath: _playerInventory
       value: 
       objectReference: {fileID: 8330619942998301799}
+    - target: {fileID: 5214978563136545159, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
+      propertyPath: _inventory
+      value: 
+      objectReference: {fileID: 8330619942998301799}
     - target: {fileID: 8963903663936707854, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
       propertyPath: player_Oxygen
       value: 
@@ -3548,7 +3552,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 631864896829124625, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1562466342}
   m_SourcePrefab: {fileID: 100100000, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
 --- !u!1 &1562466336 stripped
 GameObject:
@@ -3571,6 +3578,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069bb8b504e625549970302935654427, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1562466339 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 631864896829124625, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
+  m_PrefabInstance: {fileID: 1562466335}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1562466340 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5214978563136545159, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
+  m_PrefabInstance: {fileID: 1562466335}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 546abcb49aa4a0741ab72d76008dce06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1562466341 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2352270998362914399, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
+  m_PrefabInstance: {fileID: 1562466335}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562466339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1562466342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562466339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1562466341}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1562466340}
+        m_TargetAssemblyTypeName: DungeonResultUI, Assembly-CSharp
+        m_MethodName: OnClickReturnTown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1724782003
 GameObject:
   m_ObjectHideFlags: 0
