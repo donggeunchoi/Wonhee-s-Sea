@@ -408,12 +408,12 @@ MonoBehaviour:
   depthCalculator: {fileID: 0}
   depthText: {fileID: 24489986227982390}
   player_Inventory: {fileID: 0}
-  weight_text: {fileID: 0}
-  maxweight_text: {fileID: 0}
+  weight_text: {fileID: 5085503631283256347}
+  maxweight_text: {fileID: 5844421017832770791}
   player_Oxygen: {fileID: 0}
-  Oxygen_fill: {fileID: 0}
-  Oxygen_warnObj: {fileID: 0}
-  Oxygen_text: {fileID: 0}
+  Oxygen_fill: {fileID: 7492730852318261258}
+  Oxygen_warnObj: {fileID: 5322333943070890787}
+  Oxygen_text: {fileID: 220259857566650511}
 --- !u!1 &747432665366813655
 GameObject:
   m_ObjectHideFlags: 0
