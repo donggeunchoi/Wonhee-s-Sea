@@ -401,6 +401,7 @@ public class CTStandContent : MonoBehaviour
     // 디버그 / 외부 조회용
     public bool IsProcessing => isProcessing;
     public int OutputStockCount => outputStockCount;
-    public string OutputItemId => outputItemId;    
+    public string OutputItemId => outputItemId;
+    public int StandID => standID;
 }
 

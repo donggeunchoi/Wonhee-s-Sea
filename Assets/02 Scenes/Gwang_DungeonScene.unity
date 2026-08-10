@@ -1208,7 +1208,13 @@ MonoBehaviour:
   _player: {fileID: 8330619942998301793}
   _depthCalculator: {fileID: 1724782004}
   _fishPrefabs:
+  - {fileID: 7330135562300145863, guid: a30d5b0c280df704aa1711c1944e2970, type: 3}
+  - {fileID: 7330135562300145863, guid: a05a9c77a1ef72d44a6a0d1f9f11a4bd, type: 3}
+  - {fileID: 4235266687188426687, guid: 873d5a1d8d9dbe947b86078f09eeaf91, type: 3}
+  - {fileID: 2505301103857599738, guid: 8cdb0150592e8aa44bc80f8c090b44c8, type: 3}
   - {fileID: 6617037314581986297, guid: 915521448d5b3d94284586ada6a1c38f, type: 3}
+  - {fileID: 8031158195882196500, guid: 1a5dac7e0fdf6914c947f10410273c38, type: 3}
+  - {fileID: 7330135562300145863, guid: 1a86acb7bf87b9c4da44504b2bbdb1a3, type: 3}
 --- !u!1 &488779501
 GameObject:
   m_ObjectHideFlags: 0
