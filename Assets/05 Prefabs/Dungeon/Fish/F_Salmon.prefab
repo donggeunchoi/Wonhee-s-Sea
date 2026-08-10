@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8245811462362448677}
   - component: {fileID: 5109885742910424823}
   - component: {fileID: 6617037314581986297}
+  - component: {fileID: 4950870010891634117}
   m_Layer: 10
   m_Name: F_Salmon
   m_TagString: Untagged
@@ -107,6 +108,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fishId: 10004
+--- !u!114 &4950870010891634117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125256895149406171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ecbb56a593ff824f8d5b2c05938eda6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3727190697470120754
 GameObject:
   m_ObjectHideFlags: 0

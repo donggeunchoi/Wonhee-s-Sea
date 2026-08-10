@@ -186,6 +186,7 @@ GameObject:
   - component: {fileID: 407497465622904083}
   - component: {fileID: 2580815195431308414}
   - component: {fileID: 2505301103857599738}
+  - component: {fileID: 1418492058459724446}
   m_Layer: 10
   m_Name: F_Godeungfish
   m_TagString: Untagged
@@ -250,14 +251,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 259d4e543358d7442be0b72cefd75980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 0.5
-  _chaseSpeed: 0.7
   _moveRangeX: 5
-  _detectionRange: 3
-  _attackRange: 0.5
-  _attackCooldown: 2
-  _attackDamage: 1
   _visual: {fileID: 6788159850855712771}
+  _fleeDuration: 2
+  _fleeSpeedMultiplier: 1.5
 --- !u!114 &2580815195431308414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,7 +267,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86bcddd467f15d043ada651fc7eae092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHp: 5
 --- !u!114 &2505301103857599738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,6 +280,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fishId: 10003
+--- !u!114 &1418492058459724446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4844243474644543409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ecbb56a593ff824f8d5b2c05938eda6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7629086737358502444
 GameObject:
   m_ObjectHideFlags: 0
