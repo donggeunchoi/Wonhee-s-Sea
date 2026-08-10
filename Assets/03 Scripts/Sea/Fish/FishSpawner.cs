@@ -20,6 +20,8 @@ public class FishSpawner : MonoBehaviour
     private float _minSpawnDistance = 2f;  // 물고기끼리 최소 거리
 
     private List<FishRoot> _activeFish = new List<FishRoot>();
+    private HashSet<int> _spawnFishIds = new HashSet<int>();
+    private bool _useSpawnFishFilter;
     private Vector3 _lastPlayerPos;
 
     private void Start()
@@ -31,6 +33,7 @@ public class FishSpawner : MonoBehaviour
             return;
         }
 
+        CacheSpawnFishIds();
         _lastPlayerPos = _player.position;
         Refresh(); // 초기 스폰
     }
@@ -175,6 +178,7 @@ public class FishSpawner : MonoBehaviour
         foreach (FishRoot prefab in _fishPrefabs)
         {
             if (prefab == null) continue;
+            if (_useSpawnFishFilter && !_spawnFishIds.Contains(prefab.FishId)) continue;
 
             FishData data = JsonManager.Ins.GetDataByKey<FishData>(prefab.FishId, x => x.fishId);
             if (data != null && depth >= data.minDepth && depth <= data.maxDepth)
@@ -182,5 +186,23 @@ public class FishSpawner : MonoBehaviour
         }
 
         return candidates;
+    }
+
+    private void CacheSpawnFishIds()
+    {
+        _spawnFishIds.Clear();
+        _useSpawnFishFilter = false;
+
+        if (UserManager.Ins == null || UserManager.Ins.dungeonSpawnFishIds == null)
+            return;
+
+        _useSpawnFishFilter = true;
+
+        for (int i = 0; i < UserManager.Ins.dungeonSpawnFishIds.Count; i++)
+        {
+            int fishId = UserManager.Ins.dungeonSpawnFishIds[i];
+            if (fishId > 0)
+                _spawnFishIds.Add(fishId);
+        }
     }
 }
