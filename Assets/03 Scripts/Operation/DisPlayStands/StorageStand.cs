@@ -36,7 +36,16 @@ public class StorageStand : MonoBehaviour
 
     private readonly List<Image> pooled = new List<Image>();
 
-    public string SellItemId => standID.ToString();
+    public string SellItemId
+    {
+        get
+        {
+            if (displayStandData == null || displayStandData.sellingitem <= 0)
+                return string.Empty;
+
+            return displayStandData.sellingitem.ToString();
+        }
+    }
 
     public int FreeSpace => Mathf.Max(0, maxCapacity - current);
 
@@ -44,11 +53,10 @@ public class StorageStand : MonoBehaviour
     DisplayStandData displayStandData = null;
     private void Start()
     {
-        RefreshAll();
-
         displayStandDatas = JsonManager.Ins.GetJson<DisplayStandData>();
         displayStandData = displayStandDatas.Find(x => x.standId == standID);
 
+        RefreshAll();
     }
     public bool HasStock(int amount = 1)
     {
@@ -87,7 +95,7 @@ public class StorageStand : MonoBehaviour
           return;
 
 
-        if (string.IsNullOrEmpty(displayStandData.sellingitem.ToString()))
+        if (displayStandData == null || displayStandData.sellingitem <= 0)
             return;
 
         int space = FreeSpace;
@@ -95,14 +103,16 @@ public class StorageStand : MonoBehaviour
         if (space <= 0)
             return;
 
-        int have = inv.CountOf(displayStandData.sellingitem.ToString());
+        string sellingItemId = displayStandData.sellingitem.ToString();
+
+        int have = inv.CountOf(sellingItemId);
 
         if (have <= 0)
             return;
 
         int toDeposit = Mathf.Min(have, space);
 
-        if (!inv.TryRemove(displayStandData.sellingitem.ToString(), toDeposit))
+        if (!inv.TryRemove(sellingItemId, toDeposit))
             return;
         
         current += toDeposit;
@@ -145,14 +155,16 @@ public class StorageStand : MonoBehaviour
             return;
         }
 
-        if (string.IsNullOrEmpty(displayStandData.sellingitem.ToString()))
+        if (displayStandData == null || displayStandData.sellingitem <= 0)
         {
             Debug.LogWarning("[StorageStand] sushiItemId가 비어있음", this);
             SetPoolActiveCount(0);
             return;
         }
 
-        var prefabsprite = itemAssetManager.GetIcon(displayStandData.sellingitem.ToString());
+        string sellingItemId = displayStandData.sellingitem.ToString();
+
+        var prefabsprite = itemAssetManager.GetIcon(sellingItemId);
         if (prefabsprite == null)
         {
             Debug.LogWarning($"[StorageStand] prefab 없음. itemId={displayStandData.standId.ToString()}", this);
