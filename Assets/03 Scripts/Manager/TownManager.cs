@@ -19,6 +19,7 @@ public class TownManager : Singleton<TownManager>
 
     public void OnClickDungeonScene()
     {
+        UserManager.Ins.SetDungeonSpawnFishIdsFromPlacedStands();
         SceneManager.LoadScene("Gwang_DungeonScene");
     }
 }

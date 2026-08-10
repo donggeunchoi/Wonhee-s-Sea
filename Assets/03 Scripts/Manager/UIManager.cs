@@ -45,6 +45,7 @@ public class UIManager : Singleton<UIManager>
 
     public void OnClickDungeonScene()
     {
+        UserManager.Ins.SetDungeonSpawnFishIdsFromPlacedStands();
         SceneManager.LoadScene("Gwang_DungeonScene");
     }
 
