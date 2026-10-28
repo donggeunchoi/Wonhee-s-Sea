@@ -46,6 +46,7 @@ public class UIManager : Singleton<UIManager>
     public void OnClickTown()
     {
         Debug.LogWarning("타운 버튼 눌림");
+        storePopup.SetActive(false);
     }
 
     public void OnClickDungeonScene()
