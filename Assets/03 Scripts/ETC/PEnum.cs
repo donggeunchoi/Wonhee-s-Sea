@@ -69,3 +69,13 @@ public enum ETargetType
 //    Rating = 4,// 평판
 //    Ingredient = 5, // Type2는 EIngredientType, Type3은 IngredientID
 //}
+
+
+[Serializable]
+public enum EStoreType
+{
+    Equipment = 1,
+    Ingredient = 2,
+    Employee = 3,
+    Skin = 4
+}
