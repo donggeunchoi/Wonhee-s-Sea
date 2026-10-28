@@ -22,6 +22,10 @@ public class UIManager : Singleton<UIManager>
     [SerializeField]
     TextMeshProUGUI txRating;
 
+    [Header("상점 팝업")]
+    [SerializeField]
+    GameObject storePopup;
+
     private void Awake()
     {
         txLevel.text = string.Format("Lv.{0}", UserManager.Ins.userInfo.level);
@@ -36,6 +40,7 @@ public class UIManager : Singleton<UIManager>
     public void OnClickStore()
     {
         Debug.LogWarning("상점 버튼 눌림");
+        storePopup.SetActive(true);
     }
 
     public void OnClickTown()
