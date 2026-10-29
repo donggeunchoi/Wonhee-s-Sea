@@ -27,10 +27,20 @@ public class PopupBoxShop : MonoBehaviour
     [SerializeField]
     GameObject EmloyeeScrollView;
 
+    [Header("장비, 재료 아이템")]
+    [SerializeField]
+    ShopItemContent itemContent;
+    [SerializeField]
+    Transform itemTransform;
+
     EStoreType currentType = EStoreType.Equipment;
+
+    List<StoreData> storeDatas = new List<StoreData>();
+    List<ShopItemContent> shopItemContents = new List<ShopItemContent>();
 
     private void Awake()
     {
+        storeDatas = JsonManager.Ins.GetJson<StoreData>();
         foreach (var tap in storeTaps)
         {
             tap.btOff.onClick.AsObservable().Subscribe(_ =>
@@ -48,6 +58,8 @@ public class PopupBoxShop : MonoBehaviour
 
     void InitData(EStoreType type)
     {
+        var storeJsons = storeDatas.FindAll(info => info.storeType == (int)type);
+
         currentType = type;
         foreach (var tap in storeTaps)
         {
@@ -68,6 +80,24 @@ public class PopupBoxShop : MonoBehaviour
             {
                 storeScrollView.SetActive(true);
                 EmloyeeScrollView.SetActive(false);
+
+                for (int i = 0; i < storeJsons.Count; i++)
+                {
+                    if (i >= shopItemContents.Count)
+                    {
+                        var shopItem = Instantiate(itemContent, itemTransform, false);
+                        shopItemContents.Add(shopItem);
+                    }
+
+                    var content = shopItemContents[i];
+                    content.InitData(storeJsons[i]);
+                    content.gameObject.SetActive(true);
+                }
+
+                for (int i = storeJsons.Count; i < shopItemContents.Count; i++)
+                {
+                    shopItemContents[i].gameObject.SetActive(false);
+                }
             }
             break;
 
