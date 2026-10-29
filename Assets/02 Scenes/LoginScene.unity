@@ -1247,6 +1247,7 @@ MonoBehaviour:
   standRecipeDatas: []
   standRecipeInputDatas: []
   displayStandDatas: []
+  storeDatas: []
   fishChartFileId: 236403
   itemDataTableChartFileId: 236399
   standChartFileId: 241769
@@ -1255,6 +1256,7 @@ MonoBehaviour:
   standRecipeChartFileId: 236405
   standRecipeInputChartFileId: 236396
   displayStandChartFileId: 239335
+  storeDataId: 272263
 --- !u!1 &2056451501
 GameObject:
   m_ObjectHideFlags: 0

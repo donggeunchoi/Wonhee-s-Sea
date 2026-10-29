@@ -21,7 +21,7 @@ public class BackendManager : Singleton<BackendManager>
     public List<StandRecipeData> standRecipeDatas = new List<StandRecipeData>();
     public List<StandRecipeInputData> standRecipeInputDatas = new List<StandRecipeInputData>();
     public List<DisplayStandData> displayStandDatas = new List<DisplayStandData>();
-
+    public List<StoreData> storeDatas = new List<StoreData>();
 
     public Subject<bool> OnInitBackEnd = new Subject<bool>();
     public Subject<bool> OnBackEndLogin = new Subject<bool>();
@@ -44,6 +44,7 @@ public class BackendManager : Singleton<BackendManager>
     [SerializeField] private string standRecipeChartFileId = "";
     [SerializeField] private string standRecipeInputChartFileId = "";
     [SerializeField] private string displayStandChartFileId = "";
+    [SerializeField] private string storeDataId = "";
 
     public void InitBackEnd()
     {
@@ -312,7 +313,7 @@ public class BackendManager : Singleton<BackendManager>
         isSuccess &= LoadStandRecipeChart();
         isSuccess &= LoadStandRecipeInputChart();
         isSuccess &= LoadDisplayStandChart();
-
+        isSuccess &= LoadStoreDataChart();
         OnLoadAllChartData.OnNext(isSuccess);
     }
 
@@ -535,6 +536,27 @@ public class BackendManager : Singleton<BackendManager>
         }
         JsonManager.Ins.SetJson<DisplayStandData>(displayStandDatas);
         Debug.Log($"[Backend] DisplayStand chart load success : {displayStandDatas.Count}");
+        return true;
+    }
+
+    bool LoadStoreDataChart()
+    {
+        storeDatas.Clear();
+        JsonData rows = GetChartRows(storeDataId, "storeDatas");
+        if (rows == null)
+            return false;
+        for (int i = 0; i < rows.Count; i++)
+        {
+            JsonData row = rows[i];
+            StoreData data = new StoreData();
+            data.storeId = GetInt(row, "storeId");
+            data.storeType = GetInt(row, "storeType");
+            data.targetId = GetInt(row, "targetId");
+            data.sellCost = GetInt(row, "sellCost");
+            storeDatas.Add(data);
+        }
+        JsonManager.Ins.SetJson<StoreData>(storeDatas);
+        Debug.Log($"[Backend] DisplayStand chart load success : {storeDatas.Count}");
         return true;
     }
 
