@@ -85,3 +85,12 @@ public class DisplayStandData
     public int stackCount;
     public int sellingitem;
 }
+
+[Serializable]
+public class StoreData
+{
+    public int storeId;
+    public int storeType;
+    public int targetId;
+    public int sellCost;
+}
