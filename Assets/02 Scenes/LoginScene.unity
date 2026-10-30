@@ -522,6 +522,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 936530222}
   m_CullTransparentMesh: 1
+--- !u!1 &940129327
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 940129329}
+  - component: {fileID: 940129328}
+  m_Layer: 0
+  m_Name: SpriteManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &940129328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 940129327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a7fd2a36cb6b24095613ff0222b9d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &940129329
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 940129327}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &970467782
 GameObject:
   m_ObjectHideFlags: 0
@@ -1249,14 +1293,14 @@ MonoBehaviour:
   displayStandDatas: []
   storeDatas: []
   fishChartFileId: 236403
-  itemDataTableChartFileId: 236399
+  itemDataTableChartFileId: 272721
   standChartFileId: 241769
   equipmentChartFileId: 231054
   ingredientChartFileId: 236401
   standRecipeChartFileId: 236405
   standRecipeInputChartFileId: 236396
   displayStandChartFileId: 239335
-  storeDataId: 272263
+  storeDataId: 272716
 --- !u!1 &2056451501
 GameObject:
   m_ObjectHideFlags: 0
@@ -1317,3 +1361,4 @@ SceneRoots:
   - {fileID: 2056451503}
   - {fileID: 1426732632}
   - {fileID: 1918916831}
+  - {fileID: 940129329}
