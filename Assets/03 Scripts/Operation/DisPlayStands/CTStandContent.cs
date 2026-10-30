@@ -28,6 +28,8 @@ public class CTStandContent : MonoBehaviour
     [SerializeField]
     Transform worldStackRoot;
 
+    private int maxInputCraftCount = 5; //제작 횟수 기준 - 제작용량
+
     StandData standData = null;
     StandRecipeData standRecipeData = null;
     List<StandRecipeInputData> recipeInputDatas = new List<StandRecipeInputData>();
@@ -101,7 +103,6 @@ public class CTStandContent : MonoBehaviour
         if (!string.IsNullOrEmpty(outputItemId) && outputStockCount > 0)
         {
             TryPickupOutput(inv);
-            return;
         }
 
         // 2. 인벤토리에서 재료를 버퍼로 이동
@@ -146,19 +147,22 @@ public class CTStandContent : MonoBehaviour
             return;
 
         string itemId = inputItemId.ToString();
-
         int buffered = GetBufferedCount(itemId);
+        int capacity = needCount * Mathf.Max(1, maxInputCraftCount);
+        int space = capacity - buffered;
 
-        if (needCount - buffered <= 0)
+        if (space <= 0)
             return;
 
         int have = inv.CountOf(itemId);
+
         if (have <= 0)
             return;
 
-        int toMove = Mathf.Min(have, needCount - buffered);
+        // 각 재료를 한 번 호출할 때 최대 1회 제작분만 투입한다.
+        int toMove = Mathf.Min(have, Mathf.Min(needCount, space));
 
-        if(inv.TryRemove(itemId, toMove))
+        if (inv.TryRemove(itemId, toMove))
             AddToBuffer(itemId, toMove);
     }
 

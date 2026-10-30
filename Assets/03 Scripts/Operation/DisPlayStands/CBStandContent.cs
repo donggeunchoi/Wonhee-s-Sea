@@ -27,6 +27,8 @@ public class CBStandContent : MonoBehaviour
     [SerializeField]
     Transform worldStackRoot;
 
+    private int maxInputCraftCount = 5; //제작 횟수 기준 - 재료 대기 용량
+
     StandData standData = null;
     StandRecipeData standRecipeData = null;
     List<StandRecipeInputData> recipeInputDatas = new List<StandRecipeInputData>();
@@ -98,7 +100,6 @@ public class CBStandContent : MonoBehaviour
         if (!string.IsNullOrEmpty(outputItemId) && outputStockCount > 0)
         {
             TryPickupOutput(inv);
-            return;
         }
 
         // 2. 인벤토리에서 재료를 버퍼로 이동
@@ -118,31 +119,37 @@ public class CBStandContent : MonoBehaviour
 
     private void DepositInputFromInventory(Inventory inv)
     {
+        if (inv == null)
+            return;
+
         if (recipeInputDatas == null || recipeInputDatas.Count == 0)
             return;
 
-        // 한 번 상호작용당 "1회 제작분"만 채우기
         for (int i = 0; i < recipeInputDatas.Count; i++)
         {
             var req = recipeInputDatas[i];
 
-            if (string.IsNullOrEmpty(req.inputItemId1.ToString()) || req.inputCount <= 0)
+            if (req.inputItemId1 <= 0 || req.inputCount <= 0)
                 continue;
 
-            int buffered = GetBufferedCount(req.inputItemId1.ToString());
-            int need = req.inputCount - buffered;
+            string itemId = req.inputItemId1.ToString();
+            int buffered = GetBufferedCount(itemId);
+            int capacity = req.inputCount * Mathf.Max(1, maxInputCraftCount);
+            int space = capacity - buffered;
 
-            if (need <= 0)
+            if (space <= 0)
                 continue;
 
-            int have = inv.CountOf(req.inputItemId1.ToString());
+            int have = inv.CountOf(itemId);
+
             if (have <= 0)
                 continue;
 
-            int toMove = Mathf.Min(have, need);
+            // 한 번 호출할 때 최대 1회 제작분만 투입한다.
+            int toMove = Mathf.Min(have, Mathf.Min(req.inputCount, space));
 
-            if (inv.TryRemove(req.inputItemId1.ToString(), toMove))
-                AddToBuffer(req.inputItemId1.ToString(), toMove);
+            if (inv.TryRemove(itemId, toMove))
+                AddToBuffer(itemId, toMove);
         }
     }
 
