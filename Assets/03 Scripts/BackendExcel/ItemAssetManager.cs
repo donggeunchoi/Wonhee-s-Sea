@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class ItemAssetManager : MonoBehaviour
+public class ItemAssetManager : Singleton<ItemAssetManager>
 {
     // 아이템 아이디로 아이콘과 프리펩을 조회하는 역할
     [Header("리소시스 아이콘 내부 경로")]
@@ -130,6 +130,7 @@ public class ItemAssetManager : MonoBehaviour
                         return null;
                 }
 
+
             default:
                 Debug.LogError($"ItemAssetManager: 잘못된 ItemType. itemId={itemId}, itemType={itemType}");
                 return null;
@@ -157,6 +158,9 @@ public class ItemAssetManager : MonoBehaviour
                         Debug.LogError($"ItemAssetManager: 잘못된 IngredientType(Icon). itemId={itemId}, ingredientType={ingredientType}", this);
                         return null;
                 }
+
+            case EItemType.Weapon:
+                return $"{iconPath}/Weapon/WP{itemId}";
 
             default:
                 Debug.LogError($"ItemAssetManager: 잘못된 ItemType(Icon). itemId={itemId}, itemType={itemType}", this);

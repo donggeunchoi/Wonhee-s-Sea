@@ -20,7 +20,7 @@ public class ShopItemContent : MonoBehaviour
 
     public void InitData(StoreData _storeData)
     {
-        //imgIcon.sprite = ItemAssetManager.Ins.GetIcon(_storeData.targetId.ToString());
+        imgIcon.sprite = SpriteManager.Ins.GetIcon(_storeData.targetId.ToString(),(EStoreType)_storeData.storeType);
 
         var itemTable = JsonManager.Ins.GetJson<ItemDataTable>().Find(info => info.itemId == _storeData.targetId);
         
