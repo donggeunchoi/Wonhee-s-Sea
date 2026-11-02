@@ -17,6 +17,7 @@ public class ItemRuntimeData
 
 public class ItemRuntimeDatabase : MonoBehaviour
 {
+    //아이템 데이터 조회 역할 스크립트
     private Dictionary<string, ItemRuntimeData> itemDataDic = new Dictionary<string, ItemRuntimeData>();
 
     public bool IsLoaded => itemDataDic != null && itemDataDic.Count > 0;
@@ -27,7 +28,7 @@ public class ItemRuntimeDatabase : MonoBehaviour
         itemDataDic.Clear();
 
         if (items == null)
-            return;
+            return; 
 
         foreach (var table in items)
         {
@@ -38,6 +39,8 @@ public class ItemRuntimeDatabase : MonoBehaviour
             if (runtimeData == null)
                 continue;
 
+
+            
             itemDataDic[runtimeData.itemId] = runtimeData;
         }
 
@@ -70,8 +73,14 @@ public class ItemRuntimeDatabase : MonoBehaviour
         if (string.IsNullOrEmpty(itemId))
             return null;
 
-        itemDataDic.TryGetValue(itemId, out var data);
-        return data;
+        if (itemDataDic == null)
+            return null;
+
+        if (itemDataDic.TryGetValue(itemId, out ItemRuntimeData data))
+            return data;
+
+        Debug.LogWarning($"ItemRuntimeDatabase: itemId를 찾지 못함. itemId={itemId}");
+        return null;
     }
 
     public bool IsStackable(string itemId)

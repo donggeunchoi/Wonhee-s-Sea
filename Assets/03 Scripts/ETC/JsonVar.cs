@@ -23,9 +23,10 @@ public class StandData
 {
     public int standId;
     public string name;
-    public string standType1;
-    public string standType2;
+    public int standType1;
+    public int standType2;
     public int cost;
+    public int stage;
 }
 
 
@@ -73,4 +74,23 @@ public class  StandRecipeInputData
     public int inputItemId1;
     public int inputItemId2;
     public int inputCount;
+}
+
+[Serializable]
+public class DisplayStandData
+{
+    public int dpStandId;
+    public int standId;
+    public int grade;
+    public int stackCount;
+    public int sellingitem;
+}
+
+[Serializable]
+public class StoreData
+{
+    public int storeId;
+    public int storeType;
+    public int targetId;
+    public int sellCost;
 }

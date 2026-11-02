@@ -14,7 +14,7 @@ public class PlayerHpUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _text;
 
     private Coroutine _flashCo;
-    private int _prevHp = -1;
+    private float _prevHp = -1f;
     private float _flashOnSeconds = 0.12f;
     private float _flashFadeSeconds = 0.20f;
 
@@ -55,14 +55,17 @@ public class PlayerHpUI : MonoBehaviour
         if (_flashGroup != null) _flashGroup.alpha = 0f;
     }
 
-    private void HandleHpChanged(int current, int max)
+    private void HandleHpChanged(float current, float max)
     {
-        float t = (max <= 0) ? 0f : (float)current / max;
-        if (_fillImage != null) _fillImage.fillAmount = Mathf.Clamp01(t);
+        float t = (max <= 0f) ? 0f : current / max;
 
-        if (_text != null) _text.text = $"{current}/{max}";
+        if (_fillImage != null)
+            _fillImage.fillAmount = Mathf.Clamp01(t);
 
-        if (_prevHp >= 0 && current < _prevHp)
+        if (_text != null)
+            _text.text = $"{current:F1}/{max:F1}";
+
+        if (_prevHp >= 0f && current < _prevHp)
             FlashOnce();
 
         _prevHp = current;

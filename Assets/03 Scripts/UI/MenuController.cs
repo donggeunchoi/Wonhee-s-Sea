@@ -72,7 +72,10 @@ namespace _03_Scripts.UI
                     SetMenu(MenuType.Dungeon, closeShopPanel: true);
 
                     if (!string.IsNullOrEmpty(dungeonSceneName))
+                    {
+                        UserManager.Ins.SetDungeonSpawnFishIdsFromPlacedStands();
                         SceneManager.LoadScene(dungeonSceneName);
+                    }
                     break;
             }
         }

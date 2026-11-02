@@ -4,16 +4,13 @@ apply plugin: 'com.android.library'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 // Android Resolver Dependencies Start
-    implementation 'androidx.credentials:credentials:1.5.0' // Assets/TheBackend/Toolkit/GoogleLogin/Android/Editor/BackendGoogleLoginAndroidDependencies.xml:8
-    implementation 'androidx.credentials:credentials-play-services-auth:1.5.0' // Assets/TheBackend/Toolkit/GoogleLogin/Android/Editor/BackendGoogleLoginAndroidDependencies.xml:9
-    implementation 'com.google.android.libraries.identity.googleid:googleid:1.1.1' // Assets/TheBackend/Toolkit/GoogleLogin/Android/Editor/BackendGoogleLoginAndroidDependencies.xml:10
+    implementation 'com.google.android.gms:play-services-auth:19.0.0' // Assets/TheBackend/Toolkit/GoogleLogin/Android/Editor/BackendGoogleLoginAndroidDependencies.xml:9
 // Android Resolver Dependencies End
 **DEPS**}
 
 // Android Resolver Exclusions Start
 android {
   packagingOptions {
-      exclude ('/lib/arm64-v8a/*' + '*')
       exclude ('/lib/armeabi/*' + '*')
       exclude ('/lib/mips/*' + '*')
       exclude ('/lib/mips64/*' + '*')

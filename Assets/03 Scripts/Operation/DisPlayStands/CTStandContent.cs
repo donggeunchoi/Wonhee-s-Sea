@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CTStandContent : MonoBehaviour
 {
@@ -8,12 +9,9 @@ public class CTStandContent : MonoBehaviour
     [SerializeField]
     int standID;
 
+
     [Header("출력 표시 - 월드 오브젝트 쌓기")]
     [SerializeField] private bool useWorldStack = true;
-    [SerializeField] private Transform worldStackRoot;
-    [SerializeField] private int columnCount;
-    [SerializeField] private float worldStackOffsetX;
-    [SerializeField] private float worldStackOffsetY;
     [SerializeField] private int worldMaxVisible;
 
     [Header("출력 보관")]
@@ -23,6 +21,14 @@ public class CTStandContent : MonoBehaviour
 
     [Header("아이템 프리팹 조회용")]
     [SerializeField] private ItemAssetManager itemAssetManager;
+
+    [Header("재료 이미지")]
+    [SerializeField]
+    Image imgItem;
+    [SerializeField]
+    Transform worldStackRoot;
+
+    private int maxInputCraftCount = 5; //제작 횟수 기준 - 제작용량
 
     StandData standData = null;
     StandRecipeData standRecipeData = null;
@@ -40,8 +46,8 @@ public class CTStandContent : MonoBehaviour
     private Inventory lastInventory;
 
     // 월드 스택용 풀
-    private readonly List<GameObject> pooled = new List<GameObject>();
-    private GameObject cachedPrefab;
+    private readonly List<Image> pooled = new List<Image>();
+    private Sprite cachedPrefab;
 
     void Awake()
     {
@@ -57,7 +63,10 @@ public class CTStandContent : MonoBehaviour
 
         standData = standDatas.Find(info => info.standId == standID);
         if (standData == null)
+        {
+            Debug.LogWarning($"[CTStandContent] Stand_Data에 standID 없음: {standID}", this);
             return;
+        }
 
         var recipeDatas = JsonManager.Ins.GetJson<StandRecipeData>();
         if (recipeDatas == null)
@@ -65,7 +74,10 @@ public class CTStandContent : MonoBehaviour
 
         standRecipeData = recipeDatas.Find(info => info.standId == standID);
         if (standRecipeData == null)
+        {
+            Debug.LogWarning($"[CTStandContent] StandRecipeData에 standID 없음: {standID}", this);
             return;
+        }
 
         var inputDatas = JsonManager.Ins.GetJson<StandRecipeInputData>();
         if (inputDatas == null)
@@ -79,7 +91,7 @@ public class CTStandContent : MonoBehaviour
         if (inv == null)
             return;
 
-        if (standData == null || standRecipeData == null)
+        if (standRecipeData == null)
         {
             Debug.LogWarning($"[CTStandContent] 초기화가 완료되지 않아 Interact 불가. standID={standID}", this);
             return;
@@ -91,7 +103,6 @@ public class CTStandContent : MonoBehaviour
         if (!string.IsNullOrEmpty(outputItemId) && outputStockCount > 0)
         {
             TryPickupOutput(inv);
-            return;
         }
 
         // 2. 인벤토리에서 재료를 버퍼로 이동
@@ -136,19 +147,22 @@ public class CTStandContent : MonoBehaviour
             return;
 
         string itemId = inputItemId.ToString();
-
         int buffered = GetBufferedCount(itemId);
+        int capacity = needCount * Mathf.Max(1, maxInputCraftCount);
+        int space = capacity - buffered;
 
-        if (needCount - buffered <= 0)
+        if (space <= 0)
             return;
 
         int have = inv.CountOf(itemId);
+
         if (have <= 0)
             return;
 
-        int toMove = Mathf.Min(have, needCount - buffered);
+        // 각 재료를 한 번 호출할 때 최대 1회 제작분만 투입한다.
+        int toMove = Mathf.Min(have, Mathf.Min(needCount, space));
 
-        if(inv.TryRemove(itemId, toMove))
+        if (inv.TryRemove(itemId, toMove))
             AddToBuffer(itemId, toMove);
     }
 
@@ -226,14 +240,30 @@ public class CTStandContent : MonoBehaviour
         {
             var req = recipeInputDatas[i];
 
-            if (string.IsNullOrEmpty(req.inputItemId1.ToString()) || req.inputCount <= 0)
+            if (req.inputCount <= 0)
                 continue;
 
-            inputBuffer[req.inputItemId1.ToString()] -= req.inputCount;
-
-            if (inputBuffer[req.inputItemId1.ToString()] <= 0)
-                inputBuffer.Remove(req.inputItemId1.ToString());
+            ConsumeOneInput(req.inputItemId1, req.inputCount);
+            ConsumeOneInput(req.inputItemId2, req.inputCount);
         }
+    }
+    private void ConsumeOneInput(int inputItemId, int count)
+    {
+        if (inputItemId <= 0)
+            return;
+
+        if (count <= 0)
+            return;
+
+        string itemId = inputItemId.ToString();
+
+        if (!inputBuffer.ContainsKey(itemId))
+            return;
+
+        inputBuffer[itemId] -= count;
+
+        if (inputBuffer[itemId] <= 0)
+            inputBuffer.Remove(itemId);
     }
 
     private IEnumerator CoProcess()
@@ -313,28 +343,27 @@ public class CTStandContent : MonoBehaviour
             return;
         }
 
-        var prefab = itemAssetManager.GetPrefab(outputItemId);
-        if (prefab == null)
+        var prefabsprite = itemAssetManager.GetIcon(outputItemId);
+        if (prefabsprite == null)
         {
             Debug.LogWarning($"[CTStandContent] output prefab 없음. itemId={outputItemId}", this);
             SetPoolActiveCount(0);
             return;
         }
 
-        if (cachedPrefab != prefab)
+        if (cachedPrefab != prefabsprite)
         {
             ClearPool();
-            cachedPrefab = prefab;
+            cachedPrefab = prefabsprite;
         }
 
         int visible = Mathf.Clamp(outputStockCount, 0, worldMaxVisible);
 
-        EnsurePool(prefab, visible);
+        EnsurePool(prefabsprite, visible);
         SetPoolActiveCount(visible);
-        LayoutPoolGrid(visible);
     }
 
-    private void EnsurePool(GameObject prefab, int needCount)
+    private void EnsurePool(Sprite sprite, int needCount)
     {
         if (pooled.Count >= needCount)
             return;
@@ -343,11 +372,10 @@ public class CTStandContent : MonoBehaviour
 
         for (int i = 0; i < toCreate; i++)
         {
-            var go = Instantiate(prefab, worldStackRoot);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-            go.SetActive(false);
-            pooled.Add(go);
+            Image image = Instantiate(imgItem, worldStackRoot);
+            image.sprite = sprite;
+            image.gameObject.SetActive(false);
+            pooled.Add(image);
         }
     }
 
@@ -355,34 +383,11 @@ public class CTStandContent : MonoBehaviour
     {
         for (int i = 0; i < pooled.Count; i++)
         {
-            bool active = i < activeCount;
-
-            if (pooled[i] != null && pooled[i].activeSelf != active)
-                pooled[i].SetActive(active);
-        }
-    }
-
-    private void LayoutPoolGrid(int visibleCount)
-    {
-        if (columnCount <= 0)
-            columnCount = 5;
-
-        for (int i = 0; i < visibleCount; i++)
-        {
-            var go = pooled[i];
-            if (go == null)
+            if (pooled[i] == null)
                 continue;
 
-            int col = i % columnCount;
-            int row = i / columnCount;
-
-            go.transform.localPosition = new Vector3(
-                col * worldStackOffsetX,
-                row * worldStackOffsetY,
-                0f
-            );
-
-            go.transform.localRotation = Quaternion.identity;
+            bool active = i < activeCount;
+            pooled[i].gameObject.SetActive(active);
         }
     }
 

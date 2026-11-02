@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 5046880447426826068}
   - component: {fileID: 6902509903565451304}
   - component: {fileID: 4235266687188426687}
+  - component: {fileID: 2474816389824835307}
   m_Layer: 10
   m_Name: F_Bogfish
   m_TagString: Untagged
@@ -144,14 +145,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 259d4e543358d7442be0b72cefd75980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 0.5
-  _chaseSpeed: 0.7
   _moveRangeX: 5
-  _detectionRange: 3
-  _attackRange: 0.5
-  _attackCooldown: 2
-  _attackDamage: 1
   _visual: {fileID: 7555180037013887541}
+  _fleeDuration: 2
+  _fleeSpeedMultiplier: 1.5
 --- !u!114 &6902509903565451304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,7 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86bcddd467f15d043ada651fc7eae092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHp: 5
 --- !u!114 &4235266687188426687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,6 +171,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8707bc01bde629f41baa332a0309e486, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fishId: 10002
+--- !u!114 &2474816389824835307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733304119276298387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ecbb56a593ff824f8d5b2c05938eda6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3313492248249371775

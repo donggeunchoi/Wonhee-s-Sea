@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8245811462362448677}
   - component: {fileID: 5109885742910424823}
   - component: {fileID: 6617037314581986297}
+  - component: {fileID: 4950870010891634117}
   m_Layer: 10
   m_Name: F_Salmon
   m_TagString: Untagged
@@ -36,6 +37,7 @@ Transform:
   - {fileID: 820215638845426144}
   - {fileID: 4176719676203719733}
   - {fileID: 7338027387504414184}
+  - {fileID: 3633331197998275404}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &7247146906397563563
@@ -77,14 +79,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 259d4e543358d7442be0b72cefd75980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 0.5
-  _chaseSpeed: 0.7
   _moveRangeX: 5
-  _detectionRange: 3
-  _attackRange: 0.5
-  _attackCooldown: 2
-  _attackDamage: 1
   _visual: {fileID: 820215638845426144}
+  _fleeDuration: 2
+  _fleeSpeedMultiplier: 1.5
 --- !u!114 &5109885742910424823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,7 +95,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86bcddd467f15d043ada651fc7eae092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHp: 5
 --- !u!114 &6617037314581986297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,6 +105,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8707bc01bde629f41baa332a0309e486, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _fishId: 10004
+--- !u!114 &4950870010891634117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125256895149406171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ecbb56a593ff824f8d5b2c05938eda6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3727190697470120754
@@ -460,6 +470,86 @@ CapsuleCollider2D:
   m_Offset: {x: -0.3032233, y: -0.03575944}
   m_Size: {x: 0.68083775, y: 2.1808388}
   m_Direction: 0
+--- !u!1 &7671123345129815541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3633331197998275404}
+  - component: {fileID: 7783518620351474569}
+  - component: {fileID: 780978089382612812}
+  m_Layer: 10
+  m_Name: Sensor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3633331197998275404
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7671123345129815541}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4356506331813725694}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7783518620351474569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7671123345129815541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ecbb56a593ff824f8d5b2c05938eda6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!58 &780978089382612812
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7671123345129815541}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.04195118, y: -0.47824025}
+  serializedVersion: 2
+  m_Radius: 2.25355
 --- !u!1 &7672219495465151207
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,15 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CheckoutStand : MonoBehaviour
 {
-    public int money;
-
     public void Pay(string itemId, int amount)
     {
-        // 일단은 단순히 돈만 증가(가격은 DB에서 읽어도 됨)
-        money += amount * 1;
-        Debug.Log($"결제 완료: {itemId} x{amount}, money={money}");
+        if (amount <= 0)
+            return;
+
+        if (!TryGetItemPrice(itemId, out int price))
+            return;
+
+        int gold = price * amount;
+        UserManager.Ins.userInfo.AddGold(gold);
+    }
+
+    private bool TryGetItemPrice(string itemId, out int price)
+    {
+        price = 0;
+
+        if (!int.TryParse(itemId, out int ingredientId))
+        {
+            Debug.LogWarning($"[CheckoutStand] Invalid itemId: {itemId}", this);
+            return false;
+        }
+
+        IngredientData data = JsonManager.Ins.GetDataByKey<IngredientData>(
+            ingredientId,
+            ingredient => ingredient.ingredientId
+        );
+
+        if (data == null)
+        {
+            Debug.LogWarning($"[CheckoutStand] Ingredient price not found. itemId={itemId}", this);
+            return false;
+        }
+
+        if (data.cost <= 0)
+        {
+            Debug.LogWarning($"[CheckoutStand] Invalid item cost. itemId={itemId}, cost={data.cost}", this);
+            return false;
+        }
+
+        price = data.cost;
+        return true;
     }
 }

@@ -9,49 +9,66 @@ public class PlayerInteractStand : MonoBehaviour
     [SerializeField] private float range = 1.5f;
 
     [Header("자동 상호작용 옵션")]
-    [SerializeField] private float interactCooldown = 0.2f;
-    [SerializeField] private int holdFrames = 2;
+    [SerializeField] private float interactCooldown ;
+    [SerializeField] private int holdFrames;
 
-    private float lastInteractTime = -999f;
+    [Header("최초 접근 대기 시간")]
+    [SerializeField]
+    private float interactDelay = 1f;
+
+    private float targetStayTime;
+    private float lastInteractTime;
 
     private MonoBehaviour lastTarget;
-    private int sameTargetFrameCount = 0;
+    private int sameTargetFrameCount;
+    private Container activeContainer;
 
     void Update()
     {
-
-        if (inventory == null) return;
-
-        // 쿨타임 중이면 아무것도 안 함
-        if (Time.time - lastInteractTime < interactCooldown)
+        if (inventory == null)
             return;
 
         var target = FindNearestTargetStand();
 
         if (target == null)
         {
+            if (activeContainer != null)
+            {
+                activeContainer.SetVisualActive(false);
+                activeContainer = null;
+            }
+
             lastTarget = null;
             sameTargetFrameCount = 0;
+            targetStayTime = 0f;
             return;
         }
 
-        // 같은 대상이 연속으로 잡히는지 체크
-        if (target == lastTarget)
-            sameTargetFrameCount++;
-        else
+        if (target != lastTarget)
         {
             lastTarget = target;
             sameTargetFrameCount = 1;
+            targetStayTime = 0f;
+
+            // 접근 대기가 끝나면 첫 상호작용을 바로 실행할 수 있도록 한다.
+            lastInteractTime = Time.time - interactCooldown;
+            return;
         }
 
-        // holdFrames(기본 2프레임) 이상 유지되면 1회 실행
-        if (sameTargetFrameCount >= holdFrames)
-        {
-            InteractWithTarget(target);
+        sameTargetFrameCount++;
+        targetStayTime += Time.deltaTime;
 
-            lastInteractTime = Time.time;
-            sameTargetFrameCount = 0;
-        }
+        if (sameTargetFrameCount < holdFrames)
+            return;
+
+        if (targetStayTime < interactDelay)
+            return;
+
+        if (Time.time - lastInteractTime < interactCooldown)
+            return;
+
+        InteractWithTarget(target);
+        lastInteractTime = Time.time;
     }
 
     private void InteractWithTarget(MonoBehaviour target)
@@ -76,11 +93,22 @@ public class PlayerInteractStand : MonoBehaviour
             cbStand.Interact(inventory);
             return;
         }
+
+        if (target is Container container)
+        {
+            if (activeContainer != null && activeContainer != container)
+                activeContainer.SetVisualActive(false);
+
+            activeContainer = container;
+            container.Interact();
+            return;
+        }
     }
 
     private MonoBehaviour FindNearestTargetStand()
     {
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, range);
+        
         if (hits == null || hits.Length == 0)
             return null;
 
@@ -120,6 +148,14 @@ public class PlayerInteractStand : MonoBehaviour
             if (cbStand != null && dist < bestContentStandDist)
             {
                 bestContentStand = cbStand;
+                bestContentStandDist = dist;
+                continue;
+            }
+
+            Container container = hits[i].GetComponentInParent<Container>();
+            if (container != null && dist < bestContentStandDist)
+            {
+                bestContentStand = container;
                 bestContentStandDist = dist;
                 continue;
             }

@@ -68,7 +68,16 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void HandleAimReleased(Vector2 dir)
     {
-        _owner?.Attack?.FireRanged(_aimShootDir);
+        if (_owner?.Attack == null) return;
+
+        if (_owner.Attack.CurrentWeaponType == WeaponType.SMG)
+        {
+            _owner.Attack.StopSmgFire();
+        }
+        else
+        {
+            _owner.Attack.FireRanged(_aimShootDir);
+        }
     }
 
     private void Update()
@@ -105,6 +114,7 @@ public class PlayerInputHandler : MonoBehaviour
         }
 
         Vector2 aimRaw = _aimJoystick.Direction;
+        bool wasAiming = _isAiming;
         _isAiming = aimRaw.sqrMagnitude >= _aimDeadZone * _aimDeadZone;
 
         if (_isAiming)
@@ -112,6 +122,16 @@ public class PlayerInputHandler : MonoBehaviour
             Vector2 desiredShootDir = (-aimRaw).normalized;
             _aimShootDir = desiredShootDir;
             _lastNonZeroDir = _aimShootDir;
+
+            if (_owner?.Attack?.CurrentWeaponType == WeaponType.SMG)
+            {
+                _owner.Attack.FireRanged(_aimShootDir);
+            }
+        }
+        else if (wasAiming)
+        {
+            if (_owner?.Attack?.CurrentWeaponType == WeaponType.SMG)
+                _owner.Attack.StopSmgFire();
         }
     }
 }

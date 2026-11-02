@@ -1,18 +1,17 @@
-using BackEnd;
+﻿using BackEnd;
+using BackEnd.BackndNewtonsoft.Json;
 using LitJson;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UniRx;
-using BackEnd.BackndNewtonsoft.Json;
+using UnityEngine;
 
 public class BackendManager : Singleton<BackendManager>
 {
-    public PUserInfo userInfo = new PUserInfo();
-    public PDungeonInfo dungeonInfo = new PDungeonInfo();
-    public PTownInfo townInfo = new PTownInfo();
-    public PBuildingSaveData buildingSaveData = new PBuildingSaveData();
-
+    PuserInfo userInfo = new PuserInfo();
+    PDungeonInfo dungeonInfo = new PDungeonInfo();
+   
     [Header("뒤끝 차트 고정 데이터")]
     public List<FishData> fishDatas = new List<FishData>();
     public List<ItemDataTable> itemDataTables = new List<ItemDataTable>();
@@ -21,12 +20,18 @@ public class BackendManager : Singleton<BackendManager>
     public List<IngredientData> ingredientDatas = new List<IngredientData>();
     public List<StandRecipeData> standRecipeDatas = new List<StandRecipeData>();
     public List<StandRecipeInputData> standRecipeInputDatas = new List<StandRecipeInputData>();
+    public List<DisplayStandData> displayStandDatas = new List<DisplayStandData>();
+    public List<StoreData> storeDatas = new List<StoreData>();
 
     public Subject<bool> OnInitBackEnd = new Subject<bool>();
     public Subject<bool> OnBackEndLogin = new Subject<bool>();
     public Subject<EGameData> OnGetLoadData = new Subject<EGameData>();
     public Subject<bool> OnLoadAllChartData = new Subject<bool>();
     public Subject<bool> OnLoadChartItem = new Subject<bool>();
+    public Subject<bool> test = new Subject<bool>();
+
+    //던전에서 경영 넘어올때 던져주는 데이터
+    public Subject<string> OnTossFish = new Subject<string>();
 
     private BackendReturnObject backendInit = null;
 
@@ -38,6 +43,19 @@ public class BackendManager : Singleton<BackendManager>
     [SerializeField] private string ingredientChartFileId = "";
     [SerializeField] private string standRecipeChartFileId = "";
     [SerializeField] private string standRecipeInputChartFileId = "";
+    [SerializeField] private string displayStandChartFileId = "";
+    [SerializeField] private string storeDataId = "";
+
+    public Subject<bool> OnChangedLoginGoogle = new Subject<bool>();
+
+    public bool IsBackendLoggedIn { get; private set; }
+    public bool IsGuestAccount { get; private set; }
+
+    public string LastLoginError { get; private set; } = "";
+    public string LastGoogleLinkError { get; private set; } = "";
+
+    private bool isAuthRequestInProgress;
+    private bool isGoogleLinkInProgress;
 
     public void InitBackEnd()
     {
@@ -61,66 +79,332 @@ public class BackendManager : Singleton<BackendManager>
         }
     }
 
-    public void LoginGuest()
+
+    // 구글 로그인
+    public void LoginGoogle()
     {
-        SendQueue.Enqueue(Backend.BMember.GuestLogin, callback =>
+        if (!BeginAuthentication()) return;
+
+        RequestGoogleToken(false, (bool isSuccess, string errorMessage, string token) =>
         {
-            if (!callback.IsSuccess())
+            if (!isSuccess || string.IsNullOrEmpty(token))
             {
-                Debug.LogError("[Backend] GuestLogin failed: " + callback);
-                OnBackEndLogin.OnNext(false);
+                FailAuthentication("Google authentication failed: " + errorMessage);
                 return;
             }
+
+            AuthorizeGoogleToken(token);
+        });
+    }
+
+    // 외부에서 구글 토큰을 전달받는 방식
+    public void LoginGoogle(string token)
+    {
+        if (!BeginAuthentication()) return;
+
+        AuthorizeGoogleToken(token);
+    }
+
+    // 로그인 중복 요청 방지
+    private bool BeginAuthentication()
+    {
+        if (isAuthRequestInProgress || isGoogleLinkInProgress)
+        {
+            Debug.LogWarning("[Backend] Authentication is already in progress.");
+            return false;
+        }
+
+        if (IsBackendLoggedIn)
+        {
+            Debug.LogWarning("[Backend] Already logged in.");
+            return false;
+        }
+
+        LastLoginError = "";
+        isAuthRequestInProgress = true;
+        return true;
+    }
+
+    // 구글 토큰을 이용한 뒤끝 로그인
+    private void AuthorizeGoogleToken(string token)
+    {
+        if (string.IsNullOrEmpty(token))
+        {
+            FailAuthentication("Google token is empty.");
+            return;
+        }
+
+        SendQueue.Enqueue(Backend.BMember.AuthorizeFederation, token, FederationType.Google, callback =>
+        {
+            if (callback == null || !callback.IsSuccess())
+            {
+                FailAuthentication("Google federation failed: " + callback);
+                return;
+            }
+
+            IsGuestAccount = false;
+
+            Debug.Log("[Backend] Google federation success.");
 
             LoginGetUserInfo();
         });
     }
 
+    // 게스트 로그인
+    public void LoginGuest()
+    {
+        if (!BeginAuthentication()) return;
+
+        SendQueue.Enqueue(Backend.BMember.GuestLogin, callback =>
+        {
+            if (callback == null || !callback.IsSuccess())
+            {
+                FailAuthentication("GuestLogin failed: " + callback);
+                return;
+            }
+
+            IsGuestAccount = true;
+
+            Debug.Log("[Backend] Guest login success.");
+
+            LoginGetUserInfo();
+        });
+    }
+
+    // 게스트 계정을 구글 계정으로 연동
+    public void LinkGuestToGoogle()
+    {
+        if (!BeginGoogleLink()) return;
+
+        RequestGoogleToken(true, (bool isSuccess, string errorMessage, string token) =>
+        {
+            if (!isSuccess || string.IsNullOrEmpty(token))
+            {
+                FinishGoogleLink(false, "Google authentication for linking failed: " + errorMessage);
+                return;
+            }
+
+            ChangeGuestToGoogle(token);
+        });
+    }
+
+    // 이미 구글 토큰을 가지고 있는 경우 연동
+    public void LinkGuestToGoogle(string token)
+    {
+        if (!BeginGoogleLink()) return;
+
+        ChangeGuestToGoogle(token);
+    }
+
+    // 계정 연동 시작 조건 확인
+    private bool BeginGoogleLink()
+    {
+        if (isAuthRequestInProgress || isGoogleLinkInProgress)
+        {
+            Debug.LogWarning("[Backend] Another authentication operation is in progress.");
+            return false;
+        }
+
+        if (!IsBackendLoggedIn || !IsGuestAccount)
+        {
+            FinishGoogleLink(false, "A guest account must be logged in before linking.");
+            return false;
+        }
+
+        LastGoogleLinkError = "";
+        isGoogleLinkInProgress = true;
+
+        return true;
+    }
+
+    // 게스트에서 구글 계정으로 변경
+    private void ChangeGuestToGoogle(string token)
+    {
+        if (string.IsNullOrEmpty(token))
+        {
+            FinishGoogleLink(false, "Google token for linking is empty.");
+            return;
+        }
+
+        SendQueue.Enqueue(Backend.BMember.ChangeCustomToFederation, token, FederationType.Google, callback =>
+        {
+            if (callback == null || !callback.IsSuccess())
+            {
+                string errorMessage = callback == null ? "Empty BACKND response." : callback.ToString();
+
+                if (callback != null && callback.GetStatusCode() == "409")
+                    errorMessage = "This Google account is already connected to another account. " + errorMessage;
+
+                FinishGoogleLink(false, errorMessage);
+                return;
+            }
+
+            IsGuestAccount = false;
+
+            // 연동 성공 후 기존 로컬 게스트 인증 정보 삭제
+            Backend.BMember.DeleteGuestInfo();
+
+            Debug.Log("[Backend] Guest account linked to Google successfully.");
+
+            FinishGoogleLink(true, "");
+        });
+    }
+
+    // 구글 계정 연동 결과 전달
+    private void FinishGoogleLink(bool success, string errorMessage)
+    {
+        isGoogleLinkInProgress = false;
+
+        LastGoogleLinkError = success ? "" : errorMessage;
+
+        if (!success)
+            Debug.LogError("[Backend] Google account linking failed: " + errorMessage);
+
+        OnChangedLoginGoogle.OnNext(success);
+    }
+
+    // Android / iOS 구글 토큰 요청
+    private void RequestGoogleToken(bool forceAccountSelection, Action<bool, string, string> callback)
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+
+       if (forceAccountSelection)
+{
+    TheBackend.ToolKit.GoogleLogin.Android.GoogleSignOut(true, (bool isSuccess, string errorMessage) =>
+    {
+        if (!isSuccess)
+        {
+            callback(false, "GoogleSignOut failed: " + errorMessage, "");
+            return;
+        }
+
+        TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string error, string token) =>
+        {
+            callback(success, error, token);
+        });
+    }); 
+
+    return;
+}
+
+TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string error, string token) =>
+{
+    callback(success, error, token);
+});
+
+#elif UNITY_IOS && !UNITY_EDITOR
+
+        if (forceAccountSelection)
+        {
+            TheBackend.ToolKit.GoogleLogin.iOS.GoogleSignOut((bool isSuccess, string errorMessage) =>
+            {
+                if (!isSuccess)
+                {
+                    callback(false, "GoogleSignOut failed: " + errorMessage, "");
+                    return;
+                }
+
+                TheBackend.ToolKit.GoogleLogin.iOS.GoogleLogin((bool success, string error, string token) =>
+                {
+                    callback(success, error, token);
+                });
+            });
+
+            return;
+        }
+
+        TheBackend.ToolKit.GoogleLogin.iOS.GoogleLogin((bool success, string error, string token) =>
+        {
+            callback(success, error, token);
+        });
+
+#else
+
+        callback(false, "Google login requires Android or iOS device.", "");
+
+#endif
+    }
+
+    // 로그인 실패 처리
+    private void FailAuthentication(string errorMessage)
+    {
+        isAuthRequestInProgress = false;
+
+        IsBackendLoggedIn = false;
+        IsGuestAccount = false;
+
+        LastLoginError = errorMessage;
+
+        Debug.LogError("[Backend] " + errorMessage);
+
+        OnBackEndLogin.OnNext(false);
+    }
+
+    // 테스트용 게스트 계정 초기화
+    [ContextMenu("테스트용 게스트 정보 초기화")]
+    public void ResetGuestForTest()
+    {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+
+        if (IsBackendLoggedIn || isAuthRequestInProgress)
+        {
+            Debug.LogWarning("[Backend] Reset guest info only while logged out.");
+            return;
+        }
+
+        Backend.BMember.DeleteGuestInfo();
+
+        LoginGuest();
+
+#else
+
+        Debug.LogWarning("[Backend] ResetGuestForTest is disabled in release builds.");
+
+#endif
+    }
+
+    // 로그인 성공 후 유저 정보 로드
     private void LoginGetUserInfo()
     {
-        var bro = Backend.BMember.GetUserInfo();
-
-        if (bro == null)
+        SendQueue.Enqueue(Backend.BMember.GetUserInfo, bro =>
         {
-            Debug.LogError("[Backend] GetUserInfo bro is null");
-            OnBackEndLogin.OnNext(false);
-            return;
-        }
+            if (bro == null || !bro.IsSuccess())
+            {
+                FailAuthentication("GetUserInfo failed: " + bro);
+                return;
+            }
 
-        if (!bro.IsSuccess())
-        {
-            Debug.LogError("[Backend] GetUserInfo failed: " + bro);
-            OnBackEndLogin.OnNext(false);
-            return;
-        }
+            var json = bro.GetReturnValuetoJSON();
 
-        var json = bro.GetReturnValuetoJSON();
-        if (json == null)
-        {
-            Debug.LogError("[Backend] GetReturnValuetoJSON() is null");
-            OnBackEndLogin.OnNext(false);
-            return;
-        }
+            if (json == null || !json.ContainsKey("row") || json["row"] == null)
+            {
+                FailAuthentication("GetUserInfo response has no row.");
+                return;
+            }
 
-        if (!json.ContainsKey("row") || json["row"] == null)
-        {
-            Debug.LogWarning("[Backend] GetUserInfo has no row. First login?");
+            JsonData row = json["row"];
+
+            if (row.ContainsKey("nickname") && row["nickname"] != null)
+                UserManager.Ins.userNickName = row["nickname"].ToString();
+
+            if (row.ContainsKey("inDate") && row["inDate"] != null)
+                UserManager.Ins.userIndate = row["inDate"].ToString();
+
+            if (row.ContainsKey("gamerId") && row["gamerId"] != null)
+                UserManager.Ins.userGamerID = row["gamerId"].ToString();
+
+            if (row.ContainsKey("subscriptionType") && row["subscriptionType"] != null)
+                IsGuestAccount = row["subscriptionType"].ToString() == "customSignUp";
+
+            IsBackendLoggedIn = true;
+            isAuthRequestInProgress = false;
+
+            LastLoginError = "";
+
+            Debug.Log("[Backend] Login verified. IsGuestAccount = " + IsGuestAccount);
+
             OnBackEndLogin.OnNext(true);
-            return;
-        }
-
-        JsonData row = json["row"];
-
-        if (row.ContainsKey("nickname") && row["nickname"] != null)
-            UserManager.Ins.userNickName = row["nickname"].ToString();
-
-        if (row.ContainsKey("inDate") && row["inDate"] != null)
-            UserManager.Ins.userIndate = row["inDate"].ToString();
-
-        if (row.ContainsKey("gamerId") && row["gamerId"] != null)
-            UserManager.Ins.userGamerID = row["gamerId"].ToString();
-
-        OnBackEndLogin.OnNext(true);
+        });
     }
 
     public void LoadAll()
@@ -175,40 +459,21 @@ public class BackendManager : Singleton<BackendManager>
         switch (eGameData)
         {
             case EGameData.UserInfo:
-                {
-                    var data = JsonConvert.DeserializeObject<PUserInfo>(json);
-                    UserManager.Ins.userInfo = data;
-                    userInfo = data;
-                }
-                break;
+            {
+                var data = JsonConvert.DeserializeObject<PuserInfo>(json);
+                UserManager.Ins.userInfo = data;
+                userInfo = data;
+            }
+            break;
 
             case EGameData.DungeonInfo:
-                {
-                    var data = JsonConvert.DeserializeObject<PDungeonInfo>(json);
-                    UserManager.Ins.dungeonInfo = data;
-                    dungeonInfo = data;
-                }
-                break;
+            {
+                var data = JsonConvert.DeserializeObject<PDungeonInfo>(json);
+                UserManager.Ins.dungeonInfo = data;
+                dungeonInfo = data;
+            }
+            break;
 
-            case EGameData.TownInfo:
-                {
-                    var data = JsonConvert.DeserializeObject<PTownInfo>(json);
-                    UserManager.Ins.townInfo = data;
-                    townInfo = data;
-                }
-                break;
-
-            case EGameData.BuildingInfo:
-                {
-                    var data = JsonConvert.DeserializeObject<PBuildingSaveData>(json);
-                    if (data == null) data = new PBuildingSaveData();
-
-                    data.SyncFromJson();
-
-                    UserManager.Ins.buildingSaveData = data;
-                    buildingSaveData = data;
-                }
-                break;
         }
     }
 
@@ -278,14 +543,7 @@ public class BackendManager : Singleton<BackendManager>
 
             case EGameData.DungeonInfo:
                 return UserManager.Ins.dungeonInfo.IsDifferent(dungeonInfo);
-
-            case EGameData.TownInfo:
-                return UserManager.Ins.townInfo.IsDifferent(townInfo);
-
-            case EGameData.BuildingInfo:
-                return UserManager.Ins.buildingSaveData.IsDifferent(buildingSaveData);
         }
-
         return false;
     }
 
@@ -300,14 +558,6 @@ public class BackendManager : Singleton<BackendManager>
             case EGameData.DungeonInfo:
                 dungeonInfo = CloneUtil.DeepClone(UserManager.Ins.dungeonInfo);
                 break;
-
-            case EGameData.TownInfo:
-                townInfo = CloneUtil.DeepClone(UserManager.Ins.townInfo);
-                break;
-
-            case EGameData.BuildingInfo:
-                buildingSaveData = CloneUtil.DeepClone(UserManager.Ins.buildingSaveData);
-                break;
         }
     }
 
@@ -320,12 +570,10 @@ public class BackendManager : Singleton<BackendManager>
 
             case EGameData.DungeonInfo:
                 return UserManager.Ins.dungeonInfo.FormatJsonData();
-
             case EGameData.TownInfo:
-                return UserManager.Ins.townInfo.FormatJsonData();
-
+                return UserManager.Ins.dungeonInfo.FormatJsonData();
             case EGameData.BuildingInfo:
-                return UserManager.Ins.buildingSaveData.FormatJsonData();
+                return UserManager.Ins.dungeonInfo.FormatJsonData();
         }
 
         Debug.LogError($"[Backend] GetParamGameData Error: {eGameData}");
@@ -345,7 +593,8 @@ public class BackendManager : Singleton<BackendManager>
         isSuccess &= LoadIngredientChart();
         isSuccess &= LoadStandRecipeChart();
         isSuccess &= LoadStandRecipeInputChart();
-
+        isSuccess &= LoadDisplayStandChart();
+        isSuccess &= LoadStoreDataChart();
         OnLoadAllChartData.OnNext(isSuccess);
     }
 
@@ -486,9 +735,10 @@ public class BackendManager : Singleton<BackendManager>
 
             data.standId = GetInt(row, "StandId");
             data.name = GetString(row, "Name");
-            data.standType1 = GetString(row, "StandType1");
-            data.standType2 = GetString(row, "StandType2");
+            data.standType1 = GetInt(row, "StandType1");
+            data.standType2 = GetInt(row, "StandType2");
             data.cost = GetInt(row, "Cost");
+            data.stage = GetInt(row, "Stage");
 
             standDatas.Add(data);
         }
@@ -545,6 +795,49 @@ public class BackendManager : Singleton<BackendManager>
 
         JsonManager.Ins.SetJson<IngredientData>(ingredientDatas);
         Debug.Log($"[Backend] Ingredient chart load success : {ingredientDatas.Count}");
+        return true;
+    }
+
+    bool LoadDisplayStandChart()
+    {
+        displayStandDatas.Clear();
+        JsonData rows = GetChartRows(displayStandChartFileId, "DisplayStand");
+        if (rows == null)
+            return false;
+        for (int i = 0; i < rows.Count; i++)
+        {
+            JsonData row = rows[i];
+            DisplayStandData data = new DisplayStandData();
+            data.dpStandId = GetInt(row, "DPStandId");
+            data.standId = GetInt(row, "StandId");
+            data.grade = GetInt(row, "Grade");
+            data.stackCount = GetInt(row, "StackCount");
+            data.sellingitem = GetInt(row, "SellingItem");
+            displayStandDatas.Add(data);
+        }
+        JsonManager.Ins.SetJson<DisplayStandData>(displayStandDatas);
+        Debug.Log($"[Backend] DisplayStand chart load success : {displayStandDatas.Count}");
+        return true;
+    }
+
+    bool LoadStoreDataChart()
+    {
+        storeDatas.Clear();
+        JsonData rows = GetChartRows(storeDataId, "storeDatas");
+        if (rows == null)
+            return false;
+        for (int i = 0; i < rows.Count; i++)
+        {
+            JsonData row = rows[i];
+            StoreData data = new StoreData();
+            data.storeId = GetInt(row, "storeId");
+            data.storeType = GetInt(row, "storeType");
+            data.targetId = GetInt(row, "targetId");
+            data.sellCost = GetInt(row, "sellCost");
+            storeDatas.Add(data);
+        }
+        JsonManager.Ins.SetJson<StoreData>(storeDatas);
+        Debug.Log($"[Backend] DisplayStand chart load success : {storeDatas.Count}");
         return true;
     }
 
