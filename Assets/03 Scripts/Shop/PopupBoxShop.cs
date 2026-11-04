@@ -23,10 +23,6 @@ public class PopupBoxShop : MonoBehaviour
     [SerializeField]
     GameObject storeScrollView;
 
-    [Header("직원, 스킨 UI")]
-    [SerializeField]
-    GameObject EmloyeeScrollView;
-
     [Header("장비, 재료 아이템")]
     [SerializeField]
     ShopItemContent itemContent;
@@ -73,42 +69,24 @@ public class PopupBoxShop : MonoBehaviour
             }
         }
 
-        switch (currentType)
+        storeScrollView.SetActive(true);
+
+        for (int i = 0; i < storeJsons.Count; i++)
         {
-            case EStoreType.Equipment:
-            case EStoreType.Ingredient:
+            if (i >= shopItemContents.Count)
             {
-                storeScrollView.SetActive(true);
-                EmloyeeScrollView.SetActive(false);
-
-                for (int i = 0; i < storeJsons.Count; i++)
-                {
-                    if (i >= shopItemContents.Count)
-                    {
-                        var shopItem = Instantiate(itemContent, itemTransform, false);
-                        shopItemContents.Add(shopItem);
-                    }
-
-                    var content = shopItemContents[i];
-                    content.InitData(storeJsons[i]);
-                    content.gameObject.SetActive(true);
-                }
-
-                for (int i = storeJsons.Count; i < shopItemContents.Count; i++)
-                {
-                    shopItemContents[i].gameObject.SetActive(false);
-                }
+                var shopItem = Instantiate(itemContent, itemTransform, false);
+                shopItemContents.Add(shopItem);
             }
-            break;
 
-            case EStoreType.Employee:
-            case EStoreType.Skin:
-            {
-                storeScrollView.SetActive(false);
-                EmloyeeScrollView.SetActive(true);
-            }
-            break;
+            var content = shopItemContents[i];
+            content.InitData(storeJsons[i]);
+            content.gameObject.SetActive(true);
+        }
+
+        for (int i = storeJsons.Count; i < shopItemContents.Count; i++)
+        {
+            shopItemContents[i].gameObject.SetActive(false);
         }
     }
-
 }

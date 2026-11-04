@@ -1428,14 +1428,14 @@ MonoBehaviour:
   displayStandDatas: []
   storeDatas: []
   fishChartFileId: 236403
-  itemDataTableChartFileId: 272721
+  itemDataTableChartFileId: 273283
   standChartFileId: 241769
   equipmentChartFileId: 231054
   ingredientChartFileId: 236401
   standRecipeChartFileId: 236405
   standRecipeInputChartFileId: 236396
   displayStandChartFileId: 239335
-  storeDataId: 272716
+  storeDataId: 273282
 --- !u!1 &2056451501
 GameObject:
   m_ObjectHideFlags: 0

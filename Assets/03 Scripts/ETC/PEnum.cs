@@ -27,7 +27,9 @@ public enum  EItemType
 {
     Fish = 1,
     Ingredient = 2,// 재료 안에서의 티입2는 (1: 회, 2: 초밥, 3:지은밥, 4:생쌀)
-    Weapon = 3
+    Weapon = 3,
+    Employee = 4,
+    Skin = 5
 }
 
 [Serializable]
@@ -75,8 +77,8 @@ public enum ETargetType
 [Serializable]
 public enum EStoreType
 {
-    Equipment = 1,
-    Ingredient = 2,
-    Employee = 3,
-    Skin = 4
+    Equipment = 1,   //장비
+    Ingredient = 2,  //재료
+    Employee = 3,    //장비
+    Skin = 4         //장비
 }

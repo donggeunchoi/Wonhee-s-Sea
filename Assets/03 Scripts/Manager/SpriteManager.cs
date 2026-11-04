@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpriteManager : Singleton<SpriteManager>
 {
-    string iconPath = "Art/Weapon/";
+    string iconPath = "Art/";
 
    public Sprite GetIcon(string _id,EStoreType _storeType )
     {
@@ -12,7 +12,17 @@ public class SpriteManager : Singleton<SpriteManager>
         {
             case EStoreType.Equipment:
             {
-                    return Resources.Load<Sprite>($"{iconPath}WP{_id}");
+                    return Resources.Load<Sprite>($"{iconPath}Weapon/WP{_id}");
+            }
+
+            case EStoreType.Skin:
+                {
+                    return Resources.Load<Sprite>($"{iconPath}Skin/SK_{_id}");
+                }
+
+            case EStoreType.Employee:
+                {
+                    return Resources.Load<Sprite>($"{iconPath}Employee/EM_{_id}");
                 }
 
             default:
