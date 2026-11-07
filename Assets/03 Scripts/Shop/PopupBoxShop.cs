@@ -29,6 +29,12 @@ public class PopupBoxShop : MonoBehaviour
     [SerializeField]
     Transform itemTransform;
 
+    [Header( "아이템 상세" )]
+    [SerializeField]
+    PopupBoxItemInfo itemInfoPrefab;
+
+    PopupBoxItemInfo itemInfo;
+
     EStoreType currentType = EStoreType.Equipment;
 
     List<StoreData> storeDatas = new List<StoreData>();
@@ -51,6 +57,28 @@ public class PopupBoxShop : MonoBehaviour
         InitData(currentType);
     }
 
+    private void OnDisable()
+    {
+        if( itemInfo != null )
+            itemInfo.OnClickClose();
+    }
+
+    void ShowItemInfo( ItemDataTable itemTable, Sprite icon )
+    {
+        if( itemInfoPrefab == null )
+            return;
+
+        if( itemInfo == null )
+            itemInfo = Instantiate( itemInfoPrefab, transform, false );
+
+        itemInfo.InitData( new ItemInfoPopupData
+        {
+            icon = icon,
+            name = itemTable.name,
+            hasOwnedCount = false
+        } );
+        itemInfo.gameObject.SetActive( true );
+    }
 
     void InitData(EStoreType type)
     {
@@ -76,6 +104,7 @@ public class PopupBoxShop : MonoBehaviour
             if (i >= shopItemContents.Count)
             {
                 var shopItem = Instantiate(itemContent, itemTransform, false);
+                shopItem.SetItemInfoAction( ShowItemInfo );
                 shopItemContents.Add(shopItem);
             }
 
