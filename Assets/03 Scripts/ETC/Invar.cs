@@ -285,25 +285,66 @@ public class PDungeonInfo
 [Serializable]
 public class PEquipInfo
 {
-    public Dictionary<string, int > WeaponLevelData = new Dictionary<string, int>(); 
     //무기레벨 정보 키값 D+id, 벨류 레벨(0이면 구매만 한경우, -1이든 키값도 없으면 구매도 안한 경우로 처리)
+    public Dictionary<string, int > WeaponLevelData = new Dictionary<string, int>(); 
 
-    public List<int> SkinEquipData = new List<int>();  
     //스킨을 보윻면 아이디를 숫자로 넣어줌 이렇게 하는 이유는 데이터를 저장할때 딕셔너리가 품이 더들어가서 단순히 숫자만 저장하기위함.
+    public List<int> SkinEquipData = new List<int>();  
 
-    public Dictionary<string, int> EmployeeLevelData =  new Dictionary<string, int>();
     //직원 레벨 정보, 키값 D+id, 벨류 레벨(0이면 구매만 한경우, -1 혹은 키값 없으면 구매도 안한경우)
+    public Dictionary<string, int> EmployeeLevelData =  new Dictionary<string, int>();
+
+    //장착하고 있는 장비,
+    public int EquipWeapon = 0;
+
+    //사용하고 있는 직원 그 직원이 몇명인지도 필요하고,
+    public Dictionary<string, int> haveEmploies = new Dictionary<string, int>();
+
+    //사용하고 있는 스킨,
+    public int EquipSKin = 0;
+
+    
 
 
-    public bool IsDifferent(PDungeonInfo other)
+    public bool IsDifferent(PEquipInfo other)
     {
         if (other == null)
             return true;
 
+        if (IsDifferentLevelData(WeaponLevelData, other.WeaponLevelData))
+            return true;
+
+        if (IsDifferentLevelData(EmployeeLevelData, other.EmployeeLevelData))
+            return true;
+
+        // 스킨은 보유 여부만 비교하므로 순서는 무시한다.
+        HashSet<int> skinIDs = SkinEquipData != null ? new HashSet<int>(SkinEquipData) : new HashSet<int>();
+        HashSet<int> otherSkinIDs = other.SkinEquipData != null ? new HashSet<int>(other.SkinEquipData) : new HashSet<int>();
+
+        return skinIDs.SetEquals(otherSkinIDs) == false;
+    }
+
+    bool IsDifferentLevelData(Dictionary<string, int> data, Dictionary<string, int> other)
+    {
+        int count = data != null ? data.Count : 0;
+        int otherCount = other != null ? other.Count : 0;
+
+        if (count != otherCount)
+            return true;
+
+        if (count == 0)
+            return false;
+
+        foreach (var pair in data)
+        {
+            if (other.TryGetValue(pair.Key, out int level) == false)
+                return true;
+
+            if (pair.Value != level)
+                return true;
+        }
 
         return false;
-        //return HP != other.HP
-        //    || Attack != other.Attack;
     }
 
     public Param FormatJsonData()

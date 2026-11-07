@@ -475,6 +475,14 @@ TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string e
             }
             break;
 
+            case EGameData.EquipInfo:
+            {
+                var data = JsonConvert.DeserializeObject<PEquipInfo>(json);
+                UserManager.Ins.equipInfo = data;
+                equipInfo = data;
+            }
+            break;
+
         }
     }
 
@@ -546,7 +554,7 @@ TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string e
                 return UserManager.Ins.dungeonInfo.IsDifferent(dungeonInfo);
 
             case EGameData.EquipInfo:
-                return UserManager.Ins.equipInfo.IsDifferent(dungeonInfo);
+                return UserManager.Ins.equipInfo.IsDifferent(equipInfo);
         }
         return false;
     }
