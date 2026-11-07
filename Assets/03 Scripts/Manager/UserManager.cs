@@ -7,6 +7,7 @@ public class UserManager : Singleton<UserManager>
 {
    public PuserInfo userInfo = new PuserInfo();
    public PDungeonInfo dungeonInfo = new PDungeonInfo();
+    public PEquipInfo equipInfo = new PEquipInfo();
    
 
     public Subject<int> OnFishID = new Subject<int>();

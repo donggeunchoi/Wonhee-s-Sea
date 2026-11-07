@@ -10,6 +10,7 @@ public enum EGameData
     DungeonInfo,
     TownInfo,
     BuildingInfo,
+    EquipInfo,
 }
 
 [Serializable]

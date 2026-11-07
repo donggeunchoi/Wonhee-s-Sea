@@ -1,4 +1,4 @@
-﻿using BackEnd;
+using BackEnd;
 using BackEnd.BackndNewtonsoft.Json;
 using LitJson;
 using System;
@@ -11,6 +11,7 @@ public class BackendManager : Singleton<BackendManager>
 {
     PuserInfo userInfo = new PuserInfo();
     PDungeonInfo dungeonInfo = new PDungeonInfo();
+    PEquipInfo equipInfo = new PEquipInfo();
    
     [Header("뒤끝 차트 고정 데이터")]
     public List<FishData> fishDatas = new List<FishData>();
@@ -543,6 +544,9 @@ TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string e
 
             case EGameData.DungeonInfo:
                 return UserManager.Ins.dungeonInfo.IsDifferent(dungeonInfo);
+
+            case EGameData.EquipInfo:
+                return UserManager.Ins.equipInfo.IsDifferent(dungeonInfo);
         }
         return false;
     }
@@ -557,6 +561,10 @@ TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string e
 
             case EGameData.DungeonInfo:
                 dungeonInfo = CloneUtil.DeepClone(UserManager.Ins.dungeonInfo);
+                break;
+
+            case EGameData.EquipInfo:
+                equipInfo = CloneUtil.DeepClone(UserManager.Ins.equipInfo);
                 break;
         }
     }
@@ -574,6 +582,9 @@ TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string e
                 return UserManager.Ins.dungeonInfo.FormatJsonData();
             case EGameData.BuildingInfo:
                 return UserManager.Ins.dungeonInfo.FormatJsonData();
+
+            case EGameData.EquipInfo:
+                return UserManager.Ins.equipInfo.FormatJsonData();
         }
 
         Debug.LogError($"[Backend] GetParamGameData Error: {eGameData}");

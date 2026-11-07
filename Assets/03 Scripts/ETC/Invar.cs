@@ -59,7 +59,6 @@ public class PuserInfo
         }
     }
 
-
     public void AddFish(string fishId, int count)
     {
         string madeKey = "D" + fishId;
@@ -278,6 +277,41 @@ public class PDungeonInfo
         p.Add("Attack", Attack);
         p.Add("HPRegen", HPRegen);
         p.Add("Oxygen", Oxygen);
+        return p;
+    }
+
+}
+
+[Serializable]
+public class PEquipInfo
+{
+    public Dictionary<string, int > WeaponLevelData = new Dictionary<string, int>(); 
+    //무기레벨 정보 키값 D+id, 벨류 레벨(0이면 구매만 한경우, -1이든 키값도 없으면 구매도 안한 경우로 처리)
+
+    public List<int> SkinEquipData = new List<int>();  
+    //스킨을 보윻면 아이디를 숫자로 넣어줌 이렇게 하는 이유는 데이터를 저장할때 딕셔너리가 품이 더들어가서 단순히 숫자만 저장하기위함.
+
+    public Dictionary<string, int> EmployeeLevelData =  new Dictionary<string, int>();
+    //직원 레벨 정보, 키값 D+id, 벨류 레벨(0이면 구매만 한경우, -1 혹은 키값 없으면 구매도 안한경우)
+
+
+    public bool IsDifferent(PDungeonInfo other)
+    {
+        if (other == null)
+            return true;
+
+
+        return false;
+        //return HP != other.HP
+        //    || Attack != other.Attack;
+    }
+
+    public Param FormatJsonData()
+    {
+        Param p = new Param();
+        p.Add("WeaponLevelData", WeaponLevelData);
+        p.Add("SkinEquipData", SkinEquipData);
+        p.Add("EmployeeLevelData", EmployeeLevelData);
         return p;
     }
 
