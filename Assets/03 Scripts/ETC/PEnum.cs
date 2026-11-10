@@ -34,6 +34,14 @@ public enum  EItemType
 }
 
 [Serializable]
+public enum EGoodType
+{
+    Gold = 1,
+    Dia = 2,
+    Enchant = 3,
+}
+
+[Serializable]
 public enum EIngredientType
 {
     Sashimi = 1,

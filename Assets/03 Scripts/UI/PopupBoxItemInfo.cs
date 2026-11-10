@@ -15,6 +15,7 @@ public class ItemInfoEffect
 [Serializable]
 public class ItemInfoPopupData
 {
+    public int id;
     public Sprite icon;
     public string category;
     public string name;
@@ -101,20 +102,20 @@ public class PopupBoxItemInfo : MonoBehaviour
     [SerializeField]
     float panelWidth = 704;
 
-    Action onEquip;
-    Action onUnequip;
-    Action onUpgrade;
+    Action<bool> OnEquip = null;
+    Action<int,int> onUpgrade = null;
+    ItemInfoPopupData itemData = null;
 
-    public void InitData( ItemInfoPopupData data, Action onEquip = null, Action onUnequip = null, Action onUpgrade = null )
+    public void InitData( ItemInfoPopupData data, Action<bool> _OnEquip = null, Action<int,int> _onUpgrade = null )
     {
         const float COMPACT_BODY_HEIGHT = 560;
 
         if( data == null )
             return;
 
-        this.onEquip = onEquip;
-        this.onUnequip = onUnequip;
-        this.onUpgrade = onUpgrade;
+        itemData = data;
+        OnEquip = _OnEquip;
+        onUpgrade = _onUpgrade;
 
         imgIcon.sprite = data.icon;
         imgIcon.enabled = data.icon != null;
@@ -170,9 +171,7 @@ public class PopupBoxItemInfo : MonoBehaviour
 
         btUpgrade.interactable = data.hasUpgrade && data.canUpgrade && onUpgrade != null;
         btEquip.gameObject.SetActive( data.canEquip && data.isEquipped == false );
-        btEquip.interactable = onEquip != null;
         btUnequip.gameObject.SetActive( data.canUnequip && data.isEquipped );
-        btUnequip.interactable = onUnequip != null;
         bool hasFooter = btEquip.gameObject.activeSelf || btUnequip.gameObject.activeSelf;
         rectFooter.gameObject.SetActive( hasFooter );
 
@@ -200,19 +199,12 @@ public class PopupBoxItemInfo : MonoBehaviour
 
     public void OnClickEquip()
     {
-        if( btEquip.isActiveAndEnabled && btEquip.IsInteractable() )
-            onEquip?.Invoke();
-    }
-
-    public void OnClickUnequip()
-    {
-        if( btUnequip.isActiveAndEnabled && btUnequip.IsInteractable() )
-            onUnequip?.Invoke();
+        OnEquip?.Invoke(true);
     }
 
     public void OnClickUpgrade()
     {
         if( btUpgrade.isActiveAndEnabled && btUpgrade.IsInteractable() )
-            onUpgrade?.Invoke();
+            onUpgrade?.Invoke(itemData.id, 1);
     }
 }

@@ -18,11 +18,18 @@ public class ShopItemContent : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     TextMeshProUGUI txCost;
 
+    StoreData storeData;
     ItemDataTable itemTable;
     Action<ItemDataTable, Sprite> onShowItemInfo;
 
-    public void InitData(StoreData _storeData)
+    public void InitData( StoreData _storeData )
     {
+        storeData = _storeData;
+        itemTable = null;
+
+        if( storeData == null )
+            return;
+
         imgIcon.sprite = SpriteManager.Ins.GetIcon(_storeData.targetId.ToString(),(EStoreType)_storeData.storeType);
 
         itemTable = JsonManager.Ins.GetJson<ItemDataTable>().Find(info => info.itemId == _storeData.targetId);
@@ -43,10 +50,34 @@ public class ShopItemContent : MonoBehaviour, IPointerClickHandler
 
     public void OnClickBuyItem()
     {
-        //여기에는 구매하기 기능을 넣을것이고 구매를 할때 액션만 넘길것인지
-        // 구매를 할 수 있는 코드 자체를 넣을것인지
-        // 내가볼때는 구매한다는 액션만 넣으면 될꺼같고 이 처리는 팝업에서 처리하면 될꺼같은데.
-        // 저장은 BackendManager.Ins.EquipInfo를 통해서 아이템 저장 을 넣으면 되지 않을까?
-        //
+        if( storeData == null || itemTable == null )
+            return;
+
+        var userManager = UserManager.Ins;
+        var backendManager = BackendManager.Ins;
+        if( userManager == null || userManager.userInfo == null || backendManager == null )
+            return;
+
+        int cost = storeData.sellCost;
+        if( cost < 0 || userManager.userInfo.gold < cost)
+        {
+            Debug.Log("재화없읍");
+            return;
+        }
+
+        if( userManager.AddItem( ( EItemType ) itemTable.itemType1, itemTable.itemId, 1 ) == false)
+        {
+            Debug.Log("아이템 없음");
+            return;
+        }
+
+        if( userManager.ConsumeGood( EGoodType.Gold, cost ) == false)
+        {
+            Debug.Log("소모 오류");
+            return;
+        }
+
+        backendManager.SaveData();
     }
+
 }

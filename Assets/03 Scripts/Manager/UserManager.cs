@@ -22,6 +22,137 @@ public class UserManager : Singleton<UserManager>
     // 유저 게이머 아이디
     public string userGamerID = "";
 
+    public bool AddItem( EItemType itemType, int itemID, int count )
+    {
+        if( itemID <= 0 || count <= 0 )
+            return false;
+
+        string key = "D" + itemID;
+
+        switch( itemType )
+        {
+            case EItemType.Fish:
+            {
+                if( userInfo == null )
+                    return false;
+
+                if( userInfo.fishContainer == null )
+                    userInfo.fishContainer = new Dictionary<string, int>();
+
+                userInfo.fishContainer.TryGetValue( key, out int currentCount );
+                if( currentCount < 0 || currentCount > int.MaxValue - count )
+                    return false;
+
+                userInfo.AddFish( itemID.ToString(), count );
+                return true;
+            }
+            case EItemType.Ingredient:
+            {
+                if( userInfo == null )
+                    return false;
+
+                if( userInfo.ingredientContainer == null )
+                    userInfo.ingredientContainer = new Dictionary<string, int>();
+
+                userInfo.ingredientContainer.TryGetValue( key, out int currentCount );
+                if( currentCount < 0 || currentCount > int.MaxValue - count )
+                    return false;
+
+                userInfo.ingredientContainer[ key ] = currentCount + count;
+                return true;
+            }
+            case EItemType.Weapon:
+            {
+                // 장비는 수량 대신 보유 여부와 레벨을 관리한다.
+                if( equipInfo == null || count != 1 )
+                    return false;
+
+                if( equipInfo.WeaponLevelData == null )
+                    equipInfo.WeaponLevelData = new Dictionary<string, int>();
+
+                if( equipInfo.WeaponLevelData.TryGetValue( key, out int level ) && level >= 0 )
+                    return false;
+
+                equipInfo.WeaponLevelData[ key ] = 0;
+                return true;
+            }
+            case EItemType.Employee:
+            {
+                if( equipInfo == null )
+                    return false;
+
+                if( equipInfo.EmployeeLevelData == null )
+                    equipInfo.EmployeeLevelData = new Dictionary<string, int>();
+
+                if( equipInfo.haveEmploies == null )
+                    equipInfo.haveEmploies = new Dictionary<string, int>();
+
+                equipInfo.haveEmploies.TryGetValue( key, out int currentCount );
+                if( currentCount < 0 || currentCount > int.MaxValue - count )
+                    return false;
+
+                if( equipInfo.EmployeeLevelData.TryGetValue( key, out int level ) == false || level < 0 )
+                    equipInfo.EmployeeLevelData[ key ] = 0;
+
+                equipInfo.haveEmploies[ key ] = currentCount + count;
+                return true;
+            }
+            case EItemType.Skin:
+            {
+                // 스킨은 중복 수량 없이 보유 ID만 등록한다.
+                if( equipInfo == null || count != 1 )
+                    return false;
+
+                if( equipInfo.SkinEquipData == null )
+                    equipInfo.SkinEquipData = new List<int>();
+
+                if( equipInfo.SkinEquipData.Contains( itemID ) )
+                    return false;
+
+                equipInfo.SkinEquipData.Add( itemID );
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool ConsumeGood( EGoodType goodType, int cost )
+    {
+        if( userInfo == null || cost < 0 )
+            return false;
+
+        switch( goodType )
+        {
+            case EGoodType.Gold:
+            {
+                if( userInfo.gold < cost )
+                    return false;
+
+                userInfo.gold -= cost;
+                return true;
+            }
+            case EGoodType.Dia:
+            {
+                if( userInfo.dia < cost )
+                    return false;
+
+                userInfo.dia -= cost;
+                return true;
+            }
+            case EGoodType.Enchant:
+            {
+                if( userInfo.enchant < cost )
+                    return false;
+
+                userInfo.enchant -= cost;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void SetDungeonSpawnFishIdsFromPlacedStands()
     {
         dungeonSpawnFishIds.Clear();

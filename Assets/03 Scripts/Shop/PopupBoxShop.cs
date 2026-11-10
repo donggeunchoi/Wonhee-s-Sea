@@ -73,11 +73,24 @@ public class PopupBoxShop : MonoBehaviour
 
         itemInfo.InitData( new ItemInfoPopupData
         {
+            id = itemTable.itemId,
             icon = icon,
             name = itemTable.name,
             hasOwnedCount = false
-        } );
+        } , null, OnUpgrade);
         itemInfo.gameObject.SetActive( true );
+    }
+
+    void OnUpgrade(int _id, int _count)
+    {
+        if (_id <= 0)
+            return;
+        if(_count <= 0) 
+            return;
+
+        UserManager.Ins.equipInfo.WeaponLevelUp(_id, _count);
+
+        UserManager.Ins.ConsumeGood(EGoodType.Gold, 1000);
     }
 
     void InitData(EStoreType type)

@@ -26,6 +26,7 @@ public class PuserInfo
     //던전과 경영에서 공통으로 사용하는 정보
     public Dictionary<string,int> fishContainer = new Dictionary<string, int>();
     public List<PCollectionValue> collectionVelues = new List<PCollectionValue>();
+    public Dictionary<string, int> ingredientContainer = new Dictionary<string, int>();
 
     public void AddGold(int amount)
     {
@@ -195,6 +196,21 @@ public class PuserInfo
             }
         }
 
+        if( ingredientContainer == null && other.ingredientContainer != null ) return true;
+        if( ingredientContainer != null && other.ingredientContainer == null ) return true;
+
+        if( ingredientContainer != null && other.ingredientContainer != null )
+        {
+            if( ingredientContainer.Count != other.ingredientContainer.Count )
+                return true;
+
+            foreach( var pair in ingredientContainer )
+            {
+                if( other.ingredientContainer.TryGetValue( pair.Key, out int otherValue ) == false || pair.Value != otherValue )
+                    return true;
+            }
+        }
+
         if (collectionVelues == null && other.collectionVelues != null) return true;
         if (collectionVelues != null && other.collectionVelues == null) return true;
 
@@ -230,6 +246,7 @@ public class PuserInfo
         p.Add("currentStage", currentStage);
         p.Add("fishContainer", fishContainer);//딕셔너리
         p.Add("collectionVelues", collectionVelues);//리스트
+        p.Add( "ingredientContainer", ingredientContainer );
 
         return p;
     }
@@ -304,7 +321,20 @@ public class PEquipInfo
     public int EquipSKin = 0;
 
     
+    public void WeaponLevelUp(int id , int count)
+    {
+        string strKey = string.Format("D{0}", id);
 
+        if(WeaponLevelData.TryGetValue(strKey, out int level) == false )
+        {
+            WeaponLevelData[strKey] = 0;
+        }
+        else
+        {
+            WeaponLevelData[strKey] += count;
+        }
+
+    }
 
     public bool IsDifferent(PEquipInfo other)
     {
@@ -315,6 +345,9 @@ public class PEquipInfo
             return true;
 
         if (IsDifferentLevelData(EmployeeLevelData, other.EmployeeLevelData))
+            return true;
+
+        if( IsDifferentLevelData( haveEmploies, other.haveEmploies ) )
             return true;
 
         // 스킨은 보유 여부만 비교하므로 순서는 무시한다.
@@ -353,6 +386,7 @@ public class PEquipInfo
         p.Add("WeaponLevelData", WeaponLevelData);
         p.Add("SkinEquipData", SkinEquipData);
         p.Add("EmployeeLevelData", EmployeeLevelData);
+        p.Add( "haveEmploies", haveEmploies );
         return p;
     }
 
