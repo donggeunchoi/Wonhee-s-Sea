@@ -305,7 +305,7 @@ public class PEquipInfo
     //무기레벨 정보 키값 D+id, 벨류 레벨(0이면 구매만 한경우, -1이든 키값도 없으면 구매도 안한 경우로 처리)
     public Dictionary<string, int > WeaponLevelData = new Dictionary<string, int>(); 
 
-    //스킨을 보윻면 아이디를 숫자로 넣어줌 이렇게 하는 이유는 데이터를 저장할때 딕셔너리가 품이 더들어가서 단순히 숫자만 저장하기위함.
+    //스킨을 보유하면 아이디를 숫자로 넣어줌 이렇게 하는 이유는 데이터를 저장할때 딕셔너리가 품이 더들어가서 단순히 숫자만 저장하기위함.
     public List<int> SkinEquipData = new List<int>();  
 
     //직원 레벨 정보, 키값 D+id, 벨류 레벨(0이면 구매만 한경우, -1 혹은 키값 없으면 구매도 안한경우)
@@ -325,15 +325,51 @@ public class PEquipInfo
     {
         string strKey = string.Format("D{0}", id);
 
-        if(WeaponLevelData.TryGetValue(strKey, out int level) == false )
+        if(WeaponLevelData.ContainsKey(strKey) == false)
         {
-            WeaponLevelData[strKey] = 0;
+            WeaponLevelData.Add(strKey, count);
         }
         else
         {
-            WeaponLevelData[strKey] += count;
+            if (WeaponLevelData.TryGetValue(strKey, out int level) == false)
+                WeaponLevelData[strKey] = count;
+            else
+                WeaponLevelData[strKey] += count;
         }
+    }
 
+    public void EmployeeLevelUP(int _id, int _count)
+    {
+        string strKey = string.Format("D{0}", _id);
+
+        if(EmployeeLevelData.ContainsKey(strKey)  == false)
+        {
+            EmployeeLevelData.Add(strKey, _count);
+        }
+        else
+        {
+            if (EmployeeLevelData.TryGetValue(strKey, out int level) == false)
+                EmployeeLevelData[strKey] = 0;
+            else
+                EmployeeLevelData[strKey] += _count;
+        }
+    }
+
+    public void AddEmployee(int _id, int _count)
+    {
+        string strKey = string.Format("D{0}", _id);
+
+        if(haveEmploies.ContainsKey(strKey) == false)
+        {
+            haveEmploies.Add(strKey, _count);
+        }
+        else
+        {
+            if (haveEmploies.TryGetValue(strKey, out int count) == false)
+                haveEmploies[strKey] = _count;
+            else
+                haveEmploies[strKey] += _count;
+        }
     }
 
     public bool IsDifferent(PEquipInfo other)
