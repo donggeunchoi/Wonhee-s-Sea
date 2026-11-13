@@ -4132,6 +4132,7 @@ MonoBehaviour:
   imgIcon: {fileID: 8369709101906540776}
   txName: {fileID: 6970728165305970499}
   txCost: {fileID: 7186926795901376446}
+  btBuy: {fileID: 5284890688815071810}
 --- !u!1 &5183598017338218553
 GameObject:
   m_ObjectHideFlags: 0

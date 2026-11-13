@@ -321,6 +321,19 @@ public class PEquipInfo
     public int EquipSKin = 0;
 
     
+    public bool TryGetWeaponLevel( int itemID, out int level )
+    {
+        level = -1;
+        if( itemID <= 0 || WeaponLevelData == null )
+            return false;
+
+        if( WeaponLevelData.TryGetValue( "D" + itemID, out int savedLevel ) == false || savedLevel < 0 )
+            return false;
+
+        level = savedLevel;
+        return true;
+    }
+
     public void WeaponLevelUp(int id , int count)
     {
         string strKey = string.Format("D{0}", id);

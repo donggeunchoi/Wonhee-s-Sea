@@ -18,9 +18,13 @@ public class ShopItemContent : MonoBehaviour, IPointerClickHandler
     [SerializeField]
     TextMeshProUGUI txCost;
 
+    [Header( "구매 버튼" )]
+    [SerializeField]
+    Button btBuy;
+
     StoreData storeData;
     ItemDataTable itemTable;
-    Action<ItemDataTable, Sprite> onShowItemInfo;
+    Action<StoreData, ItemDataTable, Sprite> onShowItemInfo;
 
     public void InitData( StoreData _storeData )
     {
@@ -28,29 +32,62 @@ public class ShopItemContent : MonoBehaviour, IPointerClickHandler
         itemTable = null;
 
         if( storeData == null )
+        {
+            ReflashBuyButton();
             return;
+        }
 
         imgIcon.sprite = SpriteManager.Ins.GetIcon(_storeData.targetId.ToString(),(EStoreType)_storeData.storeType);
 
         itemTable = JsonManager.Ins.GetJson<ItemDataTable>().Find(info => info.itemId == _storeData.targetId);
         txName.text = itemTable != null ? itemTable.name : string.Empty;
         txCost.text = _storeData.sellCost.ToString();
+        ReflashBuyButton();
     }
 
-    public void SetItemInfoAction( Action<ItemDataTable, Sprite> onShowItemInfo )
+    void ReflashBuyButton()
+    {
+        if( btBuy == null )
+            return;
+
+        btBuy.interactable = storeData != null && itemTable != null && IsOwnedSinglePurchaseItem() == false;
+    }
+
+    bool IsOwnedSinglePurchaseItem()
+    {
+        var userManager = UserManager.Ins;
+        if( userManager == null || userManager.equipInfo == null )
+            return false;
+
+        var equipInfo = userManager.equipInfo;
+        switch( ( EItemType ) itemTable.itemType1 )
+        {
+            case EItemType.Weapon:
+                return equipInfo.TryGetWeaponLevel( itemTable.itemId, out _ );
+            case EItemType.Skin:
+                return equipInfo.SkinEquipData != null && equipInfo.SkinEquipData.Contains( itemTable.itemId );
+        }
+
+        return false;
+    }
+
+    public void SetItemInfoAction( Action<StoreData, ItemDataTable, Sprite> onShowItemInfo )
     {
         this.onShowItemInfo = onShowItemInfo;
     }
 
     public void OnPointerClick( PointerEventData eventData )
     {
-        if( itemTable != null && eventData.button == PointerEventData.InputButton.Left )
-            onShowItemInfo?.Invoke( itemTable, imgIcon.sprite );
+        if( storeData != null && itemTable != null && eventData.button == PointerEventData.InputButton.Left )
+            onShowItemInfo?.Invoke( storeData, itemTable, imgIcon.sprite );
     }
 
     public void OnClickBuyItem()
     {
         if( storeData == null || itemTable == null )
+            return;
+
+        if( IsOwnedSinglePurchaseItem() )
             return;
 
         var userManager = UserManager.Ins;
@@ -65,7 +102,9 @@ public class ShopItemContent : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        if( userManager.AddItem( ( EItemType ) itemTable.itemType1, itemTable.itemId, 1 ) == false)
+        EItemType itemType = ( EItemType ) itemTable.itemType1;
+        int itemID = itemTable.itemId;
+        if( userManager.AddItem( itemType, itemID, 1 ) == false)
         {
             Debug.Log("아이템 없음");
             return;
@@ -78,6 +117,21 @@ public class ShopItemContent : MonoBehaviour, IPointerClickHandler
         }
 
         backendManager.SaveData();
+
+        switch( itemType )
+        {
+            case EItemType.Fish:
+            {
+                backendManager.OnTossFish.OnNext( itemID.ToString() );
+                break;
+            }
+            case EItemType.Weapon:
+            case EItemType.Skin:
+            {
+                ReflashBuyButton();
+                break;
+            }
+        }
     }
 
 }

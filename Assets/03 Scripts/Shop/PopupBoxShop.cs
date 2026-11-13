@@ -63,7 +63,7 @@ public class PopupBoxShop : MonoBehaviour
             itemInfo.OnClickClose();
     }
 
-    void ShowItemInfo( ItemDataTable itemTable, Sprite icon )
+    void ShowItemInfo( StoreData storeData, ItemDataTable itemTable, Sprite icon )
     {
         if( itemInfoPrefab == null )
             return;
@@ -71,26 +71,47 @@ public class PopupBoxShop : MonoBehaviour
         if( itemInfo == null )
             itemInfo = Instantiate( itemInfoPrefab, transform, false );
 
-        itemInfo.InitData( new ItemInfoPopupData
+        var data = new ItemInfoPopupData
         {
             id = itemTable.itemId,
             icon = icon,
             name = itemTable.name,
             hasOwnedCount = false
-        } , null, OnUpgrade);
+        };
+
+        var userManager = UserManager.Ins;
+        var equipInfo = userManager?.equipInfo;
+        Action<int, int> onUpgrade = null;
+
+        if( ( EItemType ) itemTable.itemType1 == EItemType.Weapon && equipInfo != null &&
+            equipInfo.TryGetWeaponLevel( itemTable.itemId, out int level ) && level < int.MaxValue )
+        {
+            int cost = storeData.sellCost;
+            data.hasUpgrade = true;
+            data.level = level;
+            data.upgradeCost = cost >= 0 ? cost.ToString( "N0" ) : string.Empty;
+            data.canUpgrade = cost >= 0 && userManager.userInfo != null && userManager.userInfo.gold >= cost;
+            onUpgrade = ( itemID, count ) => OnUpgrade( storeData, itemTable, icon, itemID, count );
+        }
+
+        itemInfo.InitData( data, null, onUpgrade );
         itemInfo.gameObject.SetActive( true );
     }
 
-    void OnUpgrade(int _id, int _count)
+    void OnUpgrade( StoreData storeData, ItemDataTable itemTable, Sprite icon, int itemID, int count )
     {
-        if (_id <= 0)
-            return;
-        if(_count <= 0) 
+        if( count != 1 || itemTable.itemId != itemID || storeData.targetId != itemID )
             return;
 
-        UserManager.Ins.equipInfo.WeaponLevelUp(_id, _count);
+        var userManager = UserManager.Ins;
+        var backendManager = BackendManager.Ins;
+        if( userManager == null || backendManager == null )
+            return;
 
-        UserManager.Ins.ConsumeGood(EGoodType.Gold, 1000);
+        if( userManager.TryUpgradeWeapon( itemID, storeData.sellCost ) )
+            backendManager.SaveData();
+
+        ShowItemInfo( storeData, itemTable, icon );
     }
 
     void InitData(EStoreType type)
