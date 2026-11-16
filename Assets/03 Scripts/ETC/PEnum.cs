@@ -91,3 +91,11 @@ public enum EStoreType
     Employee = 3,    //장비
     Skin = 4         //장비
 }
+
+public enum SettingType
+{
+    Settings = 1,
+    Graphics = 2,
+    Service = 3,
+    Account = 4,
+}
