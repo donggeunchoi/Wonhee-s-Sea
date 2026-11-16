@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 28089a2a665da974c82cfd825c5ec478
+guid: 7e74261b0161bf64c923aac1bd00b14a
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -121,7 +121,70 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SSM20003_0
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 436
+        width: 376
+        height: 191
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 686a5a0d496760240b0598a062b959ec
+      internalID: -908612196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SSM20003_1
+      rect:
+        serializedVersion: 2
+        x: 596
+        y: 604
+        width: 75
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 872e8a469b8629743a9c57fc54d2efc8
+      internalID: -1041842957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SSM20003_2
+      rect:
+        serializedVersion: 2
+        x: 719
+        y: 512
+        width: 7
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 398620059966bce478523c3d821531d4
+      internalID: 436242805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +195,10 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SSM20003_0: -908612196
+      SSM20003_1: -1041842957
+      SSM20003_2: 436242805
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
