@@ -87,20 +87,32 @@ public class PopupBoxShop : MonoBehaviour
 
         var userManager = UserManager.Ins;
         var equipInfo = userManager?.equipInfo;
+        Action<bool> onEquip = null;
         Action<int, int> onUpgrade = null;
 
         if( ( EItemType ) itemTable.itemType1 == EItemType.Weapon && equipInfo != null &&
-            equipInfo.TryGetWeaponLevel( itemTable.itemId, out int level ) && level < int.MaxValue )
+            equipInfo.TryGetWeaponLevel( itemTable.itemId, out int level ) )
         {
+            data.isEquipped = equipInfo.EquipWeapon == itemTable.itemId;
+            data.canEquip = true;
+            onEquip = isEquip =>
+            {
+                if( isEquip == false || userManager.TryEquipWeapon( itemTable.itemId ) == false )
+                    return;
+
+                BackendManager.Ins.SaveData();
+                ShowItemInfo( storeData, itemTable, icon );
+            };
+
             int cost = storeData.sellCost;
-            data.hasUpgrade = true;
+            data.hasUpgrade = level < int.MaxValue;
             data.level = level;
             data.upgradeCost = cost >= 0 ? cost.ToString( "N0" ) : string.Empty;
             data.canUpgrade = cost >= 0 && userManager.userInfo != null && userManager.userInfo.gold >= cost;
             onUpgrade = ( itemID, count ) => OnUpgrade( storeData, itemTable, icon, itemID, count );
         }
 
-        itemInfoPrefab.InitData( data, null, onUpgrade );
+        itemInfoPrefab.InitData( data, onEquip, onUpgrade );
         itemInfoPrefab.gameObject.SetActive( true );
     }
 

@@ -119,6 +119,15 @@ public class UserManager : Singleton<UserManager>
         return false;
     }
 
+    public bool TryEquipWeapon( int itemID )
+    {
+        if( equipInfo == null || equipInfo.EquipWeapon == itemID || equipInfo.TryGetWeaponLevel( itemID, out _ ) == false )
+            return false;
+
+        equipInfo.EquipWeapon = itemID;
+        return true;
+    }
+
     public bool TryUpgradeWeapon( int itemID, int cost )
     {
         if( equipInfo == null || equipInfo.TryGetWeaponLevel( itemID, out int level ) == false || level == int.MaxValue )

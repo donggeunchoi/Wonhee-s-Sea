@@ -12,6 +12,7 @@ public class BackendManager : Singleton<BackendManager>
     PuserInfo userInfo = new PuserInfo();
     PDungeonInfo dungeonInfo = new PDungeonInfo();
     PEquipInfo equipInfo = new PEquipInfo();
+    int pendingEquipSaves;
    
     [Header("뒤끝 차트 고정 데이터")]
     public List<FishData> fishDatas = new List<FishData>();
@@ -481,8 +482,8 @@ TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string e
             case EGameData.EquipInfo:
             {
                 var data = JsonConvert.DeserializeObject<PEquipInfo>(json);
-                UserManager.Ins.equipInfo = data;
-                equipInfo = data;
+                UserManager.Ins.equipInfo = data ?? new PEquipInfo();
+                equipInfo = CloneUtil.DeepClone( UserManager.Ins.equipInfo );
             }
             break;
 
@@ -501,13 +502,14 @@ TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string e
         if (changed.Count == 0)
             return;
 
+        PEquipInfo equipInfoToSave = changed.Contains( EGameData.EquipInfo ) ? CloneUtil.DeepClone( UserManager.Ins.equipInfo ) : null;
         List<TransactionValue> transactionList = new List<TransactionValue>();
         foreach (var e in changed)
         {
             transactionList.Add(TransactionValue.SetUpdate(
                 e.ToString(),
                 new Where(),
-                GetParamGameData(e)
+                e == EGameData.EquipInfo ? equipInfoToSave.FormatJsonData() : GetParamGameData(e)
             ));
         }
 
@@ -522,9 +524,15 @@ TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string e
 
             var subTransactions = transactionList.GetRange(startIndex, count);
             var subChanged = changed.GetRange(startIndex, count);
+            bool isSavingEquipInfo = subChanged.Contains( EGameData.EquipInfo );
+            if( isSavingEquipInfo )
+                pendingEquipSaves++;
 
             SendQueue.Enqueue(Backend.GameData.TransactionWriteV2, subTransactions, callback =>
             {
+                if( isSavingEquipInfo )
+                    pendingEquipSaves--;
+
                 if (!callback.IsSuccess())
                 {
                     Debug.LogError("[Backend] Save(TransactionWriteV2) fail: " + callback);
@@ -533,7 +541,10 @@ TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string e
 
                 foreach (var e in subChanged)
                 {
-                    CacheSnapshot(e);
+                    if( e == EGameData.EquipInfo )
+                        equipInfo = equipInfoToSave;
+                    else
+                        CacheSnapshot(e);
                     Debug.Log($"[Backend] Save Done: {e}");
                 }
 
@@ -557,7 +568,7 @@ TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string e
                 return UserManager.Ins.dungeonInfo.IsDifferent(dungeonInfo);
 
             case EGameData.EquipInfo:
-                return UserManager.Ins.equipInfo.IsDifferent(equipInfo);
+                return pendingEquipSaves > 0 || UserManager.Ins.equipInfo.IsDifferent( equipInfo );
         }
         return false;
     }

@@ -104,6 +104,7 @@ public class ShopItemContent : MonoBehaviour, IPointerClickHandler
         }
 
         EItemType itemType = ( EItemType ) itemTable.itemType1;
+        bool isRawRice = itemType == EItemType.Ingredient && ( EIngredientType ) itemTable.itemType2 == EIngredientType.Rawrice;
         int itemID = itemTable.itemId;
         if( userManager.AddItem( itemType, itemID, 1 ) == false)
         {
@@ -123,6 +124,7 @@ public class ShopItemContent : MonoBehaviour, IPointerClickHandler
         switch( itemType )
         {
             case EItemType.Fish:
+            case EItemType.Ingredient when isRawRice:
             {
                 backendManager.OnTossFish.OnNext( itemID.ToString() );
                 break;

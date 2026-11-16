@@ -390,6 +390,9 @@ public class PEquipInfo
         if (other == null)
             return true;
 
+        if( EquipWeapon != other.EquipWeapon )
+            return true;
+
         if (IsDifferentLevelData(WeaponLevelData, other.WeaponLevelData))
             return true;
 
@@ -433,6 +436,7 @@ public class PEquipInfo
     {
         Param p = new Param();
         p.Add("WeaponLevelData", WeaponLevelData);
+        p.Add( nameof( EquipWeapon ), EquipWeapon );
         p.Add("SkinEquipData", SkinEquipData);
         p.Add("EmployeeLevelData", EmployeeLevelData);
         p.Add( "haveEmploies", haveEmploies );

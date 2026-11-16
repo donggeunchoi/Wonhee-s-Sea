@@ -38,8 +38,8 @@ public class Container : MonoBehaviour
     private void Start()
     {
         InitializeItemDatabase();
-        InitializeFishSlots();
-        SubscribeFishTossEvent();
+        InitializeSlots();
+        SubscribeContainerEvent();
     }
 
     private void InitializeItemDatabase()
@@ -61,7 +61,7 @@ public class Container : MonoBehaviour
         itemRuntimeDatabase.SetItems(items);
     }
 
-    private void InitializeFishSlots()
+    private void InitializeSlots()
     {
         ClearSlots();
 
@@ -71,27 +71,27 @@ public class Container : MonoBehaviour
             return;
         }
 
-        Dictionary<string, int> fishContainer = UserManager.Ins.userInfo.fishContainer;
+        var userInfo = UserManager.Ins.userInfo;
+        InitializeSlots( userInfo.fishContainer );
+        InitializeSlots( userInfo.ingredientContainer );
+    }
 
-        if (fishContainer == null || fishContainer.Count == 0)
-        {
-            Debug.Log("컨테이너에 저장된 물고기가 없습니다.");
+    private void InitializeSlots( Dictionary<string, int> items )
+    {
+        if( items == null )
             return;
-        }
 
-        foreach (KeyValuePair<string, int> fishData in fishContainer)
+        foreach( var item in items )
         {
-            string fishId = RemoveDungeonPrefix(fishData.Key);
-            int fishCount = fishData.Value;
-
-            if (string.IsNullOrEmpty(fishId) || fishCount <= 0)
+            string itemId = RemoveDungeonPrefix( item.Key );
+            if( item.Value <= 0 || GetContainer( itemId ) != items )
                 continue;
 
-            CreateOrUpdateSlot(fishId, fishCount);
+            CreateOrUpdateSlot( itemId, item.Value );
         }
     }
 
-    private void SubscribeFishTossEvent()
+    private void SubscribeContainerEvent()
     {
         if (BackendManager.Ins == null)
         {
@@ -99,25 +99,28 @@ public class Container : MonoBehaviour
             return;
         }
 
-        BackendManager.Ins.OnTossFish.AsObservable().Subscribe(OnFishTossed).AddTo(this);
+        BackendManager.Ins.OnTossFish.AsObservable().Subscribe( OnContainerItemAdded ).AddTo(this);
     }
 
-    private void OnFishTossed(string fishId)
+    private void OnContainerItemAdded( string itemId )
     {
-        if (string.IsNullOrEmpty(fishId))
-            return;
+        RefreshSlot( RemoveDungeonPrefix( itemId ) );
+    }
 
-        fishId = RemoveDungeonPrefix(fishId);
+    private Dictionary<string, int> GetContainer( string itemId )
+    {
+        var userInfo = UserManager.Ins?.userInfo;
+        var data = itemRuntimeDatabase?.Get( itemId );
+        if( userInfo == null || data == null )
+            return null;
 
-        int fishCount = UserManager.Ins.userInfo.GetFishCount(fishId);
+        if( data.itemType == EItemType.Fish )
+            return userInfo.fishContainer;
 
-        if (fishCount <= 0)
-        {
-            RemoveSlot(fishId);
-            return;
-        }
+        if( data.itemType == EItemType.Ingredient && data.ingredientType == EIngredientType.Rawrice )
+            return userInfo.ingredientContainer;
 
-        CreateOrUpdateSlot(fishId, fishCount);
+        return null;
     }
 
     private void CreateOrUpdateSlot(string fishId, int fishCount)
@@ -137,7 +140,7 @@ public class Container : MonoBehaviour
         Sprite fishSprite = itemAssetManager.GetIcon(fishId);
 
         if (fishSprite == null)
-            Debug.LogWarning($"물고기 아이콘을 찾지 못했습니다. ID={fishId}");
+            Debug.LogWarning($"창고 아이템 아이콘을 찾지 못했습니다. ID={fishId}");
 
         if (!fishSlots.TryGetValue(fishId, out FishSlotUI slot) || slot == null)
         {
@@ -145,63 +148,51 @@ public class Container : MonoBehaviour
             fishSlots[fishId] = slot;
         }
 
-        slot.FirstInit(fishSprite, fishId, fishCount, ReceiveFish);
+        slot.FirstInit(fishSprite, fishId, fishCount, ReceiveItem);
     }
 
-    private void ReceiveFish(string fishId)
+    private void ReceiveItem( string itemId )
     {
-        if (string.IsNullOrEmpty(fishId))
+        if( playerInventory == null )
         {
-            Debug.LogWarning("물고기 ID가 비어있습니다.");
+            Debug.LogWarning( "Player Inventory가 연결되지 않았습니다." );
             return;
         }
 
-        if (playerInventory == null)
+        var items = GetContainer( itemId );
+        string key = "D" + itemId;
+        if( items == null || items.TryGetValue( key, out int count ) == false || count <= 0 )
         {
-            Debug.LogWarning("Player Inventory가 연결되지 않았습니다.");
+            RemoveSlot( itemId );
             return;
         }
 
-        int fishCount = UserManager.Ins.userInfo.GetFishCount(fishId);
+        if( count == 1 )
+            items.Remove( key );
+        else
+            items[ key ] = count - 1;
 
-        if (fishCount <= 0)
+        if( playerInventory.TryAdd( itemId, 1 ) == false )
         {
-            Debug.LogWarning($"받을 물고기가 없습니다. ID={fishId}");
-            RemoveSlot(fishId);
+            items[ key ] = count;
+            Debug.LogWarning( $"인벤토리에 창고 아이템을 추가하지 못했습니다. ID={itemId}" );
             return;
         }
 
-        bool success = playerInventory.TryAdd(fishId, 1);
-
-        if (!success)
-        {
-            Debug.LogWarning($"인벤토리에 물고기를 추가하지 못했습니다. ID={fishId}");
-            return;
-        }
-
-        bool removed = UserManager.Ins.userInfo.RemoveFish(fishId, 1);
-
-        if (!removed)
-        {
-            Debug.LogWarning($"컨테이너에서 물고기를 제거하지 못했습니다. ID={fishId}");
-            return;
-        }
-
-        RefreshSlot(fishId);
+        RefreshSlot( itemId );
         BackendManager.Ins.SaveData();
     }
 
-    private void RefreshSlot(string fishId)
+    private void RefreshSlot( string itemId )
     {
-        int fishCount = UserManager.Ins.userInfo.GetFishCount(fishId);
-
-        if (fishCount <= 0)
+        var items = GetContainer( itemId );
+        if( items == null || items.TryGetValue( "D" + itemId, out int count ) == false || count <= 0 )
         {
-            RemoveSlot(fishId);
+            RemoveSlot( itemId );
             return;
         }
 
-        CreateOrUpdateSlot(fishId, fishCount);
+        CreateOrUpdateSlot( itemId, count );
     }
 
     private void RemoveSlot(string fishId)
