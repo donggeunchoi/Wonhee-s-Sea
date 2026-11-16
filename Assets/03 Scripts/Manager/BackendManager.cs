@@ -27,6 +27,7 @@ public class BackendManager : Singleton<BackendManager>
     public Subject<bool> OnInitBackEnd = new Subject<bool>();
     public Subject<bool> OnBackEndLogin = new Subject<bool>();
     public Subject<EGameData> OnGetLoadData = new Subject<EGameData>();
+    public Subject<EGameData> OnLoadGameDataFailed = new Subject<EGameData>();
     public Subject<bool> OnLoadAllChartData = new Subject<bool>();
     public Subject<bool> OnLoadChartItem = new Subject<bool>();
     public Subject<bool> test = new Subject<bool>();
@@ -421,6 +422,7 @@ TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string e
             if (!bro.IsSuccess())
             {
                 Debug.LogError($"[Backend] GetMyData fail: {eGameData} / {bro}");
+                OnLoadGameDataFailed.OnNext( eGameData );
                 return;
             }
 
@@ -434,6 +436,7 @@ TheBackend.ToolKit.GoogleLogin.Android.GoogleLogin(true, (bool success, string e
                     if (!insertCallback.IsSuccess())
                     {
                         Debug.LogError($"[Backend] Insert fail: {eGameData} / {insertCallback}");
+                        OnLoadGameDataFailed.OnNext( eGameData );
                         return;
                     }
 

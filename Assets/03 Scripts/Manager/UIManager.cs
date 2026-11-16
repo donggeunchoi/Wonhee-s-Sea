@@ -28,13 +28,13 @@ public class UIManager : Singleton<UIManager>
 
     private void Awake()
     {
-        txLevel.text = string.Format("Lv.{0}", UserManager.Ins.userInfo.level);
-        txGold.text = string.Format("골드:{0}", UserManager.Ins.userInfo.gold);
-        txRating.text = string.Format("평판:{0}", UserManager.Ins.userInfo.exp);
+        txLevel.text = string.Format("{0}", UserManager.Ins.userInfo.level);
+        txGold.text = string.Format("{0}", UserManager.Ins.userInfo.gold);
+        txRating.text = string.Format("{0}", UserManager.Ins.userInfo.exp);
 
         //UserInfo 다이아,강화석 추가 필요
-        txDia.text = string.Format("dia:{0}", UserManager.Ins.userInfo.dia);
-        txEnchant.text = string.Format("enchant:{0}", UserManager.Ins.userInfo.enchant);
+        txDia.text = string.Format("{0}", UserManager.Ins.userInfo.dia);
+        txEnchant.text = string.Format("{0}", UserManager.Ins.userInfo.enchant);
     }
 
     public void OnClickStore()

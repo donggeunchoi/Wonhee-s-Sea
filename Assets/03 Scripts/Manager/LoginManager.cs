@@ -27,7 +27,7 @@ public class LoginManager : MonoBehaviour
 
     private bool isLoginInProgress = false;
     private bool isSceneLoading = false;
-    private bool isChartLoadFailed = false;
+    private bool isDataLoadFailed = false;
     private bool isButtonBound = false;
 
     private int totalCount = 0;
@@ -63,6 +63,8 @@ public class LoginManager : MonoBehaviour
             .Subscribe(OnGameDataLoaded)
             .AddTo(this);
 
+        BackendManager.Ins.OnLoadGameDataFailed.Subscribe( OnGameDataLoadFailed ).AddTo( this );
+
         BackendManager.Ins.OnLoadAllChartData
             .Subscribe(OnChartLoadResult)
             .AddTo(this);
@@ -86,7 +88,7 @@ public class LoginManager : MonoBehaviour
 
         Debug.Log("[Login] Backend initialization success.");
 
-        SetLoadingMessage("초기화 완료. 로그인 해주세요.");
+        SetLoadingMessage( string.Empty );
         SetAuthGroupActive(true);
     }
 
@@ -143,7 +145,7 @@ public class LoginManager : MonoBehaviour
 
         SetAuthGroupActive(false);
 
-        SetLoadingMessage(isGoogle ? "Google 계정 인증 중..." : "게스트 로그인 중...");
+        SetLoadingProgress( isGoogle ? "Google 계정 인증 중..." : "게스트 로그인 중..." );
 
         try
         {
@@ -189,12 +191,12 @@ public class LoginManager : MonoBehaviour
 
         isGameDataLoaded = false;
         isChartDataLoaded = false;
-        isChartLoadFailed = false;
+        isDataLoadFailed = false;
 
         loadedGameData.Clear();
 
         SetAuthGroupActive(false);
-        SetLoadingMessage("로그인 성공. 데이터를 불러오는 중...");
+        ReflashDataLoadingProgress();
 
         Debug.Log("[Login] Authentication success. Starting data loading.");
 
@@ -205,6 +207,7 @@ public class LoginManager : MonoBehaviour
         }
         catch (Exception exception)
         {
+            isDataLoadFailed = true;
             Debug.LogError("[Login] Data loading exception: " + exception);
             SetLoadingMessage("데이터 로딩 실행 중 오류가 발생했습니다.");
         }
@@ -213,7 +216,7 @@ public class LoginManager : MonoBehaviour
     // 게임 데이터 로드 결과
     private void OnGameDataLoaded(EGameData gameData)
     {
-        if (!isLoginDone || isSceneLoading)
+        if( !isLoginDone || isSceneLoading || isDataLoadFailed )
             return;
 
         if (!loadedGameData.Add(gameData))
@@ -226,30 +229,36 @@ public class LoginManager : MonoBehaviour
 
         Debug.Log($"[Login] Game data loaded: {gameData} ({loadedCount}/{totalCount})");
 
-        if (!isChartLoadFailed)
-            SetLoadingMessage($"데이터 불러오는 중... {loadedCount}/{totalCount}");
+        isGameDataLoaded = loadedCount == totalCount;
+        ReflashDataLoadingProgress();
 
-        if (loadedCount < totalCount)
+        if( !isGameDataLoaded )
             return;
-
-        isGameDataLoaded = true;
 
         Debug.Log("[Login] All game data loaded.");
 
         TryMoveScene();
     }
 
+    private void OnGameDataLoadFailed( EGameData gameData )
+    {
+        if( !isLoginDone || isSceneLoading || isDataLoadFailed )
+            return;
+
+        isDataLoadFailed = true;
+        SetLoadingMessage( $"플레이어 데이터를 불러오지 못했습니다.\n({gameData}) 게임을 다시 실행해 주세요." );
+    }
+
     // 전체 차트 로드 결과
     private void OnChartLoadResult(bool success)
     {
-        if (!isLoginDone || isSceneLoading)
+        if( !isLoginDone || isSceneLoading || isDataLoadFailed )
             return;
 
         isChartDataLoaded = success;
-        isChartLoadFailed = !success;
-
         if (!success)
         {
+            isDataLoadFailed = true;
             Debug.LogError("[Login] Chart loading failed.");
             SetLoadingMessage("차트 로드에 실패했습니다. 오류 로그를 확인해주세요.");
             return;
@@ -257,7 +266,30 @@ public class LoginManager : MonoBehaviour
 
         Debug.Log("[Login] All chart data loaded.");
 
+        ReflashDataLoadingProgress();
         TryMoveScene();
+    }
+
+    private void ReflashDataLoadingProgress()
+    {
+        if( isGameDataLoaded && isChartDataLoaded )
+            return;
+
+        if( !isGameDataLoaded )
+        {
+            SetLoadingProgress( $"플레이어 데이터 불러오는 중 ({loadedGameData.Count}/{totalCount})" );
+            return;
+        }
+
+        SetLoadingProgress( "게임 설정 데이터 불러오는 중..." );
+    }
+
+    private void SetLoadingProgress( string message )
+    {
+        const int AUTH_AND_CHART_STEP_COUNT = 2;
+        int completedSteps = loadedGameData.Count + ( isLoginDone ? 1 : 0 ) + ( isChartDataLoaded ? 1 : 0 );
+        int progress = completedSteps * 100 / ( totalCount + AUTH_AND_CHART_STEP_COUNT );
+        SetLoadingMessage( $"{progress}%\n{message}" );
     }
 
     // 게임 씬 이동 조건 검사
@@ -291,8 +323,12 @@ public class LoginManager : MonoBehaviour
 
         isSceneLoading = true;
 
-        SetLoadingMessage("모든 데이터 로드 완료! 게임 씬으로 이동합니다.");
+        SetLoadingProgress( "데이터 로드 완료" );
+        Observable.NextFrame().Subscribe( _ => LoadGameScene() ).AddTo( this );
+    }
 
+    private void LoadGameScene()
+    {
         Debug.Log("[Login] Loading game scene: " + nextSceneName);
 
         try
