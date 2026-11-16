@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -27,6 +28,16 @@ public class UIManager : Singleton<UIManager>
     GameObject storePopup;
 
     private void Awake()
+    {
+        UserManager.Ins.OnResources.AsObservable().Subscribe(_ =>
+        {
+            InitData();
+        }).AddTo(this);
+
+        InitData();
+    }
+
+    void InitData()
     {
         txLevel.text = string.Format("{0}", UserManager.Ins.userInfo.level);
         txGold.text = string.Format("{0}", UserManager.Ins.userInfo.gold);

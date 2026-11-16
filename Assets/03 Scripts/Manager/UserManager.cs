@@ -13,6 +13,8 @@ public class UserManager : Singleton<UserManager>
     public Subject<int> OnFishID = new Subject<int>();
     public List<int> dungeonSpawnFishIds = new List<int>();
 
+    public Subject<bool> OnResources = new Subject<bool>(); //구매 및 재화 사용신 새로고침 용도
+
     //유저 닉네임
     public string userNickName = "";
 
@@ -122,7 +124,7 @@ public class UserManager : Singleton<UserManager>
         if( equipInfo == null || equipInfo.TryGetWeaponLevel( itemID, out int level ) == false || level == int.MaxValue )
             return false;
 
-        if( ConsumeGood( EGoodType.Gold, cost ) == false )
+        if( ConsumeGood( EGoodType.Enchant, cost ) == false )
             return false;
 
         equipInfo.WeaponLevelUp( itemID, 1 );

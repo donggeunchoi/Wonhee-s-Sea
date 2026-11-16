@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
+using TMPro;
 
 [Serializable]
 public class PopupBoxStoreTap
@@ -33,7 +34,13 @@ public class PopupBoxShop : MonoBehaviour
     [SerializeField]
     PopupBoxItemInfo itemInfoPrefab;
 
-    PopupBoxItemInfo itemInfo;
+    [Header("재화 UI")]
+    [SerializeField]
+    TextMeshProUGUI txGold;
+    [SerializeField]
+    TextMeshProUGUI txDia;
+    [SerializeField]
+    TextMeshProUGUI txEnchant;
 
     EStoreType currentType = EStoreType.Equipment;
 
@@ -50,6 +57,11 @@ public class PopupBoxShop : MonoBehaviour
                 InitData(tap.storeType);
             }).AddTo(this);
         }
+
+        UserManager.Ins.OnResources.AsObservable().Subscribe(_ =>
+        {
+            InitData(currentType);
+        }).AddTo(this);
     }
 
     private void OnEnable()
@@ -59,18 +71,12 @@ public class PopupBoxShop : MonoBehaviour
 
     private void OnDisable()
     {
-        if( itemInfo != null )
-            itemInfo.OnClickClose();
+        if(itemInfoPrefab != null )
+            itemInfoPrefab.OnClickClose();
     }
 
     void ShowItemInfo( StoreData storeData, ItemDataTable itemTable, Sprite icon )
     {
-        if( itemInfoPrefab == null )
-            return;
-
-        if( itemInfo == null )
-            itemInfo = Instantiate( itemInfoPrefab, transform, false );
-
         var data = new ItemInfoPopupData
         {
             id = itemTable.itemId,
@@ -94,8 +100,8 @@ public class PopupBoxShop : MonoBehaviour
             onUpgrade = ( itemID, count ) => OnUpgrade( storeData, itemTable, icon, itemID, count );
         }
 
-        itemInfo.InitData( data, null, onUpgrade );
-        itemInfo.gameObject.SetActive( true );
+        itemInfoPrefab.InitData( data, null, onUpgrade );
+        itemInfoPrefab.gameObject.SetActive( true );
     }
 
     void OnUpgrade( StoreData storeData, ItemDataTable itemTable, Sprite icon, int itemID, int count )
@@ -116,6 +122,10 @@ public class PopupBoxShop : MonoBehaviour
 
     void InitData(EStoreType type)
     {
+        txGold.text = string.Format("{0}", UserManager.Ins.userInfo.gold);
+        txDia.text = string.Format("{0}", UserManager.Ins.userInfo.dia);
+        txEnchant.text = string.Format("{0}", UserManager.Ins.userInfo.enchant);
+
         var storeJsons = storeDatas.FindAll(info => info.storeType == (int)type);
 
         currentType = type;
