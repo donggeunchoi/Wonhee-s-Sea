@@ -30,6 +30,7 @@ public class PlayerStats : MonoBehaviour, IDamageable
     public bool IsInvincible => _invTimer > 0f;
 
     public event Action<float, float> OnHpChanged;
+    public event Action OnDied;
 
     public void Init(PlayerRoot owner)
     {
@@ -100,10 +101,6 @@ public class PlayerStats : MonoBehaviour, IDamageable
         if (IsDead) return;
         IsDead = true;
 
-        var inv = GetComponent<PlayerInventory>();
-        if (inv != null)
-            inv.LoseFishPercent(0.9f);
-
-        Debug.Log("플레이어 사망");
+        OnDied?.Invoke();
     }
 }

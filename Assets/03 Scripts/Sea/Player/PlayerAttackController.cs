@@ -160,7 +160,7 @@ public class PlayerAttackController : MonoBehaviour
 
     public void OnAttack()
     {
-        if (CurrentWeaponType != WeaponType.Dagger || _isAttacking) return;
+        if (!isActiveAndEnabled || CurrentWeaponType != WeaponType.Dagger || _isAttacking) return;
         StartCoroutine(C_DaggerAttack());
     }
 
@@ -213,7 +213,7 @@ public class PlayerAttackController : MonoBehaviour
 
     public void FireRanged(Vector2 shootDir)
     {
-        if (CurrentWeaponType == WeaponType.Dagger) return;
+        if (!isActiveAndEnabled || CurrentWeaponType == WeaponType.Dagger) return;
         if (shootDir.sqrMagnitude < 0.0001f) return;
 
         if (CurrentWeaponType == WeaponType.SMG)

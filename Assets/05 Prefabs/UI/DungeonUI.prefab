@@ -1314,8 +1314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9da508b27cf920d48a4b303c1933bfbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerInventory: {fileID: 0}
-  _resultUI: {fileID: 5214978563136545159}
+  _dungeonManager: {fileID: 0}
 --- !u!1 &3086541801479110800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1657,7 +1656,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _panel: {fileID: 3303800661929509756}
-  _inventory: {fileID: 0}
   _totalCountText: {fileID: 8287655635471583428}
   _totalWeightText: {fileID: 8297394862574453141}
 --- !u!1 &3801920012736902714

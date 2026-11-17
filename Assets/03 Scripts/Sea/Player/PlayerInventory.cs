@@ -45,7 +45,9 @@ public class PlayerInventory : MonoBehaviour
     {
         if (_fishList.Count == 0) return;
 
-        int loseCount = Mathf.FloorToInt(_fishList.Count * percent);
+        if (percent <= 0f) return;
+
+        int loseCount = Mathf.Max(1, Mathf.FloorToInt(_fishList.Count * Mathf.Clamp01(percent)));
 
         for (int i = 0; i < loseCount; i++)
         {

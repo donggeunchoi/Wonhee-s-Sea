@@ -1351,7 +1351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 531916329}
   m_Layer: 0
-  m_Name: DungeonManager
+  m_Name: Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1370,11 +1370,58 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 531916332}
   - {fileID: 1524843486}
   - {fileID: 1724782005}
   - {fileID: 471404031}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &531916331
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 531916332}
+  - component: {fileID: 531916330}
+  m_Layer: 0
+  m_Name: DungeonManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &531916332
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531916331}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 531916329}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &531916330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531916331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e798740508c849cf98ccaa830a7fe512, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _player: {fileID: 6979615427234808483}
+  _resultUI: {fileID: 1562466340}
 --- !u!1 &551776491
 GameObject:
   m_ObjectHideFlags: 0
@@ -2205,8 +2252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9da508b27cf920d48a4b303c1933bfbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerInventory: {fileID: 8330619942998301799}
-  _resultUI: {fileID: 2092267793}
+  _dungeonManager: {fileID: 531916330}
 --- !u!1 &1149049474
 GameObject:
   m_ObjectHideFlags: 0
@@ -3536,13 +3582,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3041974590994454095, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
-      propertyPath: _playerInventory
-      value: 
-      objectReference: {fileID: 8330619942998301799}
-    - target: {fileID: 5214978563136545159, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
-      propertyPath: _inventory
-      value: 
-      objectReference: {fileID: 8330619942998301799}
+      propertyPath: _dungeonManager
+      value:
+      objectReference: {fileID: 531916330}
     - target: {fileID: 8963903663936707854, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
       propertyPath: player_Oxygen
       value: 
@@ -3655,9 +3697,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1562466340}
-        m_TargetAssemblyTypeName: DungeonResultUI, Assembly-CSharp
-        m_MethodName: OnClickReturnTown
+      - m_Target: {fileID: 531916330}
+        m_TargetAssemblyTypeName: DungeonManager, Assembly-CSharp
+        m_MethodName: ReturnToTown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4128,9 +4170,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2092267793}
-        m_TargetAssemblyTypeName: DungeonResultUI, Assembly-CSharp
-        m_MethodName: OnClickReturnTown
+      - m_Target: {fileID: 531916330}
+        m_TargetAssemblyTypeName: DungeonManager, Assembly-CSharp
+        m_MethodName: ReturnToTown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4398,7 +4440,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _panel: {fileID: 2092267789}
-  _inventory: {fileID: 8330619942998301799}
   _totalCountText: {fileID: 96662513}
   _totalWeightText: {fileID: 1417043799}
 --- !u!1 &2143687631
