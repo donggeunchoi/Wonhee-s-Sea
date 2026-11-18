@@ -1359,11 +1359,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 669786632332923128, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
+    - target: {fileID: 1483981188085886716, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
+      propertyPath: _moveJoystick
+      value:
+      objectReference: {fileID: 2103439215}
+    - target: {fileID: 3893011893758042052, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
       propertyPath: _aimJoystickObj
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 669786632332923128, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
+    - target: {fileID: 3893011893758042052, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
       propertyPath: _attackButtonObj
       value: 
       objectReference: {fileID: 0}
@@ -1371,7 +1375,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_D
       objectReference: {fileID: 0}
-    - target: {fileID: 1483981188085886716, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
+    - target: {fileID: 3893011893758042052, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
       propertyPath: _aimJoystick
       value: 
       objectReference: {fileID: 0}
@@ -1542,7 +1546,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1645774982}
-  - component: {fileID: 1645774983}
   m_Layer: 0
   m_Name: JoystickManager
   m_TagString: Untagged
@@ -1565,20 +1568,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 10460198}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1645774983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1645774981}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8216d178a7cc8284d8a112933cc9206d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 1607466702}
-  _joystick: {fileID: 2103439215}
 --- !u!1 &1665625086
 GameObject:
   m_ObjectHideFlags: 0

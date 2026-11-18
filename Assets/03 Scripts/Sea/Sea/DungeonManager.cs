@@ -36,15 +36,11 @@ public class DungeonManager : MonoBehaviour
         _previousTimeScale = Time.timeScale;
         Time.timeScale = 0f;
 
+        if (_player.CombatInput != null) _player.CombatInput.enabled = false;
         if (_player.Input != null) _player.Input.enabled = false;
-        if (_player.Controller != null) _player.Controller.enabled = false;
+        if (_player.Movement != null) _player.Movement.enabled = false;
         if (_player.Oxygen != null) _player.Oxygen.enabled = false;
-        if (_player.Attack != null)
-        {
-            _player.Attack.StopSmgFire();
-            _player.Attack.StopAllCoroutines();
-            _player.Attack.enabled = false;
-        }
+        if (_player.Attack != null) _player.Attack.enabled = false;
 
         var inventory = _player.Inventory;
         if (died)
