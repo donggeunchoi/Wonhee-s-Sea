@@ -1,17 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ReturnBtn : MonoBehaviour
 {
-    // 임시
-    [SerializeField] private PlayerInventory _playerInventory;
-    [SerializeField] private DungeonResultUI _resultUI;
+    [SerializeField] private DungeonManager _dungeonManager;
 
     public void OnClickExit()
     {
-        _resultUI.Open();
+        if (_dungeonManager != null)
+            _dungeonManager.RequestReturn();
     }
 }

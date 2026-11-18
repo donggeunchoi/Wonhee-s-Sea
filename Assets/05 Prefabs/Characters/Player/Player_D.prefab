@@ -71,7 +71,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 317856848839911226}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81d861677aeda7e47919c1adf032d73f, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c244c67f1feb764ab4373cfe27ee34d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _targetMask:
@@ -89,6 +89,8 @@ GameObject:
   - component: {fileID: 7371114770619277345}
   - component: {fileID: 8493410948222769548}
   - component: {fileID: 6441120578036806319}
+  - component: {fileID: 3893011893758042052}
+  - component: {fileID: 3893011893758042051}
   - component: {fileID: 669786632332923128}
   - component: {fileID: 8434019613737336547}
   - component: {fileID: 1483981188085886716}
@@ -158,11 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6758dbe6b89497448a52f44ec1897da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mode: 1
-  _anim: {fileID: 8439401274984012238}
-  _sr: {fileID: 2666943716693424703}
   _maxSpeed: 3
-  _pivot: {fileID: 3109116776300948327}
 --- !u!114 &669786632332923128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,14 +182,10 @@ MonoBehaviour:
   _daggerCooldown: 0.32
   _harpoonFirePoint: {fileID: 8889862581666156824}
   _smgFirePoint: {fileID: 4818040730484856601}
-  _projectilePrefab: {fileID: 2076891219032690808, guid: a2eea705befc5dd4a925fca1e8214d8b, type: 3}
-  _projectileSpeed: 12
   _projectileDamage: 100
   _harpoonCooldown: 0.45
   _smgFireRate: 0.11
   _smgDamage: 1
-  _attackButtonObj: {fileID: 0}
-  _aimJoystickObj: {fileID: 0}
 --- !u!114 &8434019613737336547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,8 +211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _useKeyboardForDebug: 1
-  _aimJoystick: {fileID: 0}
-  _aimDeadZone: 0.15
+  _moveJoystick: {fileID: 0}
 --- !u!114 &1862927204958883090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1014,3 +1007,33 @@ Transform:
   - {fileID: 8889862581666156824}
   m_Father: {fileID: 4107527178271465359}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3893011893758042051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797265196185510909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcadf211c4ee42c8926b3a0259717f94, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _anim: {fileID: 8439401274984012238}
+  _sr: {fileID: 2666943716693424703}
+  _pivot: {fileID: 3109116776300948327}
+--- !u!114 &3893011893758042052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797265196185510909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b86043585ac4be8adf5efd19fb623ab, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _aimJoystick: {fileID: 0}
+  _attackButtonObj: {fileID: 0}
+  _aimJoystickObj: {fileID: 0}

@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum WeaponType
@@ -32,26 +32,22 @@ public class PlayerAttackController : MonoBehaviour
     [SerializeField] private float _daggerAttackDistance = 1.1f;
     [SerializeField] private float _daggerCooldown = 0.32f;
 
-    [Header("원거리")]
-    [SerializeField] private Projectile _projectilePrefab;
-    [SerializeField] private float _projectileSpeed = 16f;
-
-    [Header("공격 버튼")]
-    [SerializeField] private GameObject _attackButtonObj;
-    [SerializeField] private GameObject _aimJoystickObj;
-
     private PlayerRoot _owner;
     private bool _isAttacking;
-    private float _lastFacingX = 1f;
+    private DungeonPlayerAnimation _animation;
+    private Coroutine _daggerAttack;
+    private Vector3 _daggerOrigin;
 
     private Transform _currentTransform;
-    private Transform _currentModel;
 
     public WeaponType CurrentWeaponType { get; private set; } = WeaponType.Dagger;
 
-    public void Init(PlayerRoot owner)
+    public event Action<WeaponType> WeaponChanged;
+
+    public void Init(PlayerRoot owner, DungeonPlayerAnimation animation)
     {
         _owner = owner;
+        _animation = animation;
 
         SetWeaponActive(WeaponType.Dagger, false);
         SetWeaponActive(WeaponType.Harpoon, false);
@@ -61,7 +57,6 @@ public class PlayerAttackController : MonoBehaviour
         SetWeaponActive(WeaponType.Dagger, true);
 
         _currentTransform = _daggerTransform;
-        _currentModel = _daggerTransform;
 
         if (_daggerWeapon != null)
         {
@@ -69,8 +64,7 @@ public class PlayerAttackController : MonoBehaviour
             _daggerWeapon.Equip();
         }
 
-        ApplyModeUI();
-        ApplyWeaponSideAndMirror(true);
+        ApplyWeaponSideAndMirror();
     }
 
     private void SetWeaponActive(WeaponType type, bool active)
@@ -84,6 +78,8 @@ public class PlayerAttackController : MonoBehaviour
     {
         if (CurrentWeaponType == type) return;
 
+        CancelDaggerAttack();
+        StopSmgFire();
         GetCurrentWeapon()?.Unequip();
 
         SetWeaponActive(CurrentWeaponType, false);
@@ -94,23 +90,20 @@ public class PlayerAttackController : MonoBehaviour
         {
             case WeaponType.Dagger:
                 _currentTransform = _daggerTransform;
-                _currentModel = _daggerTransform;
                 break;
             case WeaponType.Harpoon:
                 _currentTransform = _harpoonTransform;
-                _currentModel = _harpoonTransform;
                 break;
             case WeaponType.SMG:
                 _currentTransform = _smgTransform;
-                _currentModel = _smgTransform;
                 break;
         }
 
         GetCurrentWeapon()?.SetOwner(_owner.gameObject);
         GetCurrentWeapon()?.Equip();
 
-        ApplyModeUI();
-        ApplyWeaponSideAndMirror(true);
+        ApplyWeaponSideAndMirror();
+        WeaponChanged?.Invoke(CurrentWeaponType);
     }
 
     private BaseWeapon GetCurrentWeapon()
@@ -124,59 +117,53 @@ public class PlayerAttackController : MonoBehaviour
         };
     }
 
-    private void ApplyModeUI()
-    {
-        bool isMelee = CurrentWeaponType == WeaponType.Dagger;
-        if (_attackButtonObj != null) _attackButtonObj.SetActive(isMelee);
-        if (_aimJoystickObj != null) _aimJoystickObj.SetActive(!isMelee);
-    }
-
     private void LateUpdate()
     {
         if (_owner == null || _isAttacking) return;
-        ApplyWeaponSideAndMirror(false);
+        ApplyWeaponSideAndMirror();
     }
 
-    private void ApplyWeaponSideAndMirror(bool forceSnap)
+    private void ApplyWeaponSideAndMirror()
     {
         if (_currentTransform == null) return;
 
-        Vector2 facing = _owner?.Input?.FacingDir ?? Vector2.right;
-        if (Mathf.Abs(facing.x) > 0.01f) _lastFacingX = Mathf.Sign(facing.x);
-
-        bool flip = _owner?.Controller?.IsFlipY ?? (_lastFacingX < 0f);
+        bool flip = _animation != null && _animation.IsFlipY;
 
         Vector3 pos = _currentTransform.localPosition;
         pos.y = flip ? _originY_Left : _originY_Right;
         _currentTransform.localPosition = pos;
 
-        if (_currentModel != null)
-        {
-            Vector3 s = _currentModel.localScale;
-            s.y = flip ? -Mathf.Abs(s.y) : Mathf.Abs(s.y);
-            _currentModel.localScale = s;
-        }
+        Vector3 scale = _currentTransform.localScale;
+        scale.y = flip ? -Mathf.Abs(scale.y) : Mathf.Abs(scale.y);
+        _currentTransform.localScale = scale;
     }
 
     public void OnAttack()
     {
-        if (CurrentWeaponType != WeaponType.Dagger || _isAttacking) return;
-        StartCoroutine(C_DaggerAttack());
+        if (!isActiveAndEnabled || CurrentWeaponType != WeaponType.Dagger || _isAttacking
+            || _owner == null || _daggerTransform == null || _daggerTransform.parent == null) return;
+
+        Vector2 move = _owner.Input?.ReadMoveInput() ?? Vector2.zero;
+        Vector2 facing = move.sqrMagnitude >= PlayerMovement.DeadZone * PlayerMovement.DeadZone
+            ? move.normalized
+            : (_animation?.FacingDirection ?? Vector2.right);
+
+        _daggerAttack = StartCoroutine(C_DaggerAttack(facing));
     }
 
-    private IEnumerator C_DaggerAttack()
+    private IEnumerator C_DaggerAttack(Vector2 facing)
     {
         _isAttacking = true;
-        _owner.Controller?.Freeze(0.5f);
+        _owner.Movement?.Freeze(0.5f);
 
-        ApplyWeaponSideAndMirror(forceSnap: true);
-
-        Vector2 facing = _owner.Input?.FacingDir ?? Vector2.right;
+        _animation?.FaceAttack(facing);
+        ApplyWeaponSideAndMirror();
 
         Vector3 worldDir = new Vector3(facing.x, facing.y, 0f).normalized;
         Vector3 localDir = _daggerTransform.parent.InverseTransformDirection(worldDir);
 
-        Vector3 origin = _daggerTransform.localPosition;
+        _daggerOrigin = _daggerTransform.localPosition;
+        Vector3 origin = _daggerOrigin;
         Vector3 targetPos = origin + localDir * _daggerAttackDistance;
 
         _daggerWeapon?.BeginAttack();
@@ -209,15 +196,16 @@ public class PlayerAttackController : MonoBehaviour
 
         yield return new WaitForSeconds(_daggerCooldown);
         _isAttacking = false;
+        _daggerAttack = null;
     }
 
     public void FireRanged(Vector2 shootDir)
     {
-        if (CurrentWeaponType == WeaponType.Dagger) return;
+        if (!isActiveAndEnabled || CurrentWeaponType == WeaponType.Dagger) return;
         if (shootDir.sqrMagnitude < 0.0001f) return;
 
         if (CurrentWeaponType == WeaponType.SMG)
-            _smgWeapon?.StartFiring();
+            _smgWeapon?.StartFiring(shootDir);
         else
             _harpoonWeapon?.Fire(shootDir);
     }
@@ -227,9 +215,21 @@ public class PlayerAttackController : MonoBehaviour
         _smgWeapon?.StopFiring();
     }
 
-    private void Update()
+    private void CancelDaggerAttack()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && CurrentWeaponType == WeaponType.Dagger)
-            OnAttack();
+        if (_daggerAttack == null) return;
+
+        StopCoroutine(_daggerAttack);
+        _daggerAttack = null;
+        _isAttacking = false;
+        _daggerWeapon?.EndAttack();
+        if (_daggerTransform != null)
+            _daggerTransform.localPosition = _daggerOrigin;
+    }
+
+    private void OnDisable()
+    {
+        StopSmgFire();
+        CancelDaggerAttack();
     }
 }
