@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 73fcb9d0fc88df14a91a0555c5b21655
+guid: a50de3e6e33e46340bb7ad67a23bb589
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -121,7 +121,154 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SS30005_0
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 293
+        width: 952
+        height: 498
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7810af6e9e964964296d37af25378b1f
+      internalID: -1397877782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SS30005_1
+      rect:
+        serializedVersion: 2
+        x: 525
+        y: 775
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5ac590e6d068174aae4000c741e1d07
+      internalID: 2145749032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SS30005_2
+      rect:
+        serializedVersion: 2
+        x: 541
+        y: 777
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a10caef6c1e61944d9e3b83d2732ce9c
+      internalID: -2136760675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SS30005_3
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 778
+        width: 9
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 032265e06516be9458e35262059a0716
+      internalID: 2100326335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SS30005_4
+      rect:
+        serializedVersion: 2
+        x: 570
+        y: 779
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c6301c36bb2c13498ffaa55c9b996d0
+      internalID: 1842010647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SS30005_5
+      rect:
+        serializedVersion: 2
+        x: 586
+        y: 779
+        width: 4
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0fee3be21756df848a9a3a59c37c3224
+      internalID: -1412319843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SS30005_6
+      rect:
+        serializedVersion: 2
+        x: 617
+        y: 780
+        width: 4
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 11bc077dc360b904d8b0a2f42b08e028
+      internalID: 590243282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +279,14 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SS30005_0: -1397877782
+      SS30005_1: 2145749032
+      SS30005_2: -2136760675
+      SS30005_3: 2100326335
+      SS30005_4: 1842010647
+      SS30005_5: -1412319843
+      SS30005_6: 590243282
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

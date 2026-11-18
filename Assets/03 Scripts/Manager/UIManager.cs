@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,34 +23,62 @@ public class UIManager : Singleton<UIManager>
     [SerializeField]
     TextMeshProUGUI txRating;
 
+    [Header("상점 팝업")]
+    [SerializeField]
+    GameObject storePopup;
+
+    [Header( "설정 팝업" )]
+    [SerializeField]
+    GameObject popupBoxSetting;
+
     private void Awake()
     {
-        txLevel.text = string.Format("Lv.{0}", UserManager.Ins.userInfo.level);
-        txGold.text = string.Format("골드:{0}", UserManager.Ins.userInfo.gold);
-        txRating.text = string.Format("평판:{0}", UserManager.Ins.userInfo.exp);
+        UserManager.Ins.OnResources.AsObservable().Subscribe(_ =>
+        {
+            InitData();
+        }).AddTo(this);
+
+        InitData();
+    }
+
+    void InitData()
+    {
+        txLevel.text = string.Format("{0}", UserManager.Ins.userInfo.level);
+        txGold.text = string.Format("{0}", UserManager.Ins.userInfo.gold);
+        txRating.text = string.Format("{0}", UserManager.Ins.userInfo.exp);
 
         //UserInfo 다이아,강화석 추가 필요
-        txDia.text = string.Format("dia:{0}", UserManager.Ins.userInfo.dia);
-        txEnchant.text = string.Format("enchant:{0}", UserManager.Ins.userInfo.enchant);
+        txDia.text = string.Format("{0}", UserManager.Ins.userInfo.dia);
+        txEnchant.text = string.Format("{0}", UserManager.Ins.userInfo.enchant);
     }
 
     public void OnClickStore()
     {
         Debug.LogWarning("상점 버튼 눌림");
+        storePopup.SetActive(true);
     }
 
     public void OnClickTown()
     {
         Debug.LogWarning("타운 버튼 눌림");
+        storePopup.SetActive(false);
     }
 
     public void OnClickDungeonScene()
     {
+        UserManager.Ins.SetDungeonSpawnFishIdsFromPlacedStands();
         SceneManager.LoadScene("Gwang_DungeonScene");
     }
 
     public void OnClickSetting()
     {
-        Debug.LogWarning("설정 버튼 눌림");
+        if( popupBoxSetting != null )
+            popupBoxSetting.SetActive( true );
+    }
+
+    public void OnClickCloseSetting()
+    {
+        if( popupBoxSetting != null )
+            popupBoxSetting.SetActive( false );
     }
 }

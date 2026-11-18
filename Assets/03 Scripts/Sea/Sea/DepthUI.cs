@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class DepthUI : MonoBehaviour
 {
-    [SerializeField] private DepthCalculator _depthCalculator;
-    [SerializeField] private TMP_Text _depthText;
+    /*[SerializeField] private DepthCalculator depthCalculator;
+    [SerializeField] private TMP_Text depthText;
 
     private void Update()
     {
@@ -15,6 +13,6 @@ public class DepthUI : MonoBehaviour
 
     private void UpdateDepthText()
     {
-        _depthText.text = $"{Mathf.FloorToInt(_depthCalculator.CurrentDepth)} m";
-    }
+        depthText.text = $"{Mathf.FloorToInt(depthCalculator.CurrentDepth)} M";
+    }*/
 }

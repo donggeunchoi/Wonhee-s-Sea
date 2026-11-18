@@ -12,8 +12,8 @@ public class OperationManager : Singleton<OperationManager>
     [Header("연결")]
     [SerializeField]
     CheckoutStand checkoutStand;
-    // 손님 관련된 변수도 필요함 customerManager 같은거
 
+    // 손님 관련된 변수도 필요함 customerManager 같은거
 
     float currentTime;
     bool isOperating;

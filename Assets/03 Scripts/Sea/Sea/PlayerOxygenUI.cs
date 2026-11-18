@@ -6,7 +6,7 @@ using TMPro;
 
 public class PlayerOxygenUI : MonoBehaviour
 {
-    [SerializeField] private PlayerOxygen _oxygen;
+    /*[SerializeField] private PlayerOxygen _oxygen;
 
     [Header("UI")]
     [SerializeField] private Image _fillImage;
@@ -76,5 +76,5 @@ public class PlayerOxygenUI : MonoBehaviour
         yield return new WaitForSeconds(_warnShowSeconds);
         _warnObj.SetActive(false);
         _warnCo = null;
-    }
+    }*/
 }

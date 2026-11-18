@@ -6,13 +6,20 @@ public class PlayerEquipment : MonoBehaviour
 {
     public enum WeaponKind
     {
-        Melee,
-        Ranged
+        Dagger,
+        Harpoon,
+        SMG
     }
 
     private PlayerRoot _owner;
 
-    public WeaponKind CurrentWeapon { get; private set; } = WeaponKind.Melee;
+    const int UNDERWATER_KNIFE_ID = 50001;
+    const int HARPOON_ID = 50002;
+    const int HARPOON_GUN_ID = 50003;
+    const int UNDERWATER_GUN_ID = 50004;
+
+    public int EquippedWeaponID { get; private set; }
+    public WeaponKind CurrentWeapon { get; private set; } = WeaponKind.Dagger;
 
     public bool HasHat { get; private set; }
     public bool HasArmor { get; private set; }
@@ -25,23 +32,46 @@ public class PlayerEquipment : MonoBehaviour
     public void Init(PlayerRoot owner)
     {
         _owner = owner;
+        var equipInfo = UserManager.Ins?.equipInfo;
+        EquippedWeaponID = equipInfo != null && equipInfo.TryGetWeaponLevel( equipInfo.EquipWeapon, out _ ) ? equipInfo.EquipWeapon : 0;
 
-        EquipMeleeWeapon();
+        switch( EquippedWeaponID )
+        {
+            case HARPOON_ID:
+            case HARPOON_GUN_ID:
+                EquipHarpoon();
+                break;
+            case UNDERWATER_GUN_ID:
+                EquipSMG();
+                break;
+            case UNDERWATER_KNIFE_ID:
+            default:
+                EquipDagger();
+                break;
+        }
+
         RecalculateStats();
     }
 
-    public void EquipMeleeWeapon()
+    public void EquipDagger()
     {
-        CurrentWeapon = WeaponKind.Melee;
-        _owner?.Attack?.SetWeaponType(WeaponType.Melee);
-        Debug.Log("무기 장착: 근접");
+        CurrentWeapon = WeaponKind.Dagger;
+        _owner?.Attack?.SetWeaponType(WeaponType.Dagger);
+        Debug.Log("무기 장착: 짱 쎈 검");
     }
 
-    public void EquipRangedWeapon()
+    public void EquipHarpoon()
     {
-        CurrentWeapon = WeaponKind.Ranged;
-        _owner?.Attack?.SetWeaponType(WeaponType.Ranged);
-        Debug.Log("무기 장착: 원거리");
+        CurrentWeapon = WeaponKind.Harpoon;
+        _owner?.Attack?.SetWeaponType(WeaponType.Harpoon);
+        Debug.Log("무기 장착: 작살총");
+    }
+
+    public void EquipSMG()
+    {
+        CurrentWeapon = WeaponKind.SMG;
+        _owner?.Attack?.SetWeaponType(WeaponType.SMG);
+        Debug.Log("무기 장착: 따발총");
     }
 
     public void EquipHat()

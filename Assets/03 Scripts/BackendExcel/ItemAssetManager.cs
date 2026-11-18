@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class ItemAssetManager : MonoBehaviour
+public class ItemAssetManager : Singleton<ItemAssetManager>
 {
+    // 아이템 아이디로 아이콘과 프리펩을 조회하는 역할
     [Header("리소시스 아이콘 내부 경로")]
     [SerializeField]
     string iconPath = "Art";
@@ -129,6 +130,7 @@ public class ItemAssetManager : MonoBehaviour
                         return null;
                 }
 
+
             default:
                 Debug.LogError($"ItemAssetManager: 잘못된 ItemType. itemId={itemId}, itemType={itemType}");
                 return null;
@@ -139,23 +141,26 @@ public class ItemAssetManager : MonoBehaviour
         switch (itemType)
         {
             case EItemType.Fish:
-                return $"{iconPath}/Fish/{itemId}";
+                return $"{iconPath}/Fish/FS{itemId}";
 
             case EItemType.Ingredient:
                 switch (ingredientType)
                 {
                     case EIngredientType.Sashimi:
-                        return $"{iconPath}/Sashimi/{itemId}";
+                        return $"{iconPath}/Sashimi/SSM{itemId}";
                     case EIngredientType.Sushi:
-                        return $"{iconPath}/Sushi/{itemId}";
+                        return $"{iconPath}/Sushi/SS{itemId}";
                     case EIngredientType.Evenrice:
-                        return $"{iconPath}/Evenrice/{itemId}";
+                        return $"{iconPath}/Evenrice/ER{itemId}";
                     case EIngredientType.Rawrice:
-                        return $"{iconPath}/Rawrice/{itemId}";
+                        return $"{iconPath}/Rawrice/RR{itemId}";
                     default:
                         Debug.LogError($"ItemAssetManager: 잘못된 IngredientType(Icon). itemId={itemId}, ingredientType={ingredientType}", this);
                         return null;
                 }
+
+            case EItemType.Weapon:
+                return $"{iconPath}/Weapon/WP{itemId}";
 
             default:
                 Debug.LogError($"ItemAssetManager: 잘못된 ItemType(Icon). itemId={itemId}, itemType={itemType}", this);

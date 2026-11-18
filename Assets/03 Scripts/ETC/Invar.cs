@@ -21,10 +21,12 @@ public class PuserInfo
     public int dia = 0;
     public int enchant = 0;
     public int maxCarryCount = 5;
+    public int currentStage = 1;
 
     //던전과 경영에서 공통으로 사용하는 정보
     public Dictionary<string,int> fishContainer = new Dictionary<string, int>();
     public List<PCollectionValue> collectionVelues = new List<PCollectionValue>();
+    public Dictionary<string, int> ingredientContainer = new Dictionary<string, int>();
 
     public void AddGold(int amount)
     {
@@ -57,7 +59,6 @@ public class PuserInfo
             needExp = level * 100;
         }
     }
-
 
     public void AddFish(string fishId, int count)
     {
@@ -175,6 +176,7 @@ public class PuserInfo
         if (exp != other.exp) return true;
         if (enchant != other.enchant) return true;
         if (maxCarryCount != other.maxCarryCount) return true;
+        if(currentStage != other.currentStage) return true;
 
         if (fishContainer == null && other.fishContainer != null) return true;
         if (fishContainer != null && other.fishContainer == null) return true;
@@ -190,6 +192,21 @@ public class PuserInfo
                     return true;
 
                 if (pair.Value != otherValue)
+                    return true;
+            }
+        }
+
+        if( ingredientContainer == null && other.ingredientContainer != null ) return true;
+        if( ingredientContainer != null && other.ingredientContainer == null ) return true;
+
+        if( ingredientContainer != null && other.ingredientContainer != null )
+        {
+            if( ingredientContainer.Count != other.ingredientContainer.Count )
+                return true;
+
+            foreach( var pair in ingredientContainer )
+            {
+                if( other.ingredientContainer.TryGetValue( pair.Key, out int otherValue ) == false || pair.Value != otherValue )
                     return true;
             }
         }
@@ -226,8 +243,10 @@ public class PuserInfo
         p.Add("enchant", enchant);
         p.Add("dia", dia);
         p.Add("maxCarryCount", maxCarryCount);
+        p.Add("currentStage", currentStage);
         p.Add("fishContainer", fishContainer);//딕셔너리
         p.Add("collectionVelues", collectionVelues);//리스트
+        p.Add( "ingredientContainer", ingredientContainer );
 
         return p;
     }
@@ -275,6 +294,152 @@ public class PDungeonInfo
         p.Add("Attack", Attack);
         p.Add("HPRegen", HPRegen);
         p.Add("Oxygen", Oxygen);
+        return p;
+    }
+
+}
+
+[Serializable]
+public class PEquipInfo
+{
+    //무기레벨 정보 키값 D+id, 벨류 레벨(0이면 구매만 한경우, -1이든 키값도 없으면 구매도 안한 경우로 처리)
+    public Dictionary<string, int > WeaponLevelData = new Dictionary<string, int>(); 
+
+    //스킨을 보유하면 아이디를 숫자로 넣어줌 이렇게 하는 이유는 데이터를 저장할때 딕셔너리가 품이 더들어가서 단순히 숫자만 저장하기위함.
+    public List<int> SkinEquipData = new List<int>();  
+
+    //직원 레벨 정보, 키값 D+id, 벨류 레벨(0이면 구매만 한경우, -1 혹은 키값 없으면 구매도 안한경우)
+    public Dictionary<string, int> EmployeeLevelData =  new Dictionary<string, int>();
+
+    //장착하고 있는 장비,
+    public int EquipWeapon = 0;
+
+    //사용하고 있는 직원 그 직원이 몇명인지도 필요하고,
+    public Dictionary<string, int> haveEmploies = new Dictionary<string, int>();
+
+    //사용하고 있는 스킨,
+    public int EquipSKin = 0;
+
+    
+    public bool TryGetWeaponLevel( int itemID, out int level )
+    {
+        level = -1;
+        if( itemID <= 0 || WeaponLevelData == null )
+            return false;
+
+        if( WeaponLevelData.TryGetValue( "D" + itemID, out int savedLevel ) == false || savedLevel < 0 )
+            return false;
+
+        level = savedLevel;
+        return true;
+    }
+
+    public void WeaponLevelUp(int id , int count)
+    {
+        string strKey = string.Format("D{0}", id);
+
+        if(WeaponLevelData.ContainsKey(strKey) == false)
+        {
+            WeaponLevelData.Add(strKey, count);
+        }
+        else
+        {
+            if (WeaponLevelData.TryGetValue(strKey, out int level) == false)
+                WeaponLevelData[strKey] = count;
+            else
+                WeaponLevelData[strKey] += count;
+        }
+    }
+
+    public void EmployeeLevelUP(int _id, int _count)
+    {
+        string strKey = string.Format("D{0}", _id);
+
+        if(EmployeeLevelData.ContainsKey(strKey)  == false)
+        {
+            EmployeeLevelData.Add(strKey, _count);
+        }
+        else
+        {
+            if (EmployeeLevelData.TryGetValue(strKey, out int level) == false)
+                EmployeeLevelData[strKey] = 0;
+            else
+                EmployeeLevelData[strKey] += _count;
+        }
+    }
+
+    public void AddEmployee(int _id, int _count)
+    {
+        string strKey = string.Format("D{0}", _id);
+
+        if(haveEmploies.ContainsKey(strKey) == false)
+        {
+            haveEmploies.Add(strKey, _count);
+        }
+        else
+        {
+            if (haveEmploies.TryGetValue(strKey, out int count) == false)
+                haveEmploies[strKey] = _count;
+            else
+                haveEmploies[strKey] += _count;
+        }
+    }
+
+    public bool IsDifferent(PEquipInfo other)
+    {
+        if (other == null)
+            return true;
+
+        if( EquipWeapon != other.EquipWeapon )
+            return true;
+
+        if (IsDifferentLevelData(WeaponLevelData, other.WeaponLevelData))
+            return true;
+
+        if (IsDifferentLevelData(EmployeeLevelData, other.EmployeeLevelData))
+            return true;
+
+        if( IsDifferentLevelData( haveEmploies, other.haveEmploies ) )
+            return true;
+
+        // 스킨은 보유 여부만 비교하므로 순서는 무시한다.
+        HashSet<int> skinIDs = SkinEquipData != null ? new HashSet<int>(SkinEquipData) : new HashSet<int>();
+        HashSet<int> otherSkinIDs = other.SkinEquipData != null ? new HashSet<int>(other.SkinEquipData) : new HashSet<int>();
+
+        return skinIDs.SetEquals(otherSkinIDs) == false;
+    }
+
+    bool IsDifferentLevelData(Dictionary<string, int> data, Dictionary<string, int> other)
+    {
+        int count = data != null ? data.Count : 0;
+        int otherCount = other != null ? other.Count : 0;
+
+        if (count != otherCount)
+            return true;
+
+        if (count == 0)
+            return false;
+
+        foreach (var pair in data)
+        {
+            if (other.TryGetValue(pair.Key, out int level) == false)
+                return true;
+
+            if (pair.Value != level)
+                return true;
+        }
+
+        return false;
+    }
+
+    public Param FormatJsonData()
+    {
+        Param p = new Param();
+        p.Add("WeaponLevelData", WeaponLevelData);
+        p.Add( nameof( EquipWeapon ), EquipWeapon );
+        p.Add("SkinEquipData", SkinEquipData);
+        p.Add("EmployeeLevelData", EmployeeLevelData);
+        p.Add( "haveEmploies", haveEmploies );
         return p;
     }
 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1d70976ee7f392e4a90edea35dbb4f58
+guid: 5d34c1d55457e6449bb11da499b5d551
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -121,7 +121,49 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: SSM20004_0
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 107
+        width: 342
+        height: 189
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e22b9298fd34c34eb02d99d2d109402
+      internalID: -346825720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SSM20004_1
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 94
+        width: 14
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 182e3c32e018b324291c88de333982f2
+      internalID: -144546046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -132,7 +174,9 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SSM20004_0: -346825720
+      SSM20004_1: -144546046
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

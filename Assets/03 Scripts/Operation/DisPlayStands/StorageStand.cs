@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.U2D;
+using UnityEngine.UI;
 
 public class StorageStand : MonoBehaviour, StandManager.IStand
 {
-    [Header("진열 아이템 ID (Inventory와 동일)")]
-    [SerializeField] private string sushiItemId;
+    [Header("스텐드 ID")]
+    [SerializeField]
+    int standID;
 
     [Header("보관 용량")]
     [SerializeField] private int maxCapacity = 20;
 
     [Header("출력 표시 - A(월드 오브젝트 쌓기)")]
     [SerializeField] private bool useWorldStack;
-    [SerializeField] private Transform worldStackRoot;
-    [SerializeField] private float worldStackOffsetY;
-    [SerializeField] private float worldStackOffsetX;
     [SerializeField] private int worldMaxVisible; // 실제로 쌓아두는 오브젝트는 제한(성능)
 
     [Header("아이템 프리팹 조회용")]
@@ -25,13 +25,27 @@ public class StorageStand : MonoBehaviour, StandManager.IStand
     [SerializeField] private int current;
     [SerializeField] private TextMeshProUGUI countText;
 
+    [Header("재료 이미지")]
+    [SerializeField]
+    Image imgItem;
+    [SerializeField] 
+    Transform worldStackRoot;
+
     private int COLUMN = 5;
-    private GameObject cachedPrefab;
+    private Sprite cachedPrefab;
 
-    private readonly List<GameObject> pooled = new List<GameObject>();
+    private readonly List<Image> pooled = new List<Image>();
 
-    public string SellItemId => sushiItemId;
-    public int Current => current;
+    public string SellItemId
+    {
+        get
+        {
+            if (displayStandData == null || displayStandData.sellingitem <= 0)
+                return string.Empty;
+
+            return displayStandData.sellingitem.ToString();
+        }
+    }
 
     public int FreeSpace => Mathf.Max(0, maxCapacity - current);
 
@@ -40,8 +54,13 @@ public class StorageStand : MonoBehaviour, StandManager.IStand
     public float progress => 0f;
 
 
+    List<DisplayStandData> displayStandDatas = new List<DisplayStandData>();
+    DisplayStandData displayStandData = null;
     private void Start()
     {
+        displayStandDatas = JsonManager.Ins.GetJson<DisplayStandData>();
+        displayStandData = displayStandDatas.Find(x => x.standId == standID);
+
         RefreshAll();
     }
 
@@ -91,7 +110,7 @@ public class StorageStand : MonoBehaviour, StandManager.IStand
           return;
 
 
-        if (string.IsNullOrEmpty(sushiItemId))
+        if (displayStandData == null || displayStandData.sellingitem <= 0)
             return;
 
         int space = FreeSpace;
@@ -99,14 +118,16 @@ public class StorageStand : MonoBehaviour, StandManager.IStand
         if (space <= 0)
             return;
 
-        int have = inv.CountOf(sushiItemId);
+        string sellingItemId = displayStandData.sellingitem.ToString();
+
+        int have = inv.CountOf(sellingItemId);
 
         if (have <= 0)
             return;
 
         int toDeposit = Mathf.Min(have, space);
 
-        if (!inv.TryRemove(sushiItemId, toDeposit))
+        if (!inv.TryRemove(sellingItemId, toDeposit))
             return;
         
         current += toDeposit;
@@ -154,36 +175,37 @@ public class StorageStand : MonoBehaviour, StandManager.IStand
             return;
         }
 
-        if (string.IsNullOrEmpty(sushiItemId))
+        if (displayStandData == null || displayStandData.sellingitem <= 0)
         {
             Debug.LogWarning("[StorageStand] sushiItemId가 비어있음", this);
             SetPoolActiveCount(0);
             return;
         }
 
-        var prefab = itemAssetManager.GetPrefab(sushiItemId);
-        if (prefab == null)
+        string sellingItemId = displayStandData.sellingitem.ToString();
+
+        var prefabsprite = itemAssetManager.GetIcon(sellingItemId);
+        if (prefabsprite == null)
         {
-            Debug.LogWarning($"[StorageStand] prefab 없음. itemId={sushiItemId}", this);
+            Debug.LogWarning($"[StorageStand] prefab 없음. itemId={displayStandData.standId.ToString()}", this);
             SetPoolActiveCount(0);
             return;
         }
 
-        if (cachedPrefab != prefab)
+        if (cachedPrefab != prefabsprite)
         {
             ClearPool();
-            cachedPrefab = prefab;
+            cachedPrefab = prefabsprite;
         }
 
         int visible = Mathf.Clamp(current, 0, worldMaxVisible);
 
-        EnsurePool(prefab, visible);
+        EnsurePool(prefabsprite, visible);
         SetPoolActiveCount(visible);
-        LayoutPoolGrid(visible);
     }
 
 
-    private void EnsurePool(GameObject prefab, int needCount)
+    private void EnsurePool(Sprite sprite, int needCount)
     {
         if (pooled.Count >= needCount)
             return;
@@ -191,11 +213,11 @@ public class StorageStand : MonoBehaviour, StandManager.IStand
         int toCreate = needCount - pooled.Count;
         for (int i = 0; i < toCreate; i++)
         {
-            GameObject go = Instantiate(prefab, worldStackRoot);
-            go.transform.localPosition = Vector3.zero;
-            go.transform.localRotation = Quaternion.identity;
-            go.SetActive(false);
-            pooled.Add(go);
+            Image image = Instantiate(imgItem, worldStackRoot);
+            image.sprite = sprite;
+            image.gameObject.SetActive(false);
+
+            pooled.Add(image);
         }
     }
 
@@ -203,33 +225,11 @@ public class StorageStand : MonoBehaviour, StandManager.IStand
     {
         for (int i = 0; i < pooled.Count; i++)
         {
-            bool active = i < activeCount;
-            if (pooled[i] != null && pooled[i].activeSelf != active)
-                pooled[i].SetActive(active);
-        }
-    }
-
-    private void LayoutPoolGrid(int visibleCount)
-    {
-        if (COLUMN <= 0)
-            COLUMN = 5;
-
-        for (int i = 0; i < visibleCount; i++)
-        {
-            var go = pooled[i];
-            if (go == null)
+            if (pooled[i] == null)
                 continue;
 
-            int col = i % COLUMN;
-            int row = i / COLUMN;
-
-            go.transform.localPosition = new Vector3(
-                col * worldStackOffsetX,
-                row * worldStackOffsetY,
-                0f
-            );
-
-            go.transform.localRotation = Quaternion.identity;
+            bool active = i < activeCount;
+            pooled[i].gameObject.SetActive(active);
         }
     }
 
@@ -238,7 +238,7 @@ public class StorageStand : MonoBehaviour, StandManager.IStand
         for (int i = 0; i < pooled.Count; i++)
         {
             if (pooled[i] != null)
-                Destroy(pooled[i]);
+                Destroy(pooled[i].gameObject);
         }
 
         pooled.Clear();

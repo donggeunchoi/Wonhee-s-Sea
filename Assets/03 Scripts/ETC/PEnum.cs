@@ -10,6 +10,7 @@ public enum EGameData
     DungeonInfo,
     TownInfo,
     BuildingInfo,
+    EquipInfo,
 }
 
 [Serializable]
@@ -27,6 +28,17 @@ public enum  EItemType
 {
     Fish = 1,
     Ingredient = 2,// 재료 안에서의 티입2는 (1: 회, 2: 초밥, 3:지은밥, 4:생쌀)
+    Weapon = 3,
+    Employee = 4,
+    Skin = 5
+}
+
+[Serializable]
+public enum EGoodType
+{
+    Gold = 1,
+    Dia = 2,
+    Enchant = 3,
 }
 
 [Serializable]
@@ -69,3 +81,21 @@ public enum ETargetType
 //    Rating = 4,// 평판
 //    Ingredient = 5, // Type2는 EIngredientType, Type3은 IngredientID
 //}
+
+
+[Serializable]
+public enum EStoreType
+{
+    Equipment = 1,   //장비
+    Ingredient = 2,  //재료
+    Employee = 3,    //장비
+    Skin = 4         //장비
+}
+
+public enum SettingType
+{
+    Settings = 1,
+    Graphics = 2,
+    Service = 3,
+    Account = 4,
+}
