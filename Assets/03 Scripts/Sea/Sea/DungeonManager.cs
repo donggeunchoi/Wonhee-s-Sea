@@ -20,7 +20,7 @@ public class DungeonManager : MonoBehaviour
 
     public void RequestReturn()
     {
-        FinishDive(died: false);
+        FinishDive(died: _player.Stats.IsDead || _player.Stats.CurrentHp <= 0f);
     }
 
     private void HandlePlayerDied()

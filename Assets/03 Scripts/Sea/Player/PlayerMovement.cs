@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private PlayerRoot _owner;
     private Rigidbody2D _body;
     private PlayerMovementAnimation _animation;
-    private float _freezeUntil;
+    private bool _attackLocked;
     private bool _movementSuppressed;
 
     public void Init(PlayerRoot owner)
@@ -32,18 +32,22 @@ public class PlayerMovement : MonoBehaviour
         _movementSuppressed = suppressed;
     }
 
-    public void Freeze(float duration)
+    public void SetAttackLocked(bool locked)
     {
-        _freezeUntil = Mathf.Max(_freezeUntil, Time.time + duration);
+        _attackLocked = locked;
+        if (!locked) return;
+
         if (_body != null)
             _body.velocity = Vector2.zero;
+
+        _animation?.SetMoving(false);
     }
 
     private void FixedUpdate()
     {
         if (_owner == null || _owner.Input == null || _body == null) return;
 
-        if (Time.time < _freezeUntil)
+        if (_attackLocked)
         {
             _body.velocity = Vector2.zero;
             _animation?.SetMoving(false);
@@ -63,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDisable()
     {
-        _freezeUntil = 0f;
+        _attackLocked = false;
         _movementSuppressed = false;
 
         if (_body != null)
