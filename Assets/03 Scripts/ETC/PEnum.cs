@@ -30,7 +30,10 @@ public enum  EItemType
     Ingredient = 2,// 재료 안에서의 티입2는 (1: 회, 2: 초밥, 3:지은밥, 4:생쌀)
     Weapon = 3,
     Employee = 4,
-    Skin = 5
+    Skin = 5,
+    Gold = 6,
+    Dia  =7,
+    Enchant = 8,
 }
 
 [Serializable]
