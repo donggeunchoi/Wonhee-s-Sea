@@ -18,6 +18,11 @@ public class FishSensor : MonoBehaviour
         _owner = owner;
     }
 
+    private void OnDisable()
+    {
+        _targetTr = null;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (_owner == null) return;

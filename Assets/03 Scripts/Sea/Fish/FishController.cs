@@ -35,8 +35,7 @@ public class FishController : MonoBehaviour
             return;
         }
 
-        _direction = Random.Range(0, 2) == 0 ? 1 : -1;
-        _startPosition = transform.position;
+        ResetForSpawn();
 
         if (_owner.Sensor != null)
         {
@@ -48,6 +47,23 @@ public class FishController : MonoBehaviour
         {
             _owner.Stats.OnHit += HandleHit;
         }
+    }
+
+    public void ResetForSpawn()
+    {
+        _state = FishState.Patrol;
+        _targetTr = null;
+        _targetDamageable = null;
+        _cooldownTimer = 0f;
+        _fleeTimer = 0f;
+        _direction = Random.Range(0, 2) == 0 ? 1 : -1;
+        _startPosition = transform.position;
+        UpdateFacing(Vector3.right * _direction);
+    }
+
+    private void OnDisable()
+    {
+        HandleTargetExit();
     }
 
     private void OnDestroy()

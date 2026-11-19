@@ -7,6 +7,12 @@ public class FishStats : MonoBehaviour, IDamageable
 {
     private FishRoot _owner;
     private PlayerInventory _playerInventory;
+    private Action _returnToSpawner;
+
+    public void SetDeathHandler(Action returnToSpawner)
+    {
+        _returnToSpawner = returnToSpawner;
+    }
 
     public float CurrentHp { get; private set; }
     public bool IsDead { get; private set; }
@@ -66,11 +72,12 @@ public class FishStats : MonoBehaviour, IDamageable
         OnDead?.Invoke(fishId);
 
         _playerInventory = FindObjectOfType<PlayerInventory>();
-        _playerInventory.AddFish(fishId);
+        if (_playerInventory != null)
+            _playerInventory.AddFish(fishId);
 
-        if (_owner.Controller != null)
-            _owner.Controller.enabled = false;
-
-        Destroy(gameObject);
+        if (_returnToSpawner != null)
+            _returnToSpawner();
+        else
+            Destroy(gameObject);
     }
 }
