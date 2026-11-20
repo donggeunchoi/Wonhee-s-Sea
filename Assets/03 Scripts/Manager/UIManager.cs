@@ -53,7 +53,7 @@ public class UIManager : Singleton<UIManager>
 
     void InitData()
     {
-        txLevel.text = string.Format("{0}", UserManager.Ins.userInfo.level);
+        txLevel.text = string.Format("Lv.{0}", UserManager.Ins.userInfo.level);
         txGold.text = string.Format("{0}", UserManager.Ins.userInfo.gold);
         txRating.text = string.Format("{0}", UserManager.Ins.userInfo.exp);
 
