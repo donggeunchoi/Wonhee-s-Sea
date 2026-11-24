@@ -1351,7 +1351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 531916329}
   m_Layer: 0
-  m_Name: DungeonManager
+  m_Name: Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1370,11 +1370,57 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1524843486}
+  - {fileID: 531916332}
   - {fileID: 1724782005}
   - {fileID: 471404031}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &531916331
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 531916332}
+  - component: {fileID: 531916330}
+  m_Layer: 0
+  m_Name: DungeonManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &531916332
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531916331}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 531916329}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &531916330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 531916331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e798740508c849cf98ccaa830a7fe512, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _player: {fileID: 6979615427234808483}
+  _resultUI: {fileID: 1562466340}
 --- !u!1 &551776491
 GameObject:
   m_ObjectHideFlags: 0
@@ -1619,7 +1665,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &838115936
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1685,8 +1731,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2061720656954076344}
-        m_TargetAssemblyTypeName: PlayerAttackController, Assembly-CSharp
-        m_MethodName: OnAttack
+        m_TargetAssemblyTypeName: DungeonCombatInput, Assembly-CSharp
+        m_MethodName: OnAttackPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2205,8 +2251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9da508b27cf920d48a4b303c1933bfbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerInventory: {fileID: 8330619942998301799}
-  _resultUI: {fileID: 2092267793}
+  _dungeonManager: {fileID: 531916330}
 --- !u!1 &1149049474
 GameObject:
   m_ObjectHideFlags: 0
@@ -2752,7 +2797,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1406776910
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3327,52 +3372,6 @@ MonoBehaviour:
   _firePoint: {fileID: 1573791908899552323}
   _fireRate: 0.12
   _damage: 50
---- !u!1 &1524843484
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1524843486}
-  - component: {fileID: 1524843485}
-  m_Layer: 0
-  m_Name: JoystickManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1524843485
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1524843484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8216d178a7cc8284d8a112933cc9206d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 6979615427234808483}
-  _joystick: {fileID: 1406776911}
---- !u!4 &1524843486
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1524843484}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -645.1459, y: -979.4976, z: 2.0655208}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 531916329}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1537039715
 GameObject:
   m_ObjectHideFlags: 0
@@ -3391,7 +3390,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1537039716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3536,13 +3535,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3041974590994454095, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
-      propertyPath: _playerInventory
-      value: 
-      objectReference: {fileID: 8330619942998301799}
-    - target: {fileID: 5214978563136545159, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
-      propertyPath: _inventory
-      value: 
-      objectReference: {fileID: 8330619942998301799}
+      propertyPath: _dungeonManager
+      value:
+      objectReference: {fileID: 531916330}
     - target: {fileID: 8963903663936707854, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
       propertyPath: player_Oxygen
       value: 
@@ -3655,9 +3650,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1562466340}
-        m_TargetAssemblyTypeName: DungeonResultUI, Assembly-CSharp
-        m_MethodName: OnClickReturnTown
+      - m_Target: {fileID: 531916330}
+        m_TargetAssemblyTypeName: DungeonManager, Assembly-CSharp
+        m_MethodName: ReturnToTown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4128,9 +4123,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2092267793}
-        m_TargetAssemblyTypeName: DungeonResultUI, Assembly-CSharp
-        m_MethodName: OnClickReturnTown
+      - m_Target: {fileID: 531916330}
+        m_TargetAssemblyTypeName: DungeonManager, Assembly-CSharp
+        m_MethodName: ReturnToTown
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4398,7 +4393,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _panel: {fileID: 2092267789}
-  _inventory: {fileID: 8330619942998301799}
   _totalCountText: {fileID: 96662513}
   _totalWeightText: {fileID: 1417043799}
 --- !u!1 &2143687631
@@ -4484,6 +4478,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1483981188085886716, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
+      propertyPath: _moveJoystick
+      value:
+      objectReference: {fileID: 1562466343}
     - target: {fileID: 669786632332923128, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
       propertyPath: _smgModel
       value: 
@@ -4524,11 +4522,11 @@ PrefabInstance:
       propertyPath: _originY_Right
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 669786632332923128, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
+    - target: {fileID: 3893011893758042052, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
       propertyPath: _aimJoystickObj
       value: 
       objectReference: {fileID: 1562466337}
-    - target: {fileID: 669786632332923128, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
+    - target: {fileID: 3893011893758042052, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
       propertyPath: _attackButtonObj
       value: 
       objectReference: {fileID: 1562466336}
@@ -4540,7 +4538,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player_D
       objectReference: {fileID: 0}
-    - target: {fileID: 1483981188085886716, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
+    - target: {fileID: 3893011893758042052, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
       propertyPath: _aimJoystick
       value: 
       objectReference: {fileID: 1562466338}
@@ -4665,13 +4663,13 @@ MonoBehaviour:
   _damage: 150
 --- !u!114 &2061720656954076344 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 669786632332923128, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3893011893758042052, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
   m_PrefabInstance: {fileID: 1573791908899552320}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a085d841715bd6342829addbac00eb27, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b86043585ac4be8adf5efd19fb623ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6979615427234808483 stripped
@@ -4712,6 +4710,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00b5a82f192e7c74a8b1c6c1838a6d15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1562466343 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5442365874953367608, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
+  m_PrefabInstance: {fileID: 1562466335}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 069bb8b504e625549970302935654427, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

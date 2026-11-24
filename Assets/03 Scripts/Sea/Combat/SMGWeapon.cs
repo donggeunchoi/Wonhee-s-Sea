@@ -11,13 +11,15 @@ public class SMGWeapon : BaseWeapon
 
     private float _fireTimer;
     private bool _isFiring;
+    private Vector2 _shootDirection;
 
-    public override void StartFiring()
+    public void StartFiring(Vector2 direction)
     {
+        _shootDirection = direction;
         _isFiring = true;
     }
 
-    public override void StopFiring()
+    public void StopFiring()
     {
         _isFiring = false;
     }
@@ -28,11 +30,16 @@ public class SMGWeapon : BaseWeapon
             _fireTimer -= Time.deltaTime;
 
         // 연사 중이고, 조준 중이면 발사
-        if (_isFiring && _owner != null && _playerRoot?.Input?.IsAiming == true && _fireTimer <= 0f)
+        if (_isFiring && _owner != null && _fireTimer <= 0f)
         {
-            Fire(_playerRoot.Input.FacingDir);
+            Fire(_shootDirection);
             _fireTimer = _fireRate;
         }
+    }
+
+    private void OnDisable()
+    {
+        StopFiring();
     }
 
     public override void Fire(Vector2 direction)

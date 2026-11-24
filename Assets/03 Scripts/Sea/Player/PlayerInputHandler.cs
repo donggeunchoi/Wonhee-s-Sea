@@ -1,137 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerInputHandler : MonoBehaviour
 {
-    private PlayerRoot _owner;
-
-    [Header("Debug (PC 테스트용)")]
     [SerializeField] private bool _useKeyboardForDebug = true;
+    [SerializeField] private FloatingJoystick _moveJoystick;
 
-    [Header("공격 조이스틱")]
-    [SerializeField] private FloatingJoystick _aimJoystick;
-
-    [SerializeField] private float _aimDeadZone = 0.15f;
-
-    private Vector2 _joystickMove;
-    private Vector2 _move;
-    private Vector2 _lastNonZeroDir = Vector2.right;
-    private Vector2 _aimShootDir = Vector2.right;
-    public Vector2 Move => _move;
-
-    private bool _isAiming;
-    public bool IsAiming => _isAiming;
-
-    public void Init(PlayerRoot owner)
-    {
-        _owner = owner;
-
-        _joystickMove = Vector2.zero;
-        _move = Vector2.zero;
-        _lastNonZeroDir = Vector2.right;
-
-        _aimShootDir = Vector2.right;
-        _isAiming = false;
-
-        if (_aimJoystick != null)
-        {
-            _aimJoystick.OnReleased -= HandleAimReleased;
-            _aimJoystick.OnReleased += HandleAimReleased;
-        }
-    }
-
-    public void SetMove(Vector2 v)
-    {
-        if (_isAiming)
-        {
-            _joystickMove = Vector2.zero;
-            return;
-        }
-
-        _joystickMove = v;
-    }
-
-    public Vector2 FacingDir
-    {
-        get
-        {
-            if (_isAiming && _aimShootDir.sqrMagnitude > 0.0001f)
-                return _aimShootDir.normalized;
-
-            if (_lastNonZeroDir.sqrMagnitude > 0.0001f)
-                return _lastNonZeroDir.normalized;
-
-            return Vector2.right;
-        }
-    }
-
-    private void HandleAimReleased(Vector2 dir)
-    {
-        if (_owner?.Attack == null) return;
-
-        if (_owner.Attack.CurrentWeaponType == WeaponType.SMG)
-        {
-            _owner.Attack.StopSmgFire();
-        }
-        else
-        {
-            _owner.Attack.FireRanged(_aimShootDir);
-        }
-    }
+    public Vector2 Move { get; private set; }
 
     private void Update()
     {
-        UpdateAimingState();
-
-        Vector2 keyboard = Vector2.zero;
-        if (_useKeyboardForDebug)
-        {
-            float x = Input.GetAxisRaw("Horizontal");
-            float y = Input.GetAxisRaw("Vertical");
-            keyboard = new Vector2(x, y);
-            if (keyboard.sqrMagnitude > 1f) keyboard.Normalize();
-        }
-
-        if (_isAiming)
-        {
-            _move = Vector2.zero;
-            return;
-        }
-
-        _move = (keyboard.sqrMagnitude > 0.0001f) ? keyboard : _joystickMove;
-
-        if (_move.sqrMagnitude > 0.0001f)
-            _lastNonZeroDir = _move.normalized;
+        Move = ReadMoveInput();
     }
 
-    private void UpdateAimingState()
+    public Vector2 ReadMoveInput()
     {
-        if (_aimJoystick == null)
+        if (!isActiveAndEnabled) return Vector2.zero;
+
+        Vector2 keyboard = Vector2.zero;
+
+        if (_useKeyboardForDebug)
         {
-            _isAiming = false;
-            return;
+            keyboard = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            keyboard = Vector2.ClampMagnitude(keyboard, 1f);
         }
 
-        Vector2 aimRaw = _aimJoystick.Direction;
-        bool wasAiming = _isAiming;
-        _isAiming = aimRaw.sqrMagnitude >= _aimDeadZone * _aimDeadZone;
+        return keyboard.sqrMagnitude > 0.0001f
+            ? keyboard
+            : (_moveJoystick != null ? _moveJoystick.Direction : Vector2.zero);
+    }
 
-        if (_isAiming)
-        {
-            Vector2 desiredShootDir = (-aimRaw).normalized;
-            _aimShootDir = desiredShootDir;
-            _lastNonZeroDir = _aimShootDir;
-
-            if (_owner?.Attack?.CurrentWeaponType == WeaponType.SMG)
-            {
-                _owner.Attack.FireRanged(_aimShootDir);
-            }
-        }
-        else if (wasAiming)
-        {
-            if (_owner?.Attack?.CurrentWeaponType == WeaponType.SMG)
-                _owner.Attack.StopSmgFire();
-        }
+    private void OnDisable()
+    {
+        Move = Vector2.zero;
+        if (_moveJoystick != null)
+            _moveJoystick.CancelInput();
     }
 }

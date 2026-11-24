@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 868387555599319051}
   - component: {fileID: 8117939890384576953}
+  - component: {fileID: 3893011893758042051}
   - component: {fileID: 3981059177716056206}
   - component: {fileID: 2565877041576398940}
   - component: {fileID: 8333604832181772104}
@@ -87,13 +88,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6758dbe6b89497448a52f44ec1897da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mode: 0
-  _anim: {fileID: 4936942474377037452}
-  _sr: {fileID: 2343739468325538707}
   _maxSpeed: 5
   _acceleration: 10
   _deadZone: 0.15
-  _pivot: {fileID: 0}
   _pivotAngleOffset: 0
 --- !u!50 &3981059177716056206
 Rigidbody2D:
@@ -234,8 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _useKeyboardForDebug: 1
-  _aimJoystick: {fileID: 0}
-  _aimDeadZone: 0.15
+  _moveJoystick: {fileID: 0}
 --- !u!114 &1332500943144209571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -530,3 +526,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3893011893758042051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953774037117694647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b767c6ce0f452d8977980323fbe1b2, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  _anim: {fileID: 4936942474377037452}
+  _sr: {fileID: 2343739468325538707}
