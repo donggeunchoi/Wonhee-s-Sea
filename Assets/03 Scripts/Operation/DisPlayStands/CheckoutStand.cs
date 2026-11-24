@@ -1,24 +1,29 @@
+
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CheckoutStand : MonoBehaviour
 {
     public int money;
-    
-    public List<CustomerNPC> lineWaiters = new List<CustomerNPC>();
 
+    [Header("계산대 대기열")]
+    public List<CustomerNPC> lineWaiters
+        = new List<CustomerNPC>();
+
+    [Header("계산대로 이동 중인 손님")]
+    [SerializeField]
+    private List<CustomerNPC> approachingCustomers
+        = new List<CustomerNPC>();
+
+    [Header("대기열 설정")]
     public float stepDistance = 0.8f;
     public Vector3 queueDirection = Vector3.up;
 
-    // 손님이 계산대에 도착
-    // 손님의 인벤토리에 있는 물건을 확인
-    // 아이템에 맞는 골드 플레이어에게 입급
-    // 손님 아이템 제거
+
+    #region 결제 처리
 
     public void Pay(string itemId, int amount)
     {
-        // UserManager.Ins.userInfo.AddGold(amount);
-        //경험치와 골드의 구분이 있을테니 나중에 수정할 필요가 있음.
         if (amount <= 0)
             return;
 
@@ -26,6 +31,7 @@ public class CheckoutStand : MonoBehaviour
             return;
 
         int gold = price * amount;
+
         UserManager.Ins.userInfo.AddGold(gold);
     }
 
@@ -35,73 +41,159 @@ public class CheckoutStand : MonoBehaviour
 
         if (!int.TryParse(itemId, out int ingredientId))
         {
-            Debug.LogWarning($"[CheckoutStand] Invalid itemId: {itemId}", this);
+            Debug.LogWarning(
+                $"[CheckoutStand] Invalid itemId: {itemId}",
+                this
+            );
+
             return false;
         }
 
-        IngredientData data = JsonManager.Ins.GetDataByKey<IngredientData>(
-            ingredientId,
-            ingredient => ingredient.ingredientId
-        );
+        IngredientData data =
+            JsonManager.Ins.GetDataByKey<IngredientData>(
+                ingredientId,
+                ingredient => ingredient.ingredientId
+            );
 
         if (data == null)
         {
-            Debug.LogWarning($"[CheckoutStand] Ingredient price not found. itemId={itemId}", this);
+            Debug.LogWarning(
+                $"[CheckoutStand] Item price not found: {itemId}",
+                this
+            );
+
             return false;
         }
 
         if (data.cost <= 0)
         {
-            Debug.LogWarning($"[CheckoutStand] Invalid item cost. itemId={itemId}, cost={data.cost}", this);
+            Debug.LogWarning(
+                $"[CheckoutStand] Invalid item cost: {data.cost}",
+                this
+            );
+
             return false;
         }
 
         price = data.cost;
+
         return true;
     }
 
+    #endregion
+
+
+    #region 대기열 좌표 계산
+
+    // 순번에 해당하는 대기 위치
+    private Vector3 GetQueuePosition(int index)
+    {
+        return transform.position
+            + queueDirection.normalized
+            * stepDistance
+            * (index + 1);
+    }
+
+    // 현재 대기열의 마지막 빈자리
+    public Vector3 GetQueueTailPosition()
+    {
+        return GetQueuePosition(lineWaiters.Count);
+    }
+
+    #endregion
+
+
+    #region 계산대로 이동 중인 손님 관리
+
+    public Vector3 RegisterApproachingCustomer(CustomerNPC npc)
+    {
+        if (!approachingCustomers.Contains(npc) &&
+            !lineWaiters.Contains(npc))
+        {
+            approachingCustomers.Add(npc);
+        }
+
+        return GetQueueTailPosition();
+    }
+
+    private void UpdateApproachingCustomers()
+    {
+        Vector3 newTarget = GetQueueTailPosition();
+
+        foreach (CustomerNPC npc in approachingCustomers)
+        {
+            if (npc == null)
+                continue;
+
+            npc.UpdateCheckoutApproachTarget(newTarget);
+        }
+    }
+
+    #endregion
+
+
+    #region 실제 대기열 관리
+
+    // 실제 마지막 빈자리에 도착했을 때 호출
     public Vector3 JoinQueue(CustomerNPC npc)
     {
+        // 이동 중인 손님 리스트에서 제거
+        approachingCustomers.Remove(npc);
+
+        // 실제 대기열 등록
         if (!lineWaiters.Contains(npc))
         {
             lineWaiters.Add(npc);
+
+            // 마지막 빈자리가 변경되었으므로
+            // 이동 중인 손님들의 목적지 갱신
+            UpdateApproachingCustomers();
         }
 
         int myIndex = lineWaiters.IndexOf(npc);
 
-        Debug.Log(transform.position + (queueDirection * stepDistance * (myIndex + 1)));
-
-        return transform.position + (queueDirection * stepDistance * (myIndex + 1));
+        return GetQueuePosition(myIndex);
     }
 
-    // 계산 완료 후 줄에서 빠지기
+    // 계산대에서 떠나는 손님 제거
     public void LeaveQueue(CustomerNPC npc)
     {
-        if (lineWaiters.Contains(npc))
+        // 이동 중이었다면 리스트에서 제거
+        approachingCustomers.Remove(npc);
+
+        // 실제 대기열에 등록되어 있었다면 제거
+        if (lineWaiters.Remove(npc))
         {
-            lineWaiters.Remove(npc);
-            // 뒷사람들에게 한 칸씩 앞으로 오라고 신호를 보냄
+            // 기존 대기열 손님들의 위치 갱신
             UpdateQueuePositions();
+
+            // 계산대로 이동 중인 손님들의 위치 갱신
+            UpdateApproachingCustomers();
         }
     }
 
-    void UpdateQueuePositions()
+    // 줄을 서고 있는 손님들의 위치 갱신
+    private void UpdateQueuePositions()
     {
         for (int i = 0; i < lineWaiters.Count; i++)
         {
-            // 각 NPC에게 새로운 목적지 전달
-            Vector3 newPos = transform.position + (queueDirection * stepDistance * (i + 1));
-            lineWaiters[i].UpdateQueueTarget(newPos);
+            CustomerNPC npc = lineWaiters[i];
+
+            if (npc == null)
+                continue;
+
+            Vector3 newPos = GetQueuePosition(i);
+
+            npc.UpdateQueueTarget(newPos);
         }
     }
 
+    // 첫 번째 순번인지 확인
     public bool IsFirstInLine(CustomerNPC npc)
     {
-        if (lineWaiters.Count > 0 && lineWaiters[0] == npc)
-        {
-            return true;
-        }
-        return false;
+        return lineWaiters.Count > 0 &&
+               lineWaiters[0] == npc;
     }
 
+    #endregion
 }
