@@ -66,16 +66,21 @@ public class CustomerSpawner : MonoBehaviour
     private void SpawnCustomer()
     {
         // 해금된 stnad id를 통해 판매 물품 id 가져올 예정
-        int random = Random.Range(30002, 30005); // 임시
-        string requestedItemId = random.ToString();
-
-        targetStand = StandManager.Ins.GetStandByItemId(requestedItemId);
-        StorageStand matchedStand = targetStand;
+        targetStand = StandManager.Ins.GetRandomStorageStand();
 
         if (targetStand == null)
         {
-            Debug.Log("target stand가 존재하지 않습니다");
+            Debug.Log("선택 가능한 targetStand가 존재하지 않습니다.");
+            return;
         }
+
+        string requestedItemId = targetStand.SellItemId;
+
+
+        Debug.Log(
+            $"[CustomerSpawner] 선택된 매대: {targetStand.name}, " +
+            $"요청 아이템 ID: {requestedItemId}"
+        );
 
         Transform parent = customersContainer != null ? customersContainer : null;
         var npc = Instantiate(customerPrefab, exitPoint.position, Quaternion.identity, parent);
@@ -84,7 +89,7 @@ public class CustomerSpawner : MonoBehaviour
         Inventory npcInventory = npc.GetComponent<Inventory>();
         if (npcInventory != null)
         {
-            npcInventory.InitializeInventoryWithItem(matchedStand.SellItemId, 1);
+            npcInventory.InitializeInventoryWithItem(requestedItemId, 1);
         }
 
         // 손님이 사라질 때 aliveCount 줄이기

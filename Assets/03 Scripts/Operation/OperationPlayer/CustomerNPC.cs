@@ -46,29 +46,31 @@ public class CustomerNPC : MonoBehaviour
     private Coroutine waitCo;
     private Vector3 finalTargetPos;
 
-    // Start is called before the first frame update
     void Start()
     {
-        if(anim == null)
+        if (anim == null)
             anim = GetComponent<Animator>();
-        
+
         state = ENPCState.MoveToStand;
 
         if (targetStand != null)
         {
-            currentTarget = targetStand.transform;
-            SetNewPath(currentTarget.position);
+            // 매대 대기열에 등록하고 자신의 대기 위치 받기
+            Vector3 queuePos = targetStand.JoinQueue(this);
+
+            SetNewPath(queuePos);
         }
 
         RefreshAnim();
     }
+
     void RefreshAnim()
     {
         if (anim == null) return;
 
         bool isWait = (state == ENPCState.Pick || state == ENPCState.Pay);
 
-        bool isMove = (state == ENPCState.MoveToStand || state == ENPCState.MoveToCheckout||state == ENPCState.Exit);
+        bool isMove = (state == ENPCState.MoveToStand || state == ENPCState.MoveToCheckout || state == ENPCState.Exit);
 
         anim.SetBool(HashIsWait, isWait);
         anim.SetBool(HashIsMove, isMove);
@@ -142,17 +144,27 @@ public class CustomerNPC : MonoBehaviour
         // string itemId = targetStand.SellItemId;
         // npcInventory?.TryAdd(itemId, 1);
 
+        // 매대 대기열에서 제거
+        if (targetStand != null)
+        {
+            targetStand.LeaveQueue(this);
+        }
+
         // 계산대로 이동
         if (checkout != null)
         {
             state = ENPCState.MoveToCheckout;
+
             Vector3 queuePos = checkout.JoinQueue(this);
+
             SetNewPath(queuePos);
         }
         else
         {
             GoExit();
         }
+
+        RefreshAnim();
 
     }
 
@@ -188,15 +200,21 @@ public class CustomerNPC : MonoBehaviour
 
     private IEnumerator CoWaitThenPick()
     {
-        // waitTime 동안 대기 애니 유지
+        // 자신의 순번이 될 때까지 대기
+        while (!targetStand.IsFirstInLine(this))
+        {
+            yield return null;
+        }
+
+        // 첫 번째 순번이 된 상태에서 구매 시간만큼 대기
         yield return new WaitForSeconds(waitTime);
 
-        // 코루틴 끝났으니 비워주기
         waitCo = null;
 
-        // 아직도 Pick 상태일 때만 실행(중간에 다른 이유로 state 변경될 수 있음)
         if (state == ENPCState.Pick)
+        {
             TryPickOne();
+        }
     }
 
     private IEnumerator CoWaitThenPay()
@@ -228,22 +246,48 @@ public class CustomerNPC : MonoBehaviour
         pathfinding = pathfind;
 
         state = ENPCState.MoveToStand;
-        currentTarget = targetStand != null ? targetStand.transform : null;
+
+        if (targetStand != null)
+        {
+            currentTarget = targetStand.CustomerWaitPoint != null
+                ? targetStand.CustomerWaitPoint
+                : targetStand.transform;
+        }
+
         RefreshAnim();
     }
 
     void SetNewPath(Vector3 targetPos)
     {
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
+
         finalTargetPos = targetPos;
-        currentPath = pathfinding.FindPath(transform.position, targetPos);
+
+        currentPath = pathfinding.FindPath(
+            transform.position,
+            targetPos
+        );
+
         pathIndex = 0;
 
-        if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-
-        if (currentPath != null && currentPath.Count > 0)
+        if (currentPath == null)
         {
-            moveCoroutine = StartCoroutine(FollowPath());
+            Debug.LogWarning("[CustomerNPC] 경로를 찾을 수 없습니다.");
+            return;
         }
+
+        if (currentPath.Count == 0)
+        {
+            // 현재 위치와 목적지가 동일한 그리드에 있는 경우
+            moveCoroutine = StartCoroutine(MoveToFinalTarget());
+            return;
+        }
+
+        moveCoroutine = StartCoroutine(FollowPath());
     }
 
     IEnumerator FollowPath()
@@ -311,6 +355,49 @@ public class CustomerNPC : MonoBehaviour
         }
 
         RefreshAnim();
+    }
+
+    // 앞에 있던 손님이 나가면 뒤에 있던 손님이 앞으로 이동
+    public void UpdateStandQueueTarget(Vector3 newTarget)
+    {
+        // 기존 대기 코루틴 종료
+        if (waitCo != null)
+        {
+            StopCoroutine(waitCo);
+            waitCo = null;
+        }
+
+        // 다시 매대 이동 상태로 변경
+        state = ENPCState.MoveToStand;
+
+        SetNewPath(newTarget);
+
+        RefreshAnim();
+    }
+
+    private IEnumerator MoveToFinalTarget()
+    {
+        Vector3 targetPos = finalTargetPos;
+        targetPos.z = transform.position.z;
+
+        yield return null;
+
+        while (Vector3.Distance(transform.position, targetPos) > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                targetPos,
+                speed * Time.deltaTime
+            );
+
+            yield return null;
+        }
+
+        transform.position = targetPos;
+
+        moveCoroutine = null;
+
+        OnReachedTarget();
     }
 
 }
