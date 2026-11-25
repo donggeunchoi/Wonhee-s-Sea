@@ -36,12 +36,15 @@ public class CustomerSpawner : MonoBehaviour
     [SerializeField]
     Collider2D colCheckOut;
 
+    [Header("길찾기 로직")]
+    [SerializeField] PathFinding pathFinding;
+
     private float timer;
     private int aliveCount;
 
     void Update()
     {
-        if (customerPrefab == null || targetStand == null || checkoutStand == null || exitPoint == null)
+        if (customerPrefab == null || checkoutStand == null || exitPoint == null)
             return;
 
         if (aliveCount >= maxAlive)
@@ -62,9 +65,32 @@ public class CustomerSpawner : MonoBehaviour
 
     private void SpawnCustomer()
     {
+        // 해금된 stnad id를 통해 판매 물품 id 가져올 예정
+        targetStand = StandManager.Ins.GetRandomStorageStand();
+
+        if (targetStand == null)
+        {
+            Debug.Log("선택 가능한 targetStand가 존재하지 않습니다.");
+            return;
+        }
+
+        string requestedItemId = targetStand.SellItemId;
+
+
+        Debug.Log(
+            $"[CustomerSpawner] 선택된 매대: {targetStand.name}, " +
+            $"요청 아이템 ID: {requestedItemId}"
+        );
+
         Transform parent = customersContainer != null ? customersContainer : null;
         var npc = Instantiate(customerPrefab, exitPoint.position, Quaternion.identity, parent);
-        npc.Init(targetStand, checkoutStand, exitPoint, colStand,colCheckOut);
+        npc.Init(targetStand, checkoutStand, exitPoint, colStand,colCheckOut, pathFinding);
+
+        Inventory npcInventory = npc.GetComponent<Inventory>();
+        if (npcInventory != null)
+        {
+            npcInventory.InitializeInventoryWithItem(requestedItemId, 1);
+        }
 
         // 손님이 사라질 때 aliveCount 줄이기
         //npc.OnDespawn += HandleDespawn;

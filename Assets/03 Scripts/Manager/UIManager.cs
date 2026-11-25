@@ -27,6 +27,10 @@ public class UIManager : Singleton<UIManager>
     [SerializeField]
     GameObject storePopup;
 
+    [Header( "설정 팝업" )]
+    [SerializeField]
+    GameObject popupBoxSetting;
+
     private void Awake()
     {
         UserManager.Ins.OnResources.AsObservable().Subscribe(_ =>
@@ -68,6 +72,13 @@ public class UIManager : Singleton<UIManager>
 
     public void OnClickSetting()
     {
-        Debug.LogWarning("설정 버튼 눌림");
+        if( popupBoxSetting != null )
+            popupBoxSetting.SetActive( true );
+    }
+
+    public void OnClickCloseSetting()
+    {
+        if( popupBoxSetting != null )
+            popupBoxSetting.SetActive( false );
     }
 }

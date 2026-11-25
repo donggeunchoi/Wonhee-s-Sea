@@ -18,9 +18,10 @@ public enum  ENPCState
 {
     MoveToStand,
     Pick,
-    MoveToCheckout,
+    MoveToCheckout, // 실제 대기열에 등록되기 전 마지막 빈자리 추적
     Pay,
-    Exit
+    Exit,
+    MoveToCheckoutQueue // 이미 등록된 손님이 줄 안에서 앞으로 이동
 }
 
 [Serializable]
@@ -90,4 +91,12 @@ public enum EStoreType
     Ingredient = 2,  //재료
     Employee = 3,    //장비
     Skin = 4         //장비
+}
+
+public enum SettingType
+{
+    Settings = 1,
+    Graphics = 2,
+    Service = 3,
+    Account = 4,
 }

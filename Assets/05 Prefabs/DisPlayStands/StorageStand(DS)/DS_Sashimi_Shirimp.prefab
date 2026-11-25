@@ -855,6 +855,7 @@ Transform:
   - {fileID: 8231818339678425135}
   - {fileID: 6089978185113306833}
   - {fileID: 7724714618123494482}
+  - {fileID: 1776563067071436081}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &3526926622122747905
@@ -914,7 +915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49ed88cc20359df4697134d652ac58dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sushiItemId: 20001
+  standID: 0
   maxCapacity: 20
   useWorldStack: 0
   worldMaxVisible: 20
@@ -923,6 +924,7 @@ MonoBehaviour:
   countText: {fileID: 0}
   imgItem: {fileID: 7189379855694651976}
   worldStackRoot: {fileID: 2666190393219972551}
+  customerWaitPoint: {fileID: 1776563067071436081}
 --- !u!1 &4675553946818001684
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,3 +1418,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 0
+--- !u!1 &8858794035310672493
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1776563067071436081}
+  m_Layer: 0
+  m_Name: CustomerWaitPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1776563067071436081
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8858794035310672493}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1235681868951110938}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

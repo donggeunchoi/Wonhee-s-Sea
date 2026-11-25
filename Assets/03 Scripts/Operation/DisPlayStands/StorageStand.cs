@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.UI;
 
-public class StorageStand : MonoBehaviour
+public class StorageStand : MonoBehaviour, StandManager.IStand
 {
     [Header("스텐드 ID")]
     [SerializeField]
@@ -28,8 +28,20 @@ public class StorageStand : MonoBehaviour
     [Header("재료 이미지")]
     [SerializeField]
     Image imgItem;
-    [SerializeField] 
+    [SerializeField]
     Transform worldStackRoot;
+
+    [Header("손님 대기 위치")]
+    [SerializeField] private Transform customerWaitPoint;
+
+    [Header("손님 대기열")]
+    [SerializeField] private List<CustomerNPC> lineWaiters = new List<CustomerNPC>();
+
+    [SerializeField] private float stepDistance = 0.8f;
+
+    [SerializeField] private Vector3 queueDirection = Vector3.down;
+
+    public Transform CustomerWaitPoint => customerWaitPoint;
 
     private int COLUMN = 5;
     private Sprite cachedPrefab;
@@ -49,15 +61,42 @@ public class StorageStand : MonoBehaviour
 
     public int FreeSpace => Mathf.Max(0, maxCapacity - current);
 
-   List<DisplayStandData> displayStandDatas = new List<DisplayStandData>();
+    public StandManager.StandType Type => StandManager.StandType.Sell;
+    public bool IsBusy { get; private set; }
+    public float progress => 0f;
+
+
+    List<DisplayStandData> displayStandDatas = new List<DisplayStandData>();
     DisplayStandData displayStandData = null;
     private void Start()
     {
         displayStandDatas = JsonManager.Ins.GetJson<DisplayStandData>();
         displayStandData = displayStandDatas.Find(x => x.standId == standID);
 
+        // 씬에 StandManager가 존재한다면 자신을 등록
+        // 매대 등록
+        if (StandManager.Ins != null)
+        {
+            StandManager.Ins.Register(this);
+
+            Debug.Log(
+                $"[StorageStand] 매대 등록 완료: " +
+                $"StandID={standID}, SellItemID={SellItemId}"
+            );
+        }
+        else
+        {
+            Debug.LogError("[StorageStand] StandManager가 존재하지 않습니다.");
+        }
+
         RefreshAll();
     }
+
+    private void OnEnable()
+    {
+
+    }
+
     public bool HasStock(int amount = 1)
     {
         if (amount <= 0) return true;
@@ -92,7 +131,7 @@ public class StorageStand : MonoBehaviour
     public void Interact(Inventory inv)
     {
         if (inv == null)
-          return;
+            return;
 
 
         if (displayStandData == null || displayStandData.sellingitem <= 0)
@@ -114,9 +153,14 @@ public class StorageStand : MonoBehaviour
 
         if (!inv.TryRemove(sellingItemId, toDeposit))
             return;
-        
+
         current += toDeposit;
         RefreshAll();
+    }
+
+    public void Interact(StandManager.StandContext context)
+    {
+        // 손님, 플레이어 상호작용 로직
     }
 
     private void RefreshAll()
@@ -222,5 +266,56 @@ public class StorageStand : MonoBehaviour
         }
 
         pooled.Clear();
+    }
+
+    // 손님 대기열
+    private Vector3 GetQueuePosition(int index)
+    {
+        Vector3 startPos = CustomerWaitPoint != null
+            ? CustomerWaitPoint.position
+            : transform.position;
+
+        return startPos
+            + queueDirection.normalized * stepDistance * index;
+    }
+
+    // 매대 대기열에 손님 추가
+    public Vector3 JoinQueue(CustomerNPC npc)
+    {
+        if (!lineWaiters.Contains(npc))
+        {
+            lineWaiters.Add(npc);
+        }
+
+        int myIndex = lineWaiters.IndexOf(npc);
+
+        return GetQueuePosition(myIndex);
+    }
+
+    // 매대 대기열에서 손님 제거
+    public void LeaveQueue(CustomerNPC npc)
+    {
+        if (lineWaiters.Remove(npc))
+        {
+            UpdateQueuePositions();
+        }
+    }
+
+    // 나머지 손님들의 대기 위치 갱신
+    private void UpdateQueuePositions()
+    {
+        for (int i = 0; i < lineWaiters.Count; i++)
+        {
+            Vector3 newPos = GetQueuePosition(i);
+
+            lineWaiters[i].UpdateStandQueueTarget(newPos);
+        }
+    }
+
+    // 첫 번째 손님인지 확인
+    public bool IsFirstInLine(CustomerNPC npc)
+    {
+        return lineWaiters.Count > 0
+            && lineWaiters[0] == npc;
     }
 }

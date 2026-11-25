@@ -57,7 +57,7 @@ public class Inventory : MonoBehaviour
     private void Awake()
     {
         Slots = new List<ItemStack>(startSlot);
-        defaultMaxStack = UserManager.Ins.userInfo.maxCarryCount;
+        // defaultMaxStack = UserManager.Ins.userInfo.maxCarryCount;
 
         for (int i = 0; i < startSlot; i++)
             Slots.Add(new ItemStack());
@@ -308,5 +308,24 @@ public class Inventory : MonoBehaviour
         }
 
         RepositionVisual();
+    }
+
+    // 인벤토리를 특정 아이템으로 초기화하고 채우는 메서드 (손님용)
+    public void InitializeInventoryWithItem(string itemId, int amount)
+    {
+        // 1. 인벤토리 슬롯이 비어있는지 확인하고, 혹시 들어있는 아이템이 있다면 비워줌
+        for (int i = 0; i < Slots.Count; i++)
+        {
+            Slots[i] = new ItemStack();
+        }
+
+        // 2. 머리 위에 표시되는 시각적 객체(Visual) 초기화
+        SyncVisualFromSlots();
+
+        // 3. 아이템 추가
+        if (!TryAdd(itemId, amount))
+        {
+            Debug.LogWarning($"[Inventory] 아이템 초기화 중 추가 실패: {itemId}, {amount}");
+        }
     }
 }
