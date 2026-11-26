@@ -103,3 +103,15 @@ public enum SettingType
     Service = 3,
     Account = 4,
 }
+
+public enum  EmployeeType
+{
+    None = 0,
+    Casher = 1,                         //판매 직원
+    ContainerToRice =2,                 //생쌀 운반 직원
+    ContainerToSashimi = 3,             //생선 운반 직원
+    RiceToSushi = 4,                    //지은밥 운반 직원
+    SashimiToSushi = 5,                 //회 운반 직원
+    SushiToPlate = 6,                   //초밥 운반 직원
+    SashimiToPlate = 7,                 //회 운반 직원
+}
