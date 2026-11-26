@@ -56,6 +56,19 @@ public class FishHpUI : MonoBehaviour
         _hideRoutine = null;
     }
 
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        if (_hideRoutine != null)
+            StopCoroutine(_hideRoutine);
+
+        _hideRoutine = null;
+    }
+
     private void OnDestroy()
     {
         if (_stats != null)

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6059220458822788701}
   - component: {fileID: 2552583478548536910}
-  - component: {fileID: 2708572968894593854}
+  - component: {fileID: 673227257235303377}
   m_Layer: 0
   m_Name: Dagger
   m_TagString: Untagged
@@ -62,7 +62,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &2708572968894593854
+--- !u!114 &673227257235303377
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -78,6 +78,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   _hitCollider: {fileID: 3163756730980653686}
+  _damage: 150
 --- !u!1 &797265196185510909
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,6 +162,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxSpeed: 3
+--- !u!114 &3893011893758042052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797265196185510909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b86043585ac4be8adf5efd19fb623ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _aimJoystick: {fileID: 0}
+  _attackButtonObj: {fileID: 0}
+  _aimJoystickObj: {fileID: 0}
+--- !u!114 &3893011893758042051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797265196185510909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcadf211c4ee42c8926b3a0259717f94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _anim: {fileID: 8439401274984012238}
+  _sr: {fileID: 2666943716693424703}
+  _pivot: {fileID: 3109116776300948327}
 --- !u!114 &669786632332923128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,16 +207,16 @@ MonoBehaviour:
   _daggerObject: {fileID: 317856848839911226}
   _harpoonObject: {fileID: 8333074507692548208}
   _smgObject: {fileID: 4542144988261241953}
-  _daggerWeapon: {fileID: 2708572968894593854}
+  _daggerWeapon: {fileID: 673227257235303377}
+  _harpoonWeapon: {fileID: 1459109772886072721}
+  _smgWeapon: {fileID: 2488498946551270264}
   _daggerTransform: {fileID: 6059220458822788701}
+  _harpoonTransform: {fileID: 88944146508969392}
+  _smgTransform: {fileID: 5383011209923463519}
+  _originY_Right: 0
+  _originY_Left: 0.8
   _daggerAttackDistance: 1.1
   _daggerCooldown: 0.32
-  _harpoonFirePoint: {fileID: 8889862581666156824}
-  _smgFirePoint: {fileID: 4818040730484856601}
-  _projectileDamage: 100
-  _harpoonCooldown: 0.45
-  _smgFireRate: 0.11
-  _smgDamage: 1
 --- !u!114 &8434019613737336547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b9778e4d11c82343b698252288570dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseMaxHp: 500
+  _baseMaxHp: 100
   _invincibleTime: 0.5
 --- !u!114 &762198680287444055
 MonoBehaviour:
@@ -241,7 +272,7 @@ MonoBehaviour:
   _baseMaxOxygen: 60
   _drainInterval: 2
   _drainAmountPerTick: 3
-  _suffocationDamage: 1
+  _suffocationDamage: 10
   _damageInterval: 1
 --- !u!114 &8016387427201149895
 MonoBehaviour:
@@ -438,7 +469,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -522,7 +553,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -606,7 +637,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -627,6 +658,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5383011209923463519}
+  - component: {fileID: 2488498946551270264}
   m_Layer: 0
   m_Name: SMG
   m_TagString: Untagged
@@ -651,6 +683,22 @@ Transform:
   - {fileID: 4818040730484856601}
   m_Father: {fileID: 4107527178271465359}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2488498946551270264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4542144988261241953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 718805e75ca85614191aabde0448888b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectilePrefab: {fileID: 2076891219032690808, guid: a2eea705befc5dd4a925fca1e8214d8b, type: 3}
+  _firePoint: {fileID: 4818040730484856601}
+  _fireRate: 0.12
+  _damage: 50
 --- !u!1 &6000123714537476705
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,7 +957,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 2bd393ded0fcba449a7f0c27cc90d0be, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -983,6 +1031,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 88944146508969392}
+  - component: {fileID: 1459109772886072721}
   m_Layer: 0
   m_Name: Harpoon
   m_TagString: Untagged
@@ -1007,33 +1056,20 @@ Transform:
   - {fileID: 8889862581666156824}
   m_Father: {fileID: 4107527178271465359}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3893011893758042051
+--- !u!114 &1459109772886072721
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 797265196185510909}
+  m_GameObject: {fileID: 8333074507692548208}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcadf211c4ee42c8926b3a0259717f94, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  _anim: {fileID: 8439401274984012238}
-  _sr: {fileID: 2666943716693424703}
-  _pivot: {fileID: 3109116776300948327}
---- !u!114 &3893011893758042052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 797265196185510909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b86043585ac4be8adf5efd19fb623ab, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  _aimJoystick: {fileID: 0}
-  _attackButtonObj: {fileID: 0}
-  _aimJoystickObj: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: f452b22018c9c404584232905df83383, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _projectilePrefab: {fileID: 2076891219032690808, guid: a2eea705befc5dd4a925fca1e8214d8b, type: 3}
+  _firePoint: {fileID: 8889862581666156824}
+  _speed: 16
+  _damage: 100
+  _cooldown: 0.45

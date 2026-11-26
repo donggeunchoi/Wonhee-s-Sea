@@ -25,8 +25,8 @@ public class StandManager : MonoBehaviour
         void Interact(StandContext context);
     }
     public static StandManager Ins { get; private set; }
-   
-    private readonly List<IStand> _stands = new List<IStand>();
+
+    [SerializeField] private List<IStand> _stands = new List<IStand>();
 
     private void Awake()
     {
@@ -46,7 +46,7 @@ public class StandManager : MonoBehaviour
     {
         _stands.Remove(stand);
     }
-   
+
     public IStand GetNearest(Vector3 pos, float range)
     {
         IStand best = null;
@@ -67,8 +67,67 @@ public class StandManager : MonoBehaviour
         return best;
     }
 
+    public StorageStand GetStandByItemId(string itemId)
+    {
+        Debug.Log($"[StandManager] 요청 아이템 ID: {itemId}");
+        Debug.Log($"[StandManager] 등록된 매대 수: {_stands.Count}");
+
+        foreach (var stand in _stands)
+        {
+            if (stand is StorageStand storageStand)
+            {
+                Debug.Log(
+                    $"[StandManager] 매대 이름: {storageStand.name}, " +
+                    $"판매 아이템 ID: {storageStand.SellItemId}"
+                );
+
+                if (storageStand.SellItemId == itemId)
+                {
+                    Debug.Log("[StandManager] 매대 탐색 성공");
+                    return storageStand;
+                }
+            }
+            else
+            {
+                Debug.Log($"[StandManager] 다른 매대 타입: {stand?.GetType().Name}");
+            }
+        }
+
+        Debug.LogWarning(
+            $"[StandManager] 해당 아이템을 파는 매대를 찾을 수 없습니다: {itemId}"
+        );
+
+        return null;
+    }
+
+    public StorageStand GetRandomStorageStand()
+    {
+        List<StorageStand> storageStands = new List<StorageStand>();
+
+        foreach (var stand in _stands)
+        {
+            if (stand is StorageStand storageStand &&
+                storageStand != null &&
+                storageStand.isActiveAndEnabled &&
+                !string.IsNullOrEmpty(storageStand.SellItemId))
+            {
+                storageStands.Add(storageStand);
+            }
+        }
+
+        if (storageStands.Count == 0)
+        {
+            Debug.LogWarning("[StandManager] 선택 가능한 판매 매대가 없습니다.");
+            return null;
+        }
+
+        int randomIndex = UnityEngine.Random.Range(0, storageStands.Count);
+
+        return storageStands[randomIndex];
+    }
+
     public class StandContext
     {
-        
+
     }
 }

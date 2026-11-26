@@ -18,8 +18,8 @@ public class DungeonResultUI : MonoBehaviour
     public void Show(int fishCount, float weight, float maxWeight)
     {
         _shown = true;
-        _totalCountText.text = $"{fishCount}";
-        _totalWeightText.text = $"{weight:0.0} / {maxWeight:0.0}";
+        _totalCountText.text = $"{fishCount}마리";
+        _totalWeightText.text = $"{weight:0.0} / {maxWeight:0.0} kg";
         _panel.SetActive(true);
     }
 }

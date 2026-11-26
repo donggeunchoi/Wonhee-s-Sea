@@ -34,6 +34,7 @@ public class PlayerAttackController : MonoBehaviour
 
     private PlayerRoot _owner;
     private bool _isAttacking;
+    private bool _isDaggerAnimating;
     private DungeonPlayerAnimation _animation;
     private Coroutine _daggerAttack;
     private Vector3 _daggerOrigin;
@@ -119,7 +120,7 @@ public class PlayerAttackController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (_owner == null || _isAttacking) return;
+        if (_owner == null || _isDaggerAnimating) return;
         ApplyWeaponSideAndMirror();
     }
 
@@ -154,7 +155,8 @@ public class PlayerAttackController : MonoBehaviour
     private IEnumerator C_DaggerAttack(Vector2 facing)
     {
         _isAttacking = true;
-        _owner.Movement?.Freeze(0.5f);
+        _isDaggerAnimating = true;
+        _owner.Movement?.SetAttackLocked(true);
 
         _animation?.FaceAttack(facing);
         ApplyWeaponSideAndMirror();
@@ -183,16 +185,19 @@ public class PlayerAttackController : MonoBehaviour
 
         _daggerWeapon?.EndAttack();
 
+        Vector3 returnStart = _daggerTransform.localPosition;
         elapsed = 0f;
         while (elapsed < 0.10f)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / 0.10f;
-            _daggerTransform.localPosition = Vector3.Lerp(targetPos, origin, t);
+            _daggerTransform.localPosition = Vector3.Lerp(returnStart, origin, t);
             yield return null;
         }
 
         _daggerTransform.localPosition = origin;
+        _isDaggerAnimating = false;
+        _owner.Movement?.SetAttackLocked(false);
 
         yield return new WaitForSeconds(_daggerCooldown);
         _isAttacking = false;
@@ -220,10 +225,13 @@ public class PlayerAttackController : MonoBehaviour
         if (_daggerAttack == null) return;
 
         StopCoroutine(_daggerAttack);
+        bool restoreOrigin = _isDaggerAnimating;
+        _isDaggerAnimating = false;
+        _owner.Movement?.SetAttackLocked(false);
         _daggerAttack = null;
         _isAttacking = false;
         _daggerWeapon?.EndAttack();
-        if (_daggerTransform != null)
+        if (restoreOrigin && _daggerTransform != null)
             _daggerTransform.localPosition = _daggerOrigin;
     }
 

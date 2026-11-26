@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,203 +5,190 @@ public class FishSpawner : MonoBehaviour
 {
     [SerializeField] private Transform _player;
     [SerializeField] private DepthCalculator _depthCalculator;
-
     [SerializeField] private List<FishRoot> _fishPrefabs = new List<FishRoot>();
 
-    private float _rangeX = 10f;           // 좌우 스폰 범위
-    private float _rangeUp = 6f;           // 위쪽 (화면 위)
-    private float _rangeDown = 12f;        // 아래쪽 (화면 아래)
-    private float _innerSafeX = 4f;        // 플레이어 근처 안전거리
-    private float _rowHeight = 2.5f;       // row 간격 (조금 넓게)
-    private int _spawnPerRow = 2;          // 한 row당 목표 마리수
-    private float _rowYOffsetRandom = 1f;
-    private float _refreshDistance = 2f;   // 플레이어가 이 거리만큼 움직이면 Refresh
-    private float _minSpawnDistance = 2f;  // 물고기끼리 최소 거리
+    [SerializeField] private List<SpeciesSpawnOverride> _speciesSpawnOverrides = new List<SpeciesSpawnOverride>();
+    [SerializeField, Min(1)] private int _maxAlivePerSpecies = 6;
+    [SerializeField, Min(0.1f)] private float _refreshInterval = 2f;
+    [SerializeField] private Vector2 _horizontalBounds = new Vector2(-10f, 10f);
+    [SerializeField] private Vector2 _depthBounds = new Vector2(0f, 100f);
+    [SerializeField, Min(1)] private int _activationsPerFrame = 2;
 
-    private List<FishRoot> _activeFish = new List<FishRoot>();
-    private HashSet<int> _spawnFishIds = new HashSet<int>();
-    private bool _useSpawnFishFilter;
-    private Vector3 _lastPlayerPos;
+    private const float ActivationMargin = 5f;
+    private const float DeactivationMargin = 9f;
+    private const float SafeDistance = 4f;
+
+    [System.Serializable]
+    private sealed class SpeciesSpawnOverride
+    {
+        public FishRoot Prefab;
+        [Min(0)] public int MaxAlive;
+        [Min(0f)] public float RespawnDelay;
+    }
+
+    private sealed class FishSlot
+    {
+        public FishRoot Prefab;
+        public float MinY;
+        public float MaxY;
+        public Vector3 Position;
+        public FishRoot Instance;
+        public bool Alive;
+        public float RespawnTime;
+        public float RespawnDelay;
+    }
+
+    private readonly List<FishSlot> _slots = new List<FishSlot>();
+    private Camera _camera;
 
     private void Start()
     {
-        if (_player == null || _depthCalculator == null || _fishPrefabs.Count == 0)
+        if (_player == null || _depthCalculator == null || JsonManager.Ins == null)
         {
-            Debug.LogError("FishSpawner 설정 오류", this);
+            Debug.LogError("FishSpawner: missing player, depth calculator, or fish data.", this);
             enabled = false;
             return;
         }
 
-        CacheSpawnFishIds();
-        _lastPlayerPos = _player.position;
-        Refresh(); // 초기 스폰
-    }
-
-    private void Update()
-    {
-        if (Vector2.Distance(_player.position, _lastPlayerPos) >= _refreshDistance)
-        {
-            _lastPlayerPos = _player.position;
-            Refresh();
-        }
-    }
-
-    private void Refresh()
-    {
-        RemoveNullFish();
-        DespawnFarFish();
-        SpawnByRows();
-    }
-
-    private void RemoveNullFish()
-    {
-        for (int i = _activeFish.Count - 1; i >= 0; i--)
-        {
-            if (_activeFish[i] == null)
-                _activeFish.RemoveAt(i);
-        }
-    }
-
-    private void DespawnFarFish()
-    {
-        float minX = _player.position.x - (_rangeX + 5f);
-        float maxX = _player.position.x + (_rangeX + 5f);
-        float minY = _player.position.y - (_rangeDown + 6f);
-        float maxY = _player.position.y + (_rangeUp + 6f);
-
-        for (int i = _activeFish.Count - 1; i >= 0; i--)
-        {
-            FishRoot fish = _activeFish[i];
-            if (fish == null)
-            {
-                _activeFish.RemoveAt(i);
-                continue;
-            }
-
-            Vector3 pos = fish.transform.position;
-
-            if (pos.x < minX || pos.x > maxX || pos.y < minY || pos.y > maxY)
-            {
-                _activeFish.RemoveAt(i);
-                Destroy(fish.gameObject);
-            }
-        }
-    }
-
-    private void SpawnByRows()
-    {
-        float startY = _player.position.y + _rangeUp;
-        int rowCount = Mathf.CeilToInt((_rangeUp + _rangeDown) / _rowHeight) + 1; // +1 여유
-
-        for (int row = 0; row < rowCount; row++)
-        {
-            float rowCenterY = startY - (row * _rowHeight) - (_rowHeight * 0.5f);
-
-            int currentCount = CountFishInRow(rowCenterY - _rowHeight * 0.6f, rowCenterY + _rowHeight * 0.6f);
-            int needCount = _spawnPerRow - currentCount;
-
-            if (needCount <= 0) continue;
-
-            float depth = _depthCalculator.GetDepthByWorldY(rowCenterY);
-            List<FishRoot> candidates = GetCandidatesByDepth(depth);
-
-            if (candidates.Count == 0) continue;
-
-            for (int i = 0; i < needCount; i++)
-            {
-                int tryCount = 0;
-                const int maxTry = 20;
-
-                while (tryCount < maxTry)
-                {
-                    tryCount++;
-                    Vector3 spawnPos = GetRandomSpawnPosition(rowCenterY);
-
-                    if (!IsTooCloseToOtherFish(spawnPos))
-                    {
-                        FishRoot prefab = candidates[Random.Range(0, candidates.Count)];
-                        FishRoot newFish = Instantiate(prefab, spawnPos, Quaternion.identity);
-                        _activeFish.Add(newFish);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    private int CountFishInRow(float minY, float maxY)
-    {
-        int count = 0;
-        for (int i = 0; i < _activeFish.Count; i++)
-        {
-            if (_activeFish[i] == null) continue;
-            float y = _activeFish[i].transform.position.y;
-            if (y >= minY && y <= maxY)
-                count++;
-        }
-        return count;
-    }
-
-    private Vector3 GetRandomSpawnPosition(float targetY)
-    {
-        bool spawnLeft = Random.Range(0, 2) == 0;
-
-        float x = spawnLeft ?
-            Random.Range(_player.position.x - _rangeX, _player.position.x - _innerSafeX) :
-            Random.Range(_player.position.x + _innerSafeX, _player.position.x + _rangeX);
-
-        float y = targetY + Random.Range(-_rowYOffsetRandom, _rowYOffsetRandom);
-
-        // Y 범위 제한
-        y = Mathf.Clamp(y, _player.position.y - _rangeDown, _player.position.y + _rangeUp);
-
-        return new Vector3(x, y, 0f);
-    }
-
-    private bool IsTooCloseToOtherFish(Vector3 spawnPos)
-    {
-        float sqrDist = _minSpawnDistance * _minSpawnDistance;
-        for (int i = 0; i < _activeFish.Count; i++)
-        {
-            if (_activeFish[i] == null) continue;
-            if ((_activeFish[i].transform.position - spawnPos).sqrMagnitude < sqrDist)
-                return true;
-        }
-        return false;
-    }
-
-    private List<FishRoot> GetCandidatesByDepth(float depth)
-    {
-        List<FishRoot> candidates = new List<FishRoot>();
+        _camera = Camera.main;
+        var allowedIds = UserManager.Ins?.dungeonSpawnFishIds;
+        var registeredIds = new HashSet<int>();
 
         foreach (FishRoot prefab in _fishPrefabs)
         {
-            if (prefab == null) continue;
-            if (_useSpawnFishFilter && !_spawnFishIds.Contains(prefab.FishId)) continue;
+            if (prefab == null || (allowedIds != null && allowedIds.Count > 0 && !allowedIds.Contains(prefab.FishId)))
+                continue;
 
-            FishData data = JsonManager.Ins.GetDataByKey<FishData>(prefab.FishId, x => x.fishId);
-            if (data != null && depth >= data.minDepth && depth <= data.maxDepth)
-                candidates.Add(prefab);
+            FishData data = JsonManager.Ins.GetDataByKey<FishData>(prefab.FishId, fish => fish.fishId);
+            if (data == null || !registeredIds.Add(prefab.FishId))
+                continue;
+
+            float minDepth = Mathf.Max(0f, Mathf.Max(_depthBounds.x, data.minDepth));
+            float maxDepth = Mathf.Min(_depthBounds.y, data.maxDepth);
+            if (minDepth > maxDepth)
+                continue;
+
+            SpeciesSpawnOverride spawnOverride = _speciesSpawnOverrides.Find(entry => entry != null && entry.Prefab == prefab);
+            int maxAlive = spawnOverride != null && spawnOverride.MaxAlive > 0 ? spawnOverride.MaxAlive : _maxAlivePerSpecies;
+            float respawnDelay = spawnOverride != null && spawnOverride.RespawnDelay > 0f ? spawnOverride.RespawnDelay : _refreshInterval;
+            for (int i = 0; i < maxAlive; i++)
+            {
+                var slot = new FishSlot
+                {
+                    Prefab = prefab,
+                    RespawnDelay = respawnDelay,
+                    MinY = _depthCalculator.SurfaceY - maxDepth,
+                    MaxY = _depthCalculator.SurfaceY - minDepth
+                };
+                slot.Position = RandomPosition(slot);
+                slot.Alive = true;
+                _slots.Add(slot);
+            }
         }
-
-        return candidates;
     }
 
-    private void CacheSpawnFishIds()
+    private void LateUpdate()
     {
-        _spawnFishIds.Clear();
-        _useSpawnFishFilter = false;
-
-        if (UserManager.Ins == null || UserManager.Ins.dungeonSpawnFishIds == null)
+        if (Time.timeScale <= 0f || _player == null)
             return;
 
-        _useSpawnFishFilter = true;
+        Vector2 center = _camera != null ? _camera.transform.position : _player.position;
+        float halfHeight = _camera != null && _camera.orthographic ? _camera.orthographicSize : 6f;
+        float halfWidth = _camera != null ? halfHeight * _camera.aspect : 10f;
+        var view = new Vector2(halfWidth, halfHeight);
+        int activationsLeft = _activationsPerFrame;
 
-        for (int i = 0; i < UserManager.Ins.dungeonSpawnFishIds.Count; i++)
+        foreach (FishSlot slot in _slots)
         {
-            int fishId = UserManager.Ins.dungeonSpawnFishIds[i];
-            if (fishId > 0)
-                _spawnFishIds.Add(fishId);
+            if (!slot.Alive && Time.time >= slot.RespawnTime)
+                TryRespawn(slot, center, view);
+
+            if (!slot.Alive)
+                continue;
+
+            if (slot.Instance != null && slot.Instance.gameObject.activeSelf)
+            {
+                slot.Position = slot.Instance.transform.position;
+                if (!IsWithinView(slot.Position, center, view, DeactivationMargin))
+                {
+                    slot.Instance.HpUI?.Hide();
+                    slot.Instance.gameObject.SetActive(false);
+                }
+                continue;
+            }
+
+            if (activationsLeft <= 0 || !IsWithinView(slot.Position, center, view, ActivationMargin))
+                continue;
+
+            Activate(slot);
+            activationsLeft--;
         }
+    }
+
+    private void Activate(FishSlot slot)
+    {
+        if (slot.Instance == null)
+        {
+            slot.Instance = Instantiate(slot.Prefab, slot.Position, Quaternion.identity, transform);
+            slot.Instance.Stats.SetDeathHandler(() => Release(slot));
+            return;
+        }
+
+        if (slot.Instance.Stats.IsDead)
+            ResetForRespawn(slot.Instance, slot.Position);
+
+        slot.Instance.gameObject.SetActive(true);
+    }
+
+    private static void ResetForRespawn(FishRoot fish, Vector3 position)
+    {
+        fish.transform.position = position;
+        if (fish.Rb != null)
+        {
+            fish.Rb.position = position;
+            fish.Rb.velocity = Vector2.zero;
+            fish.Rb.angularVelocity = 0f;
+        }
+
+        fish.Stats.Init(fish);
+        fish.Sensor.Init(fish);
+        fish.Controller.ResetForSpawn();
+        fish.HpUI?.Init(fish.Stats);
+    }
+
+    private void Release(FishSlot slot)
+    {
+        slot.Alive = false;
+        slot.RespawnTime = Time.time + slot.RespawnDelay;
+        slot.Instance.gameObject.SetActive(false);
+    }
+
+    private void TryRespawn(FishSlot slot, Vector2 center, Vector2 view)
+    {
+        for (int attempt = 0; attempt < 8; attempt++)
+        {
+            Vector3 position = RandomPosition(slot);
+            if (IsWithinView(position, center, view, 0f) ||
+                ((Vector2)(position - _player.position)).sqrMagnitude < SafeDistance * SafeDistance)
+                continue;
+
+            slot.Position = position;
+            slot.Alive = true;
+            return;
+        }
+
+        slot.RespawnTime = Time.time + slot.RespawnDelay;
+    }
+
+    private Vector3 RandomPosition(FishSlot slot)
+    {
+        return new Vector3(Random.Range(_horizontalBounds.x, _horizontalBounds.y),
+            Random.Range(slot.MinY, slot.MaxY), 0f);
+    }
+
+    private static bool IsWithinView(Vector2 position, Vector2 center, Vector2 view, float margin)
+    {
+        Vector2 offset = position - center;
+        return Mathf.Abs(offset.x) <= view.x + margin && Mathf.Abs(offset.y) <= view.y + margin;
     }
 }

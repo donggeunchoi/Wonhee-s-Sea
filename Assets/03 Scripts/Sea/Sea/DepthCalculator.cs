@@ -7,6 +7,7 @@ public class DepthCalculator : MonoBehaviour
     [SerializeField] private Transform _player;
     [SerializeField] private float _surfaceY = 0f;
 
+    public float SurfaceY => _surfaceY;
     public float CurrentDepth { get; private set; }
 
     private void Update()
