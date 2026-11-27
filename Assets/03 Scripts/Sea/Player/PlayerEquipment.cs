@@ -6,8 +6,8 @@ public class PlayerEquipment : MonoBehaviour
 {
     public enum WeaponKind
     {
-        Dagger,
         Harpoon,
+        HarpoonGun,
         SMG
     }
 
@@ -19,7 +19,7 @@ public class PlayerEquipment : MonoBehaviour
     const int UNDERWATER_GUN_ID = 50004;
 
     public int EquippedWeaponID { get; private set; }
-    public WeaponKind CurrentWeapon { get; private set; } = WeaponKind.Dagger;
+    public WeaponKind CurrentWeapon { get; private set; } = WeaponKind.Harpoon;
 
     public bool HasHat { get; private set; }
     public bool HasArmor { get; private set; }
@@ -37,33 +37,33 @@ public class PlayerEquipment : MonoBehaviour
 
         switch( EquippedWeaponID )
         {
-            case HARPOON_ID:
             case HARPOON_GUN_ID:
-                EquipHarpoon();
+                EquipHarpoonGun();
                 break;
             case UNDERWATER_GUN_ID:
                 EquipSMG();
                 break;
             case UNDERWATER_KNIFE_ID:
+            case HARPOON_ID:
             default:
-                EquipDagger();
+                EquipHarpoon();
                 break;
         }
 
         RecalculateStats();
     }
 
-    public void EquipDagger()
-    {
-        CurrentWeapon = WeaponKind.Dagger;
-        _owner?.Attack?.SetWeaponType(WeaponType.Dagger);
-        Debug.Log("무기 장착: 짱 쎈 검");
-    }
-
     public void EquipHarpoon()
     {
         CurrentWeapon = WeaponKind.Harpoon;
         _owner?.Attack?.SetWeaponType(WeaponType.Harpoon);
+        Debug.Log("무기 장착: 작살");
+    }
+
+    public void EquipHarpoonGun()
+    {
+        CurrentWeapon = WeaponKind.HarpoonGun;
+        _owner?.Attack?.SetWeaponType(WeaponType.HarpoonGun);
         Debug.Log("무기 장착: 작살총");
     }
 

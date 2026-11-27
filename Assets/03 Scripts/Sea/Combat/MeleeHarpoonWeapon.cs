@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DaggerWeapon : BaseWeapon
+public class MeleeHarpoonWeapon : BaseWeapon
 {
     [SerializeField] private LayerMask _targetMask;
     [SerializeField] private Collider2D _hitCollider;

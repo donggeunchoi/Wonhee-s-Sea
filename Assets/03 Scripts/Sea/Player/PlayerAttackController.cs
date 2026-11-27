@@ -4,65 +4,65 @@ using UnityEngine;
 
 public enum WeaponType
 {
-    Dagger,
     Harpoon,
+    HarpoonGun,
     SMG
 }
 
 public class PlayerAttackController : MonoBehaviour
 {
     [Header("무기 오브젝트")]
-    [SerializeField] private GameObject _daggerObject;
     [SerializeField] private GameObject _harpoonObject;
+    [SerializeField] private GameObject _harpoonGunObject;
     [SerializeField] private GameObject _smgObject;
 
     [Header("무기 컴포넌트")]
-    [SerializeField] private DaggerWeapon _daggerWeapon;
-    [SerializeField] private HarpoonWeapon _harpoonWeapon;
+    [SerializeField] private MeleeHarpoonWeapon _harpoonWeapon;
+    [SerializeField] private HarpoonGunWeapon _harpoonGunWeapon;
     [SerializeField] private SMGWeapon _smgWeapon;
 
     [Header("위치 보정")]
-    [SerializeField] private Transform _daggerTransform;
     [SerializeField] private Transform _harpoonTransform;
+    [SerializeField] private Transform _harpoonGunTransform;
     [SerializeField] private Transform _smgTransform;
     [SerializeField] private float _originY_Right = 0f;
     [SerializeField] private float _originY_Left = 1.1f;
 
     [Header("근접")]
-    [SerializeField] private float _daggerAttackDistance = 1.1f;
-    [SerializeField] private float _daggerCooldown = 0.32f;
+    [SerializeField] private Transform _harpoonTip;
+    [SerializeField, Min(0f)] private float _harpoonAttackDistance = 0.8f;
+    [SerializeField] private float _harpoonCooldown = 0.32f;
 
     private PlayerRoot _owner;
     private bool _isAttacking;
-    private bool _isDaggerAnimating;
+    private bool _isHarpoonAnimating;
     private DungeonPlayerAnimation _animation;
-    private Coroutine _daggerAttack;
-    private Vector3 _daggerOrigin;
+    private Coroutine _harpoonAttack;
+    private Vector3 _harpoonTipOrigin;
 
     private Transform _currentTransform;
 
-    public WeaponType CurrentWeaponType { get; private set; } = WeaponType.Dagger;
+    public WeaponType CurrentWeaponType { get; private set; } = WeaponType.Harpoon;
 
-    public event Action<WeaponType> WeaponChanged;
 
     public void Init(PlayerRoot owner, DungeonPlayerAnimation animation)
     {
         _owner = owner;
         _animation = animation;
 
-        SetWeaponActive(WeaponType.Dagger, false);
         SetWeaponActive(WeaponType.Harpoon, false);
+        SetWeaponActive(WeaponType.HarpoonGun, false);
         SetWeaponActive(WeaponType.SMG, false);
 
-        CurrentWeaponType = WeaponType.Dagger;
-        SetWeaponActive(WeaponType.Dagger, true);
+        CurrentWeaponType = WeaponType.Harpoon;
+        SetWeaponActive(WeaponType.Harpoon, true);
 
-        _currentTransform = _daggerTransform;
+        _currentTransform = _harpoonTransform;
 
-        if (_daggerWeapon != null)
+        if (_harpoonWeapon != null)
         {
-            _daggerWeapon.SetOwner(_owner.gameObject);
-            _daggerWeapon.Equip();
+            _harpoonWeapon.SetOwner(_owner.gameObject);
+            _harpoonWeapon.Equip();
         }
 
         ApplyWeaponSideAndMirror();
@@ -70,8 +70,8 @@ public class PlayerAttackController : MonoBehaviour
 
     private void SetWeaponActive(WeaponType type, bool active)
     {
-        if (_daggerObject != null && type == WeaponType.Dagger) _daggerObject.SetActive(active);
         if (_harpoonObject != null && type == WeaponType.Harpoon) _harpoonObject.SetActive(active);
+        if (_harpoonGunObject != null && type == WeaponType.HarpoonGun) _harpoonGunObject.SetActive(active);
         if (_smgObject != null && type == WeaponType.SMG) _smgObject.SetActive(active);
     }
 
@@ -79,8 +79,7 @@ public class PlayerAttackController : MonoBehaviour
     {
         if (CurrentWeaponType == type) return;
 
-        CancelDaggerAttack();
-        StopSmgFire();
+        CancelHarpoonAttack();
         GetCurrentWeapon()?.Unequip();
 
         SetWeaponActive(CurrentWeaponType, false);
@@ -89,11 +88,11 @@ public class PlayerAttackController : MonoBehaviour
 
         switch (type)
         {
-            case WeaponType.Dagger:
-                _currentTransform = _daggerTransform;
-                break;
             case WeaponType.Harpoon:
                 _currentTransform = _harpoonTransform;
+                break;
+            case WeaponType.HarpoonGun:
+                _currentTransform = _harpoonGunTransform;
                 break;
             case WeaponType.SMG:
                 _currentTransform = _smgTransform;
@@ -104,15 +103,14 @@ public class PlayerAttackController : MonoBehaviour
         GetCurrentWeapon()?.Equip();
 
         ApplyWeaponSideAndMirror();
-        WeaponChanged?.Invoke(CurrentWeaponType);
     }
 
     private BaseWeapon GetCurrentWeapon()
     {
         return CurrentWeaponType switch
         {
-            WeaponType.Dagger => _daggerWeapon,
             WeaponType.Harpoon => _harpoonWeapon,
+            WeaponType.HarpoonGun => _harpoonGunWeapon,
             WeaponType.SMG => _smgWeapon,
             _ => null
         };
@@ -120,7 +118,7 @@ public class PlayerAttackController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (_owner == null || _isDaggerAnimating) return;
+        if (_owner == null || _isHarpoonAnimating) return;
         ApplyWeaponSideAndMirror();
     }
 
@@ -141,34 +139,39 @@ public class PlayerAttackController : MonoBehaviour
 
     public void OnAttack()
     {
-        if (!isActiveAndEnabled || CurrentWeaponType != WeaponType.Dagger || _isAttacking
-            || _owner == null || _daggerTransform == null || _daggerTransform.parent == null) return;
+        if (!isActiveAndEnabled || _owner == null || _isAttacking) return;
 
         Vector2 move = _owner.Input?.ReadMoveInput() ?? Vector2.zero;
         Vector2 facing = move.sqrMagnitude >= PlayerMovement.DeadZone * PlayerMovement.DeadZone
             ? move.normalized
             : (_animation?.FacingDirection ?? Vector2.right);
 
-        _daggerAttack = StartCoroutine(C_DaggerAttack(facing));
+        if (CurrentWeaponType == WeaponType.Harpoon)
+        {
+            if (_harpoonTip != null)
+                _harpoonAttack = StartCoroutine(C_HarpoonAttack(facing));
+            return;
+        }
+
+        _animation?.FaceAttack(facing);
+        ApplyWeaponSideAndMirror();
+        GetCurrentWeapon()?.Fire(facing);
     }
 
-    private IEnumerator C_DaggerAttack(Vector2 facing)
+    private IEnumerator C_HarpoonAttack(Vector2 facing)
     {
         _isAttacking = true;
-        _isDaggerAnimating = true;
+        _isHarpoonAnimating = true;
         _owner.Movement?.SetAttackLocked(true);
 
         _animation?.FaceAttack(facing);
         ApplyWeaponSideAndMirror();
 
-        Vector3 worldDir = new Vector3(facing.x, facing.y, 0f).normalized;
-        Vector3 localDir = _daggerTransform.parent.InverseTransformDirection(worldDir);
+        _harpoonTipOrigin = _harpoonTip.localPosition;
+        Vector3 origin = _harpoonTipOrigin;
+        Vector3 targetPos = origin + Vector3.right * _harpoonAttackDistance;
 
-        _daggerOrigin = _daggerTransform.localPosition;
-        Vector3 origin = _daggerOrigin;
-        Vector3 targetPos = origin + localDir * _daggerAttackDistance;
-
-        _daggerWeapon?.BeginAttack();
+        _harpoonWeapon?.BeginAttack();
 
         float elapsed = 0f;
         float attackTime = 0.12f;
@@ -176,68 +179,51 @@ public class PlayerAttackController : MonoBehaviour
         while (elapsed < attackTime)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / attackTime;
-            float eased = Mathf.Sin(t * Mathf.PI * 0.8f);
+            float t = Mathf.Clamp01(elapsed / attackTime);
+            float eased = Mathf.Sin(t * Mathf.PI * 0.5f);
 
-            _daggerTransform.localPosition = Vector3.Lerp(origin, targetPos, eased);
+            _harpoonTip.localPosition = Vector3.Lerp(origin, targetPos, eased);
             yield return null;
         }
 
-        _daggerWeapon?.EndAttack();
+        _harpoonWeapon?.EndAttack();
 
-        Vector3 returnStart = _daggerTransform.localPosition;
+        Vector3 returnStart = _harpoonTip.localPosition;
         elapsed = 0f;
         while (elapsed < 0.10f)
         {
             elapsed += Time.deltaTime;
             float t = elapsed / 0.10f;
-            _daggerTransform.localPosition = Vector3.Lerp(returnStart, origin, t);
+            _harpoonTip.localPosition = Vector3.Lerp(returnStart, origin, t);
             yield return null;
         }
 
-        _daggerTransform.localPosition = origin;
-        _isDaggerAnimating = false;
+        _harpoonTip.localPosition = origin;
+        _isHarpoonAnimating = false;
         _owner.Movement?.SetAttackLocked(false);
 
-        yield return new WaitForSeconds(_daggerCooldown);
+        yield return new WaitForSeconds(_harpoonCooldown);
         _isAttacking = false;
-        _daggerAttack = null;
+        _harpoonAttack = null;
     }
 
-    public void FireRanged(Vector2 shootDir)
+    private void CancelHarpoonAttack()
     {
-        if (!isActiveAndEnabled || CurrentWeaponType == WeaponType.Dagger) return;
-        if (shootDir.sqrMagnitude < 0.0001f) return;
+        if (_harpoonAttack == null) return;
 
-        if (CurrentWeaponType == WeaponType.SMG)
-            _smgWeapon?.StartFiring(shootDir);
-        else
-            _harpoonWeapon?.Fire(shootDir);
-    }
-
-    public void StopSmgFire()
-    {
-        _smgWeapon?.StopFiring();
-    }
-
-    private void CancelDaggerAttack()
-    {
-        if (_daggerAttack == null) return;
-
-        StopCoroutine(_daggerAttack);
-        bool restoreOrigin = _isDaggerAnimating;
-        _isDaggerAnimating = false;
+        StopCoroutine(_harpoonAttack);
+        bool restoreOrigin = _isHarpoonAnimating;
+        _isHarpoonAnimating = false;
         _owner.Movement?.SetAttackLocked(false);
-        _daggerAttack = null;
+        _harpoonAttack = null;
         _isAttacking = false;
-        _daggerWeapon?.EndAttack();
-        if (restoreOrigin && _daggerTransform != null)
-            _daggerTransform.localPosition = _daggerOrigin;
+        _harpoonWeapon?.EndAttack();
+        if (restoreOrigin && _harpoonTip != null)
+            _harpoonTip.localPosition = _harpoonTipOrigin;
     }
 
     private void OnDisable()
     {
-        StopSmgFire();
-        CancelDaggerAttack();
+        CancelHarpoonAttack();
     }
 }

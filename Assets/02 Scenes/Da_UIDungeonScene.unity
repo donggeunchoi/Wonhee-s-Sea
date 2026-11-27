@@ -1366,11 +1366,11 @@ PrefabInstance:
     - target: {fileID: 3893011893758042052, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
       propertyPath: _aimJoystickObj
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7025640013902038002}
     - target: {fileID: 3893011893758042052, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
       propertyPath: _attackButtonObj
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7025640013902038001}
     - target: {fileID: 797265196185510909, guid: 78b1ba4b950c20a4cb6e7804a49b101f, type: 3}
       propertyPath: m_Name
       value: Player_D
@@ -2075,3 +2075,13 @@ SceneRoots:
   - {fileID: 1965470808}
   - {fileID: 1607466699}
   - {fileID: 10460198}
+--- !u!1 &7025640013902038001 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2234572539933193200, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
+  m_PrefabInstance: {fileID: 4419907631398750088}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7025640013902038002 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6266849842703551655, guid: 01b00839d291b574e9dcc72408bba1f9, type: 3}
+  m_PrefabInstance: {fileID: 4419907631398750088}
+  m_PrefabAsset: {fileID: 0}

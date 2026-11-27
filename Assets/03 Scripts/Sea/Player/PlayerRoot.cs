@@ -33,6 +33,6 @@ public class PlayerRoot : MonoBehaviour
         Stats?.Init(this);
         Oxygen?.Init(this);
         Equipment?.Init(this);
-        CombatInput?.Init(this, dungeonAnimation);
+        CombatInput?.Init(this);
     }
 }

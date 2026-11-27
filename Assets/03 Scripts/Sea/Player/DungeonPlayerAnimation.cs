@@ -3,6 +3,10 @@ using UnityEngine;
 public class DungeonPlayerAnimation : PlayerMovementAnimation
 {
     [SerializeField] private Transform _pivot;
+    [SerializeField] private Transform _weaponGrip;
+    [SerializeField] private Sprite _secondSwimFrame;
+    [SerializeField] private Vector2 _firstSwimGripOffset;
+    [SerializeField] private Vector2 _secondSwimGripOffset;
 
     private const float MaxTurnSpeed = 360f;
     private const float PivotYRight = 0f;
@@ -10,6 +14,30 @@ public class DungeonPlayerAnimation : PlayerMovementAnimation
 
     public Vector2 FacingDirection { get; private set; } = Vector2.right;
     public bool IsFlipY { get; private set; }
+
+    private Vector3 _weaponGripOrigin;
+
+    private void Awake()
+    {
+        if (_weaponGrip != null)
+            _weaponGripOrigin = _weaponGrip.localPosition;
+    }
+
+    private void LateUpdate()
+    {
+        UpdateWeaponGrip();
+    }
+
+    private void UpdateWeaponGrip()
+    {
+        if (_weaponGrip == null || _sr == null) return;
+
+        Vector2 offset = _sr.sprite == _secondSwimFrame ? _secondSwimGripOffset : _firstSwimGripOffset;
+        if (IsFlipY)
+            offset.y = -offset.y;
+
+        _weaponGrip.localPosition = _weaponGripOrigin + (Vector3)offset;
+    }
 
     public void FaceAim(Vector2 direction)
     {
@@ -20,6 +48,7 @@ public class DungeonPlayerAnimation : PlayerMovementAnimation
     {
         FacingDirection = direction;
         ApplyFacing(snap: true);
+        UpdateWeaponGrip();
     }
 
     public override void ApplyMovement(Vector2 direction)

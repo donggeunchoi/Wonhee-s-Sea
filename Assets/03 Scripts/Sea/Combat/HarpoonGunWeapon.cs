@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HarpoonWeapon : BaseWeapon
+public class HarpoonGunWeapon : BaseWeapon
 {
     [SerializeField] private Projectile _projectilePrefab;
     [SerializeField] private Transform _firePoint;

@@ -56,15 +56,15 @@ public class EquipmentDebug : EditorWindow
             EditorGUILayout.LabelField("무기", EditorStyles.boldLabel);
 
             EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("단검 장착", GUILayout.Height(30)))
+            if (GUILayout.Button("작살 장착", GUILayout.Height(30)))
             {
-                equip.EquipDagger();
+                equip.EquipHarpoon();
                 RefreshEditor();
             }
 
             if (GUILayout.Button("작살총 장착", GUILayout.Height(30)))
             {
-                equip.EquipHarpoon();
+                equip.EquipHarpoonGun();
                 RefreshEditor();
             }
 
