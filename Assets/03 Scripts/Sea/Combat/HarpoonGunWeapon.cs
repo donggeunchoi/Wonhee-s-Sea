@@ -12,6 +12,8 @@ public class HarpoonGunWeapon : BaseWeapon
 
     private float _cdTimer;
 
+    public override bool CanFire => _cdTimer <= 0f && _projectilePrefab != null && _firePoint != null;
+
     private void Update()
     {
         if (_cdTimer > 0) _cdTimer -= Time.deltaTime;
@@ -19,7 +21,7 @@ public class HarpoonGunWeapon : BaseWeapon
 
     public override void Fire(Vector2 direction)
     {
-        if (_cdTimer > 0 || _projectilePrefab == null || _firePoint == null) return;
+        if (!CanFire) return;
 
         direction = direction.normalized;
         var proj = Instantiate(_projectilePrefab, _firePoint.position, Quaternion.identity);

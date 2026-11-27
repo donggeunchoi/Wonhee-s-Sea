@@ -11,9 +11,11 @@ public class SMGWeapon : BaseWeapon
 
     private float _nextFireTime;
 
+    public override bool CanFire => Time.time >= _nextFireTime && _projectilePrefab != null && _firePoint != null;
+
     public override void Fire(Vector2 direction)
     {
-        if (Time.time < _nextFireTime || _projectilePrefab == null || _firePoint == null) return;
+        if (!CanFire) return;
 
         var projectile = Instantiate(_projectilePrefab, _firePoint.position, Quaternion.identity);
         projectile.Init(_owner, direction, _damage, 16f);

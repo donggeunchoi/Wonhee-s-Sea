@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class BaseWeapon : MonoBehaviour
 {
     protected GameObject _owner;
+    public virtual bool CanFire => false;
 
     public virtual void SetOwner(GameObject owner)
     {

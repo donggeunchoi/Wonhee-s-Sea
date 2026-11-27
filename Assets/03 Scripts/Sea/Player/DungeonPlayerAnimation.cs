@@ -9,6 +9,7 @@ public class DungeonPlayerAnimation : PlayerMovementAnimation
     [SerializeField] private Vector2 _secondSwimGripOffset;
 
     private const float MaxTurnSpeed = 360f;
+    private const float MovementFlipDeadZone = 10f;
     private const float PivotYRight = 0f;
     private const float PivotYLeft = -0.6f;
 
@@ -73,7 +74,10 @@ public class DungeonPlayerAnimation : PlayerMovementAnimation
 
         if (_sr == null) return;
 
-        bool flip = angle > 90f || angle < -90f;
+        float absoluteAngle = Mathf.Abs(Mathf.DeltaAngle(0f, nextAngle));
+        if (!snap && Mathf.Abs(absoluteAngle - 90f) <= MovementFlipDeadZone) return;
+
+        bool flip = absoluteAngle > 90f;
         if (flip == IsFlipY) return;
 
         IsFlipY = flip;

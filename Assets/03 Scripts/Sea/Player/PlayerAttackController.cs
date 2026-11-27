@@ -153,9 +153,12 @@ public class PlayerAttackController : MonoBehaviour
             return;
         }
 
+        BaseWeapon weapon = GetCurrentWeapon();
+        if (weapon == null || !weapon.CanFire) return;
+
         _animation?.FaceAttack(facing);
         ApplyWeaponSideAndMirror();
-        GetCurrentWeapon()?.Fire(facing);
+        weapon.Fire(facing);
     }
 
     private IEnumerator C_HarpoonAttack(Vector2 facing)
