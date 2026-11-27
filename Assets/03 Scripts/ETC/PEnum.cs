@@ -31,7 +31,10 @@ public enum  EItemType
     Ingredient = 2,// 재료 안에서의 티입2는 (1: 회, 2: 초밥, 3:지은밥, 4:생쌀)
     Weapon = 3,
     Employee = 4,
-    Skin = 5
+    Skin = 5,
+    Gold = 6,
+    Dia  =7,
+    Enchant = 8,
 }
 
 [Serializable]
@@ -99,4 +102,16 @@ public enum SettingType
     Graphics = 2,
     Service = 3,
     Account = 4,
+}
+
+public enum  EmployeeType
+{
+    None = 0,
+    Casher = 1,                         //판매 직원
+    ContainerToRice =2,                 //생쌀 운반 직원
+    ContainerToSashimi = 3,             //생선 운반 직원
+    RiceToSushi = 4,                    //지은밥 운반 직원
+    SashimiToSushi = 5,                 //회 운반 직원
+    SushiToPlate = 6,                   //초밥 운반 직원
+    SashimiToPlate = 7,                 //회 운반 직원
 }

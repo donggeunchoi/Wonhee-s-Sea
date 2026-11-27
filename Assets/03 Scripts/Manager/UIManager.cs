@@ -4,18 +4,28 @@ using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
     [Header("골드")]
     [SerializeField]
     TextMeshProUGUI txGold;
+    [SerializeField]
+    Image imgGold;
+
     [Header("다이아")]
     [SerializeField]
     TextMeshProUGUI txDia;
+    [SerializeField]
+    Image imgDia;
+
     [Header("강화석")]
     [SerializeField]
     TextMeshProUGUI txEnchant;
+    [SerializeField]
+    Image imgEnchant;
+
     [Header("레벨")]
     [SerializeField]
     TextMeshProUGUI txLevel;
@@ -43,13 +53,17 @@ public class UIManager : Singleton<UIManager>
 
     void InitData()
     {
-        txLevel.text = string.Format("{0}", UserManager.Ins.userInfo.level);
+        txLevel.text = string.Format("Lv.{0}", UserManager.Ins.userInfo.level);
         txGold.text = string.Format("{0}", UserManager.Ins.userInfo.gold);
         txRating.text = string.Format("{0}", UserManager.Ins.userInfo.exp);
 
         //UserInfo 다이아,강화석 추가 필요
         txDia.text = string.Format("{0}", UserManager.Ins.userInfo.dia);
         txEnchant.text = string.Format("{0}", UserManager.Ins.userInfo.enchant);
+
+        imgGold.sprite = SpriteManager.Ins.OnGetSprite(EItemType.Gold);
+        imgDia.sprite = SpriteManager.Ins.OnGetSprite(EItemType.Dia);
+        imgEnchant.sprite = SpriteManager.Ins.OnGetSprite(EItemType.Enchant);
     }
 
     public void OnClickStore()

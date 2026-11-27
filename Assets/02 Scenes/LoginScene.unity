@@ -989,6 +989,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a7fd2a36cb6b24095613ff0222b9d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goldIcon: {fileID: 21300000, guid: d9164224ccef82049b7e0e8f1b692e36, type: 3}
+  diaIcon: {fileID: 21300000, guid: 3ba2f98fa0b12924e9282d27073fd915, type: 3}
+  enchantIcon: {fileID: 21300000, guid: 5697aca4e14adcd45b0ee6e08facb015, type: 3}
 --- !u!4 &940129329
 Transform:
   m_ObjectHideFlags: 0
